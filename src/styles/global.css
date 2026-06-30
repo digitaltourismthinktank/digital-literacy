@@ -291,6 +291,7 @@ h2 { font-size: 23px; line-height: 1.18; margin: 0 0 10px; font-weight: 700; col
 .btn.primary:hover { background: var(--navy-600); }
 .btn.ghost { border-color: transparent; background: transparent; }
 .btn:focus-visible, a:focus-visible, .toggle button:focus-visible { outline: 2px solid var(--teal); outline-offset: 2px; }
+[tabindex="-1"]:focus { outline: none; }
 
 /* ---------- cover ---------- */
 .cover { flex-direction: row; gap: 40px; align-items: flex-start; }
