@@ -1,0 +1,11 @@
+{
+  "track": 4,
+  "trackName": "Data Fundamentals",
+  "title": "Spreadsheets and CSVs",
+  "hook": "The file format AI actually reads",
+  "duration": "~12 min",
+  "isFree": true,
+  "status": "published",
+  "prev": "4-1",
+  "next": "4-3"
+}

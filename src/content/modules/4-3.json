@@ -1,0 +1,11 @@
+{
+  "track": 4,
+  "trackName": "Data Fundamentals",
+  "title": "JSON and Data Interchange",
+  "hook": "The other format AI tools pass data around in",
+  "duration": "~10 min",
+  "isFree": false,
+  "status": "coming-soon",
+  "prev": "4-2",
+  "next": "4-4"
+}

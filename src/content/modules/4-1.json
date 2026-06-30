@@ -1,0 +1,11 @@
+{
+  "track": 4,
+  "trackName": "Data Fundamentals",
+  "title": "Structured vs Unstructured Data",
+  "hook": "Why the format of data matters as much as the data itself",
+  "duration": "~10 min",
+  "isFree": false,
+  "status": "coming-soon",
+  "prev": null,
+  "next": "4-2"
+}

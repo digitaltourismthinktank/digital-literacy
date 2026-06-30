@@ -1,0 +1,495 @@
+---
+import { getCollection } from 'astro:content';
+import Shell from '../../layouts/Shell.astro';
+import { getModuleData } from '../../data/index';
+
+export async function getStaticPaths() {
+  const modules = await getCollection('modules');
+  return modules.map((mod) => ({
+    params: { id: mod.id },
+    props: { meta: mod.data },
+  }));
+}
+
+interface Props {
+  meta: {
+    track: number;
+    trackName: string;
+    title: string;
+    hook: string;
+    duration?: string;
+    isFree: boolean;
+    status: 'published' | 'coming-soon';
+    prev: string | null;
+    next: string | null;
+  };
+}
+
+const { id } = Astro.params;
+const { meta } = Astro.props;
+const displayId = id.replace('-', '.');
+const data = getModuleData(id);
+
+// Serialised for the inline client script; null for coming-soon modules.
+const MOD = data
+  ? {
+      moduleId: id,
+      clean: data.inspector.clean,
+      broken: data.inspector.broken,
+      scReplies: data.selfCheckReplies,
+    }
+  : null;
+---
+
+<Shell title={`Module ${displayId} — ${meta.title}`}>
+
+  {meta.status === 'coming-soon' && (
+    <div style="min-height:100vh;display:flex;align-items:center;justify-content:center;padding:40px 18px;background:var(--paper-2);">
+      <div style="max-width:460px;text-align:center;">
+        <div class="step-eyebrow" style="margin-bottom:14px;">Track {meta.track} · {meta.trackName}</div>
+        <h1 style="font-size:28px;color:var(--navy);margin:0 0 12px;line-height:1.2;">{meta.title}</h1>
+        <p class="lead" style="margin-bottom:28px;">{meta.hook}</p>
+        <span style="display:inline-block;padding:7px 18px;border-radius:99px;background:var(--paper);border:1px solid var(--line-strong);font-size:13px;color:var(--muted);font-weight:500;">Coming soon</span>
+      </div>
+    </div>
+  )}
+
+  {meta.status === 'published' && data && (
+    <main class="lesson" aria-label={`Module ${displayId} lesson`}>
+
+      <div class="topbar">
+        <span class="crumb">Module&nbsp;<b>{displayId}</b> · Track {meta.track} {meta.trackName}</span>
+        <div class="segments" id="segments" aria-hidden="true"></div>
+        <span class="timehint" id="timehint">{meta.duration}</span>
+      </div>
+
+      <div class="stage" id="stage">
+
+        <!-- 0 · COVER -->
+        <section class="frame cover show" data-frame="0">
+          <div class="cover-left">
+            <div class="step-eyebrow">Spreadsheets and CSVs</div>
+            <h1>The file format AI actually reads</h1>
+            <p class="lead">A CSV is the plain, stripped-back version of a spreadsheet, and it is the format almost every AI tool reaches for when it works with your data. Most people have never looked inside one.</p>
+            <div class="scene">
+              <div class="scene-row"><span class="k">What this is</span><span>A short, hands-on look at what a CSV really is and why a messy one quietly breaks AI tools.</span></div>
+              <div class="scene-row"><span class="k">Why you'd care</span><span>If AI keeps misreading your data or giving wrong totals, the file is usually the problem, not the prompt.</span></div>
+              <div class="scene-row"><span class="k">What you'll do</span><span>Compare a clean file against a messy one, see how AI reads each, then clean one yourself.</span></div>
+            </div>
+            <div class="signpost">
+              <b>The shape of the next ten minutes.</b> Six short steps. You'll try something first, then we'll explain what you saw. You can open a <b>"new to this?"</b> panel anywhere you want more grounding, or move straight through if you're comfortable.
+            </div>
+          </div>
+          <div class="cover-right">
+            <div class="videoframe" role="img" aria-label="Orientation video, 75 seconds">
+              <div class="playdot"></div>
+              <div class="vlabel">Why this matters</div>
+              <div class="vtime">75 seconds</div>
+              <div class="vplaceholder">video to be filmed · Vimeo embed</div>
+            </div>
+            <div class="promise"><b>By the end:</b> you'll know what a CSV is, why messy ones break AI tools, and how to clean one so AI can use it.</div>
+          </div>
+        </section>
+
+        <!-- 1 · SEE IT FOR YOURSELF -->
+        <section class="frame" data-frame="1">
+          <div class="step-eyebrow">Step 1 of 6 · Try it first</div>
+          <h2>Same data, clean and messy. Watch where AI trips.</h2>
+          <div class="challenge">
+            <b>Your challenge:</b> flip the file from clean to messy, then click through the three views. It's the same visitor log both times.
+            <span class="lookfor">→ What to look for: in the messy file, the spots an AI trips over are flagged in red.</span>
+          </div>
+          <div class="inspector">
+            <div class="insp-controls">
+              <div class="ctrl">
+                <span class="ctrl-label">File</span>
+                <div class="toggle" role="tablist" aria-label="Choose a file">
+                  <button data-set="clean" class="on" role="tab" aria-selected="true"><span class="dotmark"></span>Clean</button>
+                  <button data-set="broken" role="tab" aria-selected="false"><span class="dotmark"></span>Messy</button>
+                </div>
+              </div>
+              <div class="ctrl">
+                <span class="ctrl-label">View</span>
+                <div class="viewtabs" role="tablist" aria-label="Choose a view">
+                  <button data-view="raw" class="on" role="tab" aria-selected="true">Raw file</button>
+                  <button data-view="grid" role="tab" aria-selected="false">Spreadsheet</button>
+                  <button data-view="ai" role="tab" aria-selected="false">How AI reads it</button>
+                </div>
+              </div>
+            </div>
+            <div class="insp-stage">
+              <div class="insp-view show" data-view="raw">
+                <div class="view-cap">What's actually saved in the file.</div>
+                <div class="raw" id="rawView"></div>
+              </div>
+              <div class="insp-view" data-view="grid">
+                <div class="view-cap">How a spreadsheet displays that same file.</div>
+                <div id="gridView"></div>
+              </div>
+              <div class="insp-view" data-view="ai">
+                <div class="view-cap">What the AI tool sees when it reads the file.</div>
+                <div id="aiView"></div>
+              </div>
+            </div>
+            <div class="askrow">
+              <span class="q">You ask the AI: <b>"What was total revenue?"</b></span>
+              <span class="a" id="askAnswer"></span>
+            </div>
+          </div>
+        </section>
+
+        <!-- 2 · WHAT YOU JUST SAW -->
+        <section class="frame" data-frame="2">
+          <div class="step-eyebrow">Step 2 of 6 · The idea</div>
+          <h2>A CSV is just text. Commas make the columns.</h2>
+          <div class="concept-visual">
+            <div class="map-line">
+              <span class="field">2025-06-05</span><span class="sep">,</span><span class="field">Harbour&nbsp;Museum</span><span class="sep">,</span><span class="field">455</span><span class="sep">,</span><span class="field">2275</span>
+            </div>
+            <div class="map-arrow">↓ each comma starts a new column ↓</div>
+            <div class="map-grid">
+              <div>2025-06-05</div><div>Harbour Museum</div><div>455</div><div>2275</div>
+            </div>
+          </div>
+          <p class="takeline"><b>That's the whole format.</b> A comma starts a new column, a new line starts a new row, and there is nothing else: no colours, no formulas, no merged cells. That bareness is exactly why AI tools like CSVs, and exactly why a stray comma or a currency symbol can throw the whole thing off.</p>
+          <details class="disclosure">
+            <summary><span class="chev">▶</span>New to this? Start here<span class="tag">30-second grounding</span></summary>
+            <div class="body">
+              A <b>spreadsheet</b> (an Excel or Google Sheets file) is a working document. It can hold formatting, formulas, colours and several tabs. A <b>CSV</b> is just the data underneath, saved as plain text. CSV stands for <b>"comma-separated values"</b>. When you "export to CSV", you keep the rows and columns and throw away everything else. AI tools work best with that stripped-back version because there is nothing extra to misread.
+            </div>
+          </details>
+        </section>
+
+        <!-- 3 · QUICK CHECK -->
+        <section class="frame" data-frame="3">
+          <div class="step-eyebrow">Step 3 of 6 · Quick check</div>
+          <h2>One quick prediction before we move on.</h2>
+          <p class="sub">In the messy file, one revenue figure was written as <span style="font-family:var(--mono);color:var(--bad)">£1,945</span>, with a comma inside the number and no quote marks around it. What will most tools do with it?</p>
+          <div class="options" id="checkOptions">
+            <button class="opt" data-correct="false"><span class="key">A</span><span>Read it correctly as £1,945 in the revenue column.</span></button>
+            <button class="opt" data-correct="true"><span class="key">B</span><span>Split it into two columns: "£1" and "945", knocking the row out of line.</span></button>
+            <button class="opt" data-correct="false"><span class="key">C</span><span>Ignore the value and leave the cell empty.</span></button>
+          </div>
+          <div class="reveal" id="checkReveal">
+            <b>It's B.</b> The comma is the column separator, so a comma inside an un-quoted value reads as "new column here". The £1,945 splits into £1 and 945, every later value on that row shifts one place to the right, and the AI can no longer line revenue up with the right day. This single problem is one of the most common reasons a data file misbehaves.
+          </div>
+        </section>
+
+        <!-- 4 · CHOOSE YOUR APPROACH -->
+        <section class="frame" data-frame="4">
+          <div class="step-eyebrow">Step 4 of 6 · Choose your approach</div>
+          <h2>Tools that open, check and clean CSVs.</h2>
+          <table class="tools">
+            <thead><tr><th>Tool</th><th>Cost</th><th>Best for</th></tr></thead>
+            <tbody>
+              <tr><td class="tool">Excel</td><td><span class="pill paid">Paid</span></td><td>Most people already have it. Strong for editing, but watch its habit of "helpfully" reformatting dates and dropping leading zeros.</td></tr>
+              <tr><td class="tool">Google Sheets</td><td><span class="pill free">Free</span></td><td>Free, shareable, opens CSVs cleanly. Good default for quick checks and light cleaning.</td></tr>
+              <tr><td class="tool">Numbers</td><td><span class="pill free">Free</span></td><td>Comes with Mac. Fine for viewing and small edits; export back to CSV when you're done.</td></tr>
+              <tr><td class="tool">OpenRefine</td><td><span class="pill free">Free</span></td><td>Built for messy data at scale. Steeper to learn, but powerful for de-duping and fixing inconsistent values across thousands of rows.</td></tr>
+              <tr><td class="tool">Airtable</td><td><span class="pill mix">Free / Paid</span></td><td>Spreadsheet-database hybrid. Useful when the data needs structure and rules, not just a one-off tidy.</td></tr>
+              <tr><td class="tool">CSV Lint</td><td><span class="pill free">Free</span></td><td>Checks a CSV for structural problems before you use it. A quick way to catch broken rows early.</td></tr>
+            </tbody>
+          </table>
+          <p class="neutral-note">No single right answer here. Pick what fits the job and what you already have open. For most quick fixes, a spreadsheet you know plus an AI tool is enough.</p>
+        </section>
+
+        <!-- 5 · YOUR TURN -->
+        <section class="frame" data-frame="5">
+          <div class="step-eyebrow">Step 5 of 6 · Your turn</div>
+          <h2>Clean the messy file yourself.</h2>
+          <div class="turn-grid">
+            <div class="card">
+              <h3>1 · The sample file</h3>
+              <p class="sub" style="margin-bottom:11px">Download the same messy visitor log you saw earlier. This is your raw material.</p>
+              <div class="row-actions"><button class="btn primary" id="dlBtn">Download messy-visitors.csv</button></div>
+              <p class="sub" style="margin-top:11px;font-size:12.5px">Then swap in one of your own exports and run the same prompt on it.</p>
+            </div>
+            <div class="card">
+              <h3>2 · The prompt to paste</h3>
+              <div class="promptbox" id="promptText">Here is a CSV of visitor data that I know is messy. First, list the formatting problems you can see. Then return a cleaned version: one header row, one record per line, dates as YYYY-MM-DD, numbers with no currency symbols or thousands separators, and the title row and totals row removed. Briefly explain what you changed and why.</div>
+              <div class="row-actions"><button class="btn" id="copyBtn">Copy prompt</button></div>
+            </div>
+          </div>
+          <ol class="steps">
+            <li>Open your AI tool, attach <b>messy-visitors.csv</b>, and paste the prompt.</li>
+            <li>Read the list of problems it finds. Check it against the red flags you spotted in Step 1.</li>
+            <li>Ask it for the cleaned file back, then swap in one of your own messy exports and repeat.</li>
+          </ol>
+          <div class="selfcheck">
+            <div class="q">How did it go?</div>
+            <div class="sc-btns">
+              <button class="btn" data-sc="worked">It worked</button>
+              <button class="btn" data-sc="partly">Partly</button>
+              <button class="btn" data-sc="stuck">I got stuck</button>
+            </div>
+            <div class="sc-reply" id="scReply"></div>
+          </div>
+        </section>
+
+        <!-- 6 · CARRY FORWARD -->
+        <section class="frame" data-frame="6">
+          <div class="step-eyebrow">Step 6 of 6 · Carry forward</div>
+          <h2>What to take with you.</h2>
+          <ul class="takeaways">
+            <li>A CSV is plain text: commas separate columns, line breaks separate rows. Nothing else.</li>
+            <li>The usual things that break AI tools are mixed date formats, numbers with symbols or commas, and stray title or total rows.</li>
+            <li>When AI misreads your data, suspect the file first. Cleaning it is often a single, repeatable prompt.</li>
+          </ul>
+          <div class="next-cards">
+            <div class="next-card"><div class="nlabel">NEXT</div><div class="ntitle">4.1 Structured vs Unstructured Data</div><div class="nwhy">Where a CSV sits in the wider data picture.</div></div>
+            <div class="next-card"><div class="nlabel">NEXT</div><div class="ntitle">4.3 JSON and Data Interchange</div><div class="nwhy">The other format AI tools pass data around in.</div></div>
+            <div class="next-card"><div class="nlabel">NEXT</div><div class="ntitle">6.1 Working with Your Own Documents</div><div class="nwhy">Putting cleaned files to work inside AI tools.</div></div>
+          </div>
+          <div class="complete-row">
+            <button class="btn primary" id="completeBtn">Mark module complete</button>
+            <span class="completed-msg" id="completedMsg">✓ Module complete. Progress saved.</span>
+          </div>
+        </section>
+
+      </div>
+
+      <div class="controls">
+        <button class="btn ghost" id="backBtn" disabled>← Back</button>
+        <button class="btn primary" id="nextBtn">Start →</button>
+      </div>
+
+    </main>
+  )}
+
+  <script is:inline define:vars={{ MOD }}>
+  (function () {
+    if (!MOD) return;
+
+    var TOTAL = 7;
+    var frame = 0;
+    var frames = Array.prototype.slice.call(document.querySelectorAll('.frame'));
+    var segWrap = document.getElementById('segments');
+    var backBtn = document.getElementById('backBtn');
+    var nextBtn = document.getElementById('nextBtn');
+
+    for (var i = 0; i < TOTAL; i++) {
+      var s = document.createElement('div');
+      s.className = 'seg';
+      segWrap.appendChild(s);
+    }
+    var segs = Array.prototype.slice.call(segWrap.children);
+
+    var PK = 'dl_progress';
+    function pRead() {
+      try { return JSON.parse(localStorage.getItem(PK) || '{}'); } catch (e) { return {}; }
+    }
+    function pWrite(m) {
+      try { localStorage.setItem(PK, JSON.stringify(m)); } catch (e) {}
+    }
+
+    function render() {
+      frames.forEach(function (f) {
+        f.classList.toggle('show', +f.dataset.frame === frame);
+      });
+      segs.forEach(function (s, i) {
+        s.className = 'seg' + (i < frame ? ' done' : '') + (i === frame ? ' active' : '');
+      });
+      backBtn.disabled = frame === 0;
+      nextBtn.textContent = frame === 0 ? 'Start →' : (frame === TOTAL - 1 ? 'Finish' : 'Next →');
+      nextBtn.disabled = frame === TOTAL - 1;
+      var active = frames[frame];
+      var h = active.querySelector('h1,h2');
+      if (h) { h.setAttribute('tabindex', '-1'); h.focus({ preventScroll: true }); }
+    }
+
+    function go(n) {
+      frame = Math.max(0, Math.min(TOTAL - 1, n));
+      var m = pRead();
+      var cur = m[MOD.moduleId] || { complete: false, furthest: 0 };
+      if (frame > cur.furthest) {
+        m[MOD.moduleId] = Object.assign({}, cur, { furthest: frame });
+        pWrite(m);
+      }
+      render();
+    }
+
+    backBtn.onclick = function () { go(frame - 1); };
+    nextBtn.onclick = function () { go(frame + 1); };
+    document.addEventListener('keydown', function (e) {
+      if (e.target.matches('input,textarea,button,summary,[contenteditable]') &&
+          (e.key === 'Enter' || e.key === ' ')) return;
+      if (e.key === 'ArrowRight') { go(frame + 1); }
+      if (e.key === 'ArrowLeft') { go(frame - 1); }
+    });
+
+    /* ---- inspector ---- */
+    var rawView = document.getElementById('rawView');
+    var gridView = document.getElementById('gridView');
+    var aiView = document.getElementById('aiView');
+    var askAnswer = document.getElementById('askAnswer');
+
+    function esc(t) {
+      return t.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    }
+
+    function renderRaw(set) {
+      var data = set === 'clean' ? MOD.clean : MOD.broken;
+      var html = '';
+      data.raw.forEach(function (line) {
+        var txt = esc(line[0]);
+        txt = txt.replace(/,/g, '<span class="comma">,</span>');
+        if (line[1]) { txt = '<span class="flag">' + txt + '</span>'; }
+        html += txt + '\n';
+      });
+      rawView.innerHTML = html;
+    }
+
+    function renderGrid(set) {
+      var data = set === 'clean' ? MOD.clean : MOD.broken;
+      var cols = data.cols;
+      var letters = ['A', 'B', 'C', 'D', 'E'];
+      var html = '<table class="grid"><thead><tr><th></th>';
+      for (var c = 0; c < cols; c++) { html += '<th>' + letters[c] + '</th>'; }
+      html += '</tr></thead><tbody>';
+      data.grid.forEach(function (row, r) {
+        html += '<tr><th>' + (r + 1) + '</th>';
+        for (var c = 0; c < cols; c++) {
+          var v = row[c] !== undefined ? row[c] : '';
+          var cls = '';
+          if (set === 'broken' && data.badCells) {
+            for (var k = 0; k < data.badCells.length; k++) {
+              if (data.badCells[k][0] === r && data.badCells[k][1] === c) { cls = 'bad'; break; }
+            }
+          }
+          if (v === '' && cls === '') { cls = 'empty'; }
+          html += '<td class="' + cls + '">' + esc(v) + '</td>';
+        }
+        html += '</tr>';
+      });
+      html += '</tbody></table>';
+      if (set === 'broken') {
+        html += '<div class="gridnote">⚠ The £1,945 has spilled into column E, so this row no longer lines up.</div>';
+      }
+      gridView.innerHTML = html;
+    }
+
+    function renderAI(set) {
+      var data = set === 'clean' ? MOD.clean : MOD.broken;
+      var html = '<div class="ai-line">' + esc(data.aiSummary) + '</div><ul class="ai-list">';
+      data.aiItems.forEach(function (item) {
+        html += '<li class="' + (item.ok ? 'ok' : 'warn') + '">' + esc(item.t) + '</li>';
+      });
+      html += '</ul>';
+      aiView.innerHTML = html;
+      askAnswer.className = 'a ' + (data.askAnswer.good ? 'good' : 'bad');
+      askAnswer.textContent = data.askAnswer.text;
+    }
+
+    function setData(set) {
+      renderRaw(set);
+      renderGrid(set);
+      renderAI(set);
+      document.querySelectorAll('.toggle button').forEach(function (b) {
+        var on = b.dataset.set === set;
+        b.classList.toggle('on', on);
+        b.setAttribute('aria-selected', on ? 'true' : 'false');
+      });
+    }
+
+    document.querySelectorAll('.toggle button').forEach(function (b) {
+      b.onclick = function () { setData(b.dataset.set); };
+    });
+    setData('clean');
+
+    /* ---- view tabs ---- */
+    document.querySelectorAll('.viewtabs button').forEach(function (b) {
+      b.onclick = function () {
+        var v = b.dataset.view;
+        document.querySelectorAll('.insp-view').forEach(function (el) {
+          el.classList.toggle('show', el.dataset.view === v);
+        });
+        document.querySelectorAll('.viewtabs button').forEach(function (x) {
+          var on = x === b;
+          x.classList.toggle('on', on);
+          x.setAttribute('aria-selected', on ? 'true' : 'false');
+        });
+      };
+    });
+
+    /* ---- quick check ---- */
+    var answered = false;
+    document.querySelectorAll('#checkOptions .opt').forEach(function (opt) {
+      opt.onclick = function () {
+        if (answered) return;
+        answered = true;
+        document.querySelectorAll('#checkOptions .opt').forEach(function (o) {
+          if (o.dataset.correct === 'true') o.classList.add('correct');
+          else if (o === opt) o.classList.add('wrong');
+          else o.classList.add('dim');
+        });
+        document.getElementById('checkReveal').classList.add('show');
+      };
+    });
+
+    /* ---- download ---- */
+    document.getElementById('dlBtn').onclick = function () {
+      var a = document.createElement('a');
+      a.href = '/dttt/4-2/messy-visitors.csv';
+      a.download = 'messy-visitors.csv';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      this.textContent = 'Downloaded ✓';
+      var b = this;
+      setTimeout(function () { b.textContent = 'Download messy-visitors.csv'; }, 2200);
+    };
+
+    /* ---- copy prompt ---- */
+    document.getElementById('copyBtn').onclick = function () {
+      var txt = document.getElementById('promptText').innerText;
+      var b = this;
+      function done() {
+        b.textContent = 'Copied ✓';
+        setTimeout(function () { b.textContent = 'Copy prompt'; }, 2200);
+      }
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(txt).then(done, done);
+      } else {
+        var ta = document.createElement('textarea');
+        ta.value = txt;
+        document.body.appendChild(ta);
+        ta.select();
+        try { document.execCommand('copy'); } catch (e) {}
+        document.body.removeChild(ta);
+        done();
+      }
+    };
+
+    /* ---- self check ---- */
+    document.querySelectorAll('[data-sc]').forEach(function (b) {
+      b.onclick = function () {
+        var r = document.getElementById('scReply');
+        r.textContent = MOD.scReplies[b.dataset.sc];
+        r.classList.add('show');
+      };
+    });
+
+    /* ---- mark complete ---- */
+    document.getElementById('completeBtn').onclick = function () {
+      var m = pRead();
+      var cur = m[MOD.moduleId] || { complete: false, furthest: 0 };
+      m[MOD.moduleId] = Object.assign({}, cur, { complete: true });
+      pWrite(m);
+      document.getElementById('completedMsg').classList.add('show');
+      this.disabled = true;
+      this.textContent = 'Completed';
+    };
+
+    var prog = pRead()[MOD.moduleId];
+    if (prog && prog.complete) {
+      var msg = document.getElementById('completedMsg');
+      var btn = document.getElementById('completeBtn');
+      if (msg) msg.classList.add('show');
+      if (btn) { btn.disabled = true; btn.textContent = 'Completed'; }
+    }
+
+    render();
+  })();
+  </script>
+
+</Shell>

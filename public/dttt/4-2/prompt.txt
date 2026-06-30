@@ -1,0 +1,1 @@
+Here is a CSV of visitor data that I know is messy. First, list the formatting problems you can see. Then return a cleaned version: one header row, one record per line, dates as YYYY-MM-DD, numbers with no currency symbols or thousands separators, and the title row and totals row removed. Briefly explain what you changed and why.
