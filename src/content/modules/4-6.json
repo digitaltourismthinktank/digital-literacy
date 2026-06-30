@@ -3,8 +3,9 @@
   "trackName": "Data Fundamentals",
   "title": "Data Pipes: Getting Data In and Out",
   "hook": "How data moves between tools and systems",
+  "duration": "~15 min",
   "isFree": false,
-  "status": "coming-soon",
+  "status": "published",
   "prev": "4-5",
   "next": null
 }

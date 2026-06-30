@@ -1,0 +1,16 @@
+site,type,capacity,location,date,visitors,revenue_gbp
+Harbour Museum,museum,400,coastal,2025-06-01,342,1710
+Harbour Museum,museum,400,coastal,2025-06-02,389,1945
+Harbour Museum,museum,400,coastal,2025-06-03,401,2005
+Harbour Museum,museum,400,coastal,2025-06-04,298,1490
+Harbour Museum,museum,400,coastal,2025-06-05,455,2275
+Old Lighthouse,monument,80,coastal,2025-06-01,118,590
+Old Lighthouse,monument,80,coastal,2025-06-02,94,470
+Old Lighthouse,monument,80,coastal,2025-06-03,107,535
+Old Lighthouse,monument,80,coastal,2025-06-04,88,440
+Old Lighthouse,monument,80,coastal,2025-06-05,121,605
+Cliff Gardens,garden,250,coastal,2025-06-01,231,0
+Cliff Gardens,garden,250,coastal,2025-06-02,278,0
+Cliff Gardens,garden,250,coastal,2025-06-03,312,0
+Cliff Gardens,garden,250,coastal,2025-06-04,195,0
+Cliff Gardens,garden,250,coastal,2025-06-05,344,0

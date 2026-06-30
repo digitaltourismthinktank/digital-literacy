@@ -3,9 +3,9 @@
   "trackName": "Data Fundamentals",
   "title": "JSON and Data Interchange",
   "hook": "The other format AI tools pass data around in",
-  "duration": "~10 min",
+  "duration": "~13 min",
   "isFree": false,
-  "status": "coming-soon",
+  "status": "published",
   "prev": "4-2",
   "next": "4-4"
 }

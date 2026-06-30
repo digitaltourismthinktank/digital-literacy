@@ -1,0 +1,1 @@
+I have a flat CSV of site visits where the site name and its details repeat on every row. Show me how to split it into two linked tables — a Sites table and a Visits table — explain what the linking key is, and explain why this is better than one flat table.

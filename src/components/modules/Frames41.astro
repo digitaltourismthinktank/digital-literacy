@@ -1,0 +1,322 @@
+---
+interface Props { data: any; }
+const { data } = Astro.props;
+const CARDS = data.classifier.cards;
+const SC = data.selfCheckReplies;
+---
+
+<!-- 0 · COVER -->
+<section class="frame cover show" data-frame="0">
+  <div class="cover-left">
+    <div class="step-eyebrow">Structured vs Unstructured Data</div>
+    <h1>How AI sees your data before it can use it</h1>
+    <p class="lead">Not all data is equal in AI's eyes. A spreadsheet and a folder of photos both contain information, but AI handles them completely differently. Knowing which type you have is the first step to using AI effectively.</p>
+    <div class="scene">
+      <div class="scene-row"><span class="k">What this is</span><span>A hands-on look at the three shapes of data and what each one means for AI.</span></div>
+      <div class="scene-row"><span class="k">Why you'd care</span><span>When AI gives vague or wrong answers, the data format is often the reason — not the prompt.</span></div>
+      <div class="scene-row"><span class="k">What you'll do</span><span>Sort ten real data sources into categories, then apply the same thinking to your own data.</span></div>
+    </div>
+    <div class="signpost">
+      <b>The shape of the next ten minutes.</b> Six short steps. You'll sort some data items first, then we'll explain what you found. Open a <b>"new to this?"</b> panel anywhere you want more grounding.
+    </div>
+  </div>
+  <div class="cover-right">
+    <div class="videoframe" role="img" aria-label="Orientation video, 75 seconds">
+      <div class="playdot"></div>
+      <div class="vlabel">Why this matters</div>
+      <div class="vtime">75 seconds</div>
+      <div class="vplaceholder">video · Vimeo embed</div>
+    </div>
+    <div class="promise"><b>By the end:</b> you'll be able to look at any data source and know whether AI can use it directly, needs it converted, or can only read it.</div>
+  </div>
+</section>
+
+<!-- 1 · SEE IT FOR YOURSELF (classifier) -->
+<section class="frame" data-frame="1">
+  <div class="step-eyebrow">Step 1 of 6 · Try it first</div>
+  <h2>Sort these ten data sources by how AI handles them.</h2>
+  <div class="challenge">
+    <b>Your challenge:</b> for each item, pick a bucket. Go on instinct — you can check your answers after all ten.
+    <span class="lookfor">→ Hint: ask yourself whether the data already has named rows and columns with one value per cell.</span>
+  </div>
+  <div class="classifier">
+    <div class="clf-legend">
+      <span class="clf-leg clf-leg-s">Structured — AI uses directly</span>
+      <span class="clf-leg clf-leg-m">Semi-structured — needs tidying first</span>
+      <span class="clf-leg clf-leg-u">Unstructured — AI reads only</span>
+    </div>
+    <div class="clf-grid" id="clfGrid"></div>
+    <div class="clf-footer">
+      <button class="btn primary" id="clfCheck" disabled>Check answers</button>
+      <span class="clf-score" id="clfScore"></span>
+    </div>
+  </div>
+</section>
+
+<!-- 2 · WHAT YOU JUST SAW -->
+<section class="frame" data-frame="2">
+  <div class="step-eyebrow">Step 2 of 6 · The idea</div>
+  <h2>Three shapes of data, three different starting points.</h2>
+  <div class="clf-types">
+    <div class="clf-type clf-type-s">
+      <div class="clf-type-label">Structured</div>
+      <div class="clf-type-icon">⊞</div>
+      <div class="clf-type-desc">Rows, columns, named fields. AI can query, count, and calculate across it directly. A CSV or database table.</div>
+      <div class="clf-type-handle">AI can: <b>use directly</b></div>
+    </div>
+    <div class="clf-type clf-type-m">
+      <div class="clf-type-label">Semi-structured</div>
+      <div class="clf-type-icon">⊟</div>
+      <div class="clf-type-desc">Some labelled fields but also free text. A form with a name, email, and a comment box. Needs a conversion step first.</div>
+      <div class="clf-type-handle">AI can: <b>use after tidying</b></div>
+    </div>
+    <div class="clf-type clf-type-u">
+      <div class="clf-type-label">Unstructured</div>
+      <div class="clf-type-icon">≡</div>
+      <div class="clf-type-desc">Free-flowing prose, images, or audio. AI can read and summarise it but cannot analyse it like a table or query specific values.</div>
+      <div class="clf-type-handle">AI can: <b>read only</b></div>
+    </div>
+  </div>
+  <p class="takeline"><b>The key question:</b> does it already have named fields in rows? If yes, it's structured. If it's partly labelled with some free text, it's semi-structured. If it's pure prose or media, it's unstructured.</p>
+  <details class="disclosure">
+    <summary><span class="chev">▶</span>New to this? Start here<span class="tag">30-second grounding</span></summary>
+    <div class="body">
+      When you ask AI to "look at my data", it needs to know where each piece of information lives. A spreadsheet tells it: "column 3 is always revenue". A PDF doesn't — AI has to read and guess. <b>Structured data</b> is like a well-organised filing system with labelled drawers. <b>Unstructured data</b> is like a folder of loose papers. Both contain information, but finding a specific fact is very different.
+    </div>
+  </details>
+</section>
+
+<!-- 3 · QUICK CHECK -->
+<section class="frame" data-frame="3">
+  <div class="step-eyebrow">Step 3 of 6 · Quick check</div>
+  <h2>One quick prediction before we move on.</h2>
+  <p class="sub">Your colleague exports a PDF of their annual report and asks AI to "give me the revenue figures from each quarter." What is the most likely outcome?</p>
+  <div class="options" id="checkOptions">
+    <button class="opt" data-correct="false"><span class="key">A</span><span>AI reads the figures accurately because PDF is a standard file format.</span></button>
+    <button class="opt" data-correct="true"><span class="key">B</span><span>AI finds some figures but may miss or misread others, because it's reading layout rather than querying a table.</span></button>
+    <button class="opt" data-correct="false"><span class="key">C</span><span>AI refuses to read PDFs and asks for a CSV instead.</span></button>
+  </div>
+  <div class="reveal" id="checkReveal">
+    <b>It's B.</b> AI can read PDFs, but it reads them like a human reads a page — scanning for patterns, not querying columns. Revenue figures buried in paragraphs or merged table cells are easy to miss or misattribute. If precision matters, exporting the underlying data to a spreadsheet or CSV gives AI a clean, queryable version.
+  </div>
+</section>
+
+<!-- 4 · CHOOSE YOUR APPROACH -->
+<section class="frame" data-frame="4">
+  <div class="step-eyebrow">Step 4 of 6 · Choose your approach</div>
+  <h2>Turning unstructured data into something AI can work with.</h2>
+  <table class="tools">
+    <thead><tr><th>Source</th><th>Convert it to</th><th>How</th></tr></thead>
+    <tbody>
+      <tr><td class="tool">PDF report</td><td>Spreadsheet or CSV</td><td>Copy the table manually, or ask AI to extract it and paste into a sheet. Always verify numbers afterwards.</td></tr>
+      <tr><td class="tool">Email thread</td><td>Summary table</td><td>Ask AI to extract key facts (dates, names, amounts) into a table. Review and correct before using.</td></tr>
+      <tr><td class="tool">Visitor reviews</td><td>Tagged categories</td><td>Ask AI to classify each review by theme (accessibility, value, experience). Export the result as a CSV.</td></tr>
+      <tr><td class="tool">Interview transcript</td><td>Coded themes</td><td>Ask AI to identify recurring themes and count mentions. Good for patterns, less reliable for precise counts.</td></tr>
+      <tr><td class="tool">Form responses</td><td>Clean table</td><td>Export the structured fields (name, email, date) directly. Extract the free-text fields separately for AI to summarise.</td></tr>
+    </tbody>
+  </table>
+  <p class="neutral-note">The conversion step is not a flaw — it is a feature. Deciding which fields matter before you hand data to AI forces you to be clear about what question you are actually asking.</p>
+</section>
+
+<!-- 5 · YOUR TURN -->
+<section class="frame" data-frame="5">
+  <div class="step-eyebrow">Step 5 of 6 · Your turn</div>
+  <h2>Classify your own data sources.</h2>
+  <div class="turn-grid">
+    <div class="card">
+      <h3>1 · The worksheet</h3>
+      <p class="sub" style="margin-bottom:11px">Download this blank worksheet. List five data sources from your own work and classify each one.</p>
+      <div class="row-actions"><button class="btn primary" id="dlBtn">Download worksheet</button></div>
+      <p class="sub" style="margin-top:11px;font-size:12.5px">Fill in the Source, Shape, and How AI handles it columns.</p>
+    </div>
+    <div class="card">
+      <h3>2 · The prompt to paste</h3>
+      <div class="promptbox" id="promptText">I have the following data sources at work. For each one, tell me: (1) whether it is structured, semi-structured, or unstructured; (2) whether AI can use it directly, needs it converted first, or can only read it; and (3) what single step would make the most useful one easier for AI to work with. [list your data sources here]</div>
+      <div class="row-actions"><button class="btn" id="copyBtn">Copy prompt</button></div>
+    </div>
+  </div>
+  <ol class="steps">
+    <li>Fill in three to five data sources you actually use — not hypothetical ones.</li>
+    <li>Paste the prompt into your AI tool and add your list at the end.</li>
+    <li>Compare its classification with yours. Where it differs, ask why.</li>
+  </ol>
+  <div class="selfcheck">
+    <div class="q">How did it go?</div>
+    <div class="sc-btns">
+      <button class="btn" data-sc="worked">It worked</button>
+      <button class="btn" data-sc="partly">Partly</button>
+      <button class="btn" data-sc="stuck">I got stuck</button>
+    </div>
+    <div class="sc-reply" id="scReply"></div>
+  </div>
+</section>
+
+<!-- 6 · CARRY FORWARD -->
+<section class="frame" data-frame="6">
+  <div class="step-eyebrow">Step 6 of 6 · Carry forward</div>
+  <h2>What to take with you.</h2>
+  <ul class="takeaways">
+    <li>Structured data has rows, columns, and named fields. AI can use it directly. A CSV or database table is the clearest example.</li>
+    <li>Unstructured data is prose, images, or audio. AI can read and summarise it but cannot query it like a table.</li>
+    <li>Semi-structured sits in between — some fields, some free text. A conversion step (even just asking AI to extract key facts) bridges the gap.</li>
+    <li>When AI gives you vague or wrong answers from data, the format is often the reason, not the prompt.</li>
+  </ul>
+  <div class="next-cards">
+    <div class="next-card"><div class="nlabel">NEXT</div><div class="ntitle">4.2 Spreadsheets and CSVs</div><div class="nwhy">The most common structured format and why messy ones break AI.</div></div>
+    <div class="next-card"><div class="nlabel">NEXT</div><div class="ntitle">4.3 JSON and Data Interchange</div><div class="nwhy">The structured format AI tools use to pass data between themselves.</div></div>
+    <div class="next-card"><div class="nlabel">NEXT</div><div class="ntitle">4.4 Schemas, Fields, and Clean Data</div><div class="nwhy">The rules that keep structured data accurate.</div></div>
+  </div>
+  <div class="complete-row">
+    <button class="btn primary" id="completeBtn">Mark module complete</button>
+    <span class="completed-msg" id="completedMsg">✓ Module complete. Progress saved.</span>
+  </div>
+</section>
+
+<script is:inline define:vars={{ CARDS, SC }}>
+(function () {
+  var mainEl = document.querySelector('.lesson[data-module-id]');
+  var modId  = mainEl ? mainEl.dataset.moduleId : '';
+  var PK = 'dl_progress';
+  function pRead() { try { return JSON.parse(localStorage.getItem(PK) || '{}'); } catch (e) { return {}; } }
+  function pWrite(m) {
+    try { localStorage.setItem(PK, JSON.stringify(m)); } catch (e) {}
+    if (typeof window.__msWriteProgress === 'function') window.__msWriteProgress();
+  }
+  function esc(t) { return String(t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+  /* ---- classifier ---- */
+  var answers  = {};
+  var checked  = false;
+  var checkBtn = document.getElementById('clfCheck');
+  var scoreEl  = document.getElementById('clfScore');
+  var grid     = document.getElementById('clfGrid');
+
+  if (grid) {
+    var html = '';
+    CARDS.forEach(function (card) {
+      html += '<div class="clf-card" data-id="' + card.id + '">';
+      html += '<div class="clf-card-text">' + esc(card.text) + '</div>';
+      html += '<div class="clf-btns">';
+      [['structured','Structured'],['semi','Semi-structured'],['unstructured','Unstructured']].forEach(function (pair) {
+        html += '<button class="clf-btn clf-btn-' + pair[0] + '" data-card="' + card.id + '" data-bucket="' + pair[0] + '">' + pair[1] + '</button>';
+      });
+      html += '</div>';
+      html += '<div class="clf-reveal" id="rev-' + card.id + '"></div>';
+      html += '</div>';
+    });
+    grid.innerHTML = html;
+
+    document.querySelectorAll('.clf-btn').forEach(function (btn) {
+      btn.onclick = function () {
+        if (checked) return;
+        var cid = btn.dataset.card;
+        answers[cid] = btn.dataset.bucket;
+        document.querySelectorAll('[data-card="' + cid + '"]').forEach(function (b) {
+          b.classList.toggle('selected', b.dataset.bucket === btn.dataset.bucket);
+        });
+        var all = CARDS.every(function (c) { return answers[c.id]; });
+        if (checkBtn) checkBtn.disabled = !all;
+      };
+    });
+  }
+
+  if (checkBtn) {
+    checkBtn.onclick = function () {
+      if (checked) return;
+      checked = true;
+      checkBtn.disabled = true;
+      var correct = 0;
+      CARDS.forEach(function (card) {
+        var chosen = answers[card.id];
+        var right  = card.bucket;
+        document.querySelectorAll('[data-card="' + card.id + '"]').forEach(function (b) {
+          if (b.dataset.bucket === right) b.classList.add('correct');
+          else if (b.dataset.bucket === chosen && chosen !== right) b.classList.add('wrong');
+          else if (b.dataset.bucket !== right) b.classList.add('dim');
+        });
+        var rev = document.getElementById('rev-' + card.id);
+        if (rev) {
+          var ok = chosen === right;
+          if (ok) correct++;
+          rev.innerHTML = '<span class="' + (ok ? 'rev-ok' : 'rev-bad') + '">' + (ok ? '✓' : '✗ ' + esc(card.bucket)) + '</span> ' + esc(card.why);
+          rev.classList.add('show');
+        }
+      });
+      if (scoreEl) { scoreEl.textContent = correct + ' / ' + CARDS.length + ' correct'; scoreEl.classList.add('show'); }
+    };
+  }
+
+  /* ---- quick check ---- */
+  var answered1 = false;
+  document.querySelectorAll('#checkOptions .opt').forEach(function (opt) {
+    opt.onclick = function () {
+      if (answered1) return; answered1 = true;
+      document.querySelectorAll('#checkOptions .opt').forEach(function (o) {
+        if (o.dataset.correct === 'true') o.classList.add('correct');
+        else if (o === opt) o.classList.add('wrong');
+        else o.classList.add('dim');
+      });
+      var rev = document.getElementById('checkReveal');
+      if (rev) rev.classList.add('show');
+    };
+  });
+
+  /* ---- download ---- */
+  var dlBtn = document.getElementById('dlBtn');
+  if (dlBtn) {
+    dlBtn.onclick = function () {
+      var a = document.createElement('a');
+      a.href = '/dttt/4-1/data-sources-worksheet.csv';
+      a.download = 'data-sources-worksheet.csv';
+      document.body.appendChild(a); a.click(); document.body.removeChild(a);
+      this.textContent = 'Downloaded ✓';
+      var b = this; setTimeout(function () { b.textContent = 'Download worksheet'; }, 2200);
+    };
+  }
+
+  /* ---- copy prompt ---- */
+  var copyBtn = document.getElementById('copyBtn');
+  if (copyBtn) {
+    copyBtn.onclick = function () {
+      var txt = document.getElementById('promptText').innerText;
+      var b = this;
+      function done() { b.textContent = 'Copied ✓'; setTimeout(function () { b.textContent = 'Copy prompt'; }, 2200); }
+      if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(txt).then(done, done);
+      else {
+        var ta = document.createElement('textarea'); ta.value = txt;
+        document.body.appendChild(ta); ta.select();
+        try { document.execCommand('copy'); } catch (e) {}
+        document.body.removeChild(ta); done();
+      }
+    };
+  }
+
+  /* ---- self check ---- */
+  document.querySelectorAll('[data-sc]').forEach(function (b) {
+    b.onclick = function () {
+      var r = document.getElementById('scReply');
+      if (r) { r.textContent = SC[b.dataset.sc]; r.classList.add('show'); }
+    };
+  });
+
+  /* ---- mark complete ---- */
+  var completeBtn = document.getElementById('completeBtn');
+  if (completeBtn) {
+    completeBtn.onclick = function () {
+      var m = pRead(); var cur = m[modId] || { complete: false, furthest: 0 };
+      m[modId] = Object.assign({}, cur, { complete: true }); pWrite(m);
+      var msg = document.getElementById('completedMsg');
+      if (msg) msg.classList.add('show');
+      this.disabled = true; this.textContent = 'Completed';
+    };
+  }
+
+  var prog = pRead()[modId];
+  if (prog && prog.complete) {
+    var msg = document.getElementById('completedMsg');
+    var btn = document.getElementById('completeBtn');
+    if (msg) msg.classList.add('show');
+    if (btn) { btn.disabled = true; btn.textContent = 'Completed'; }
+  }
+})();
+</script>

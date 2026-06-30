@@ -1,0 +1,401 @@
+---
+interface Props { data: any; }
+const { data } = Astro.props;
+const SC = data.selfCheckReplies;
+---
+
+<!-- 0 · COVER -->
+<section class="frame cover show" data-frame="0">
+  <div class="cover-left">
+    <div class="step-eyebrow">Databases</div>
+    <h1>A spreadsheet copes — until it doesn't</h1>
+    <p class="lead">Past a certain size or complexity, a spreadsheet stops working and someone suggests a proper database. Knowing the main types, including the one AI relies on most, lets you follow and shape that decision rather than just nodding along.</p>
+    <div class="scene">
+      <div class="scene-row"><span class="k">What this is</span><span>The main kinds of database in plain terms, and which job each suits.</span></div>
+      <div class="scene-row"><span class="k">Why you'd care</span><span>Knowing the options lets you shape the conversation instead of accepting whatever is proposed.</span></div>
+      <div class="scene-row"><span class="k">What you'll do</span><span>See one dataset stored four ways, and find out why AI reaches for the unusual one.</span></div>
+    </div>
+    <div class="signpost">
+      <b>The shape of the next seventeen minutes.</b> Seven steps, including one extra frame on the vector database — the kind AI uses to find things by meaning, not by exact match. Open the <b>"new to this?"</b> panels wherever you want grounding.
+    </div>
+  </div>
+  <div class="cover-right">
+    <div class="videoframe" role="img" aria-label="Orientation video, 90 seconds">
+      <div class="playdot"></div>
+      <div class="vlabel">Why this matters</div>
+      <div class="vtime">90 seconds</div>
+      <div class="vplaceholder">video · Vimeo embed</div>
+    </div>
+    <div class="promise"><b>By the end:</b> you'll be able to tell the three database types apart in plain terms, and explain why AI tools lean on vector databases to retrieve your content.</div>
+  </div>
+</section>
+
+<!-- 1 · SEE IT FOR YOURSELF -->
+<section class="frame" data-frame="1">
+  <div class="step-eyebrow">Step 1 of 7 · Try it first</div>
+  <h2>One dataset, four ways to store it.</h2>
+  <div class="challenge">
+    <b>Your challenge:</b> step through all four views and look at how the same Harbourford data is organised each time.
+    <span class="lookfor">→ What to look for: in the relational view, Harbour Museum appears only once. In the vector view, clicking "find similar" finds things by meaning rather than exact match.</span>
+  </div>
+  <div class="inspector">
+    <div class="insp-controls">
+      <div class="ctrl">
+        <span class="ctrl-label">Storage type</span>
+        <div class="viewtabs" role="tablist" aria-label="Choose a view">
+          <button data-view="flat"       class="on" role="tab" aria-selected="true">Spreadsheet</button>
+          <button data-view="relational" role="tab" aria-selected="false">Relational</button>
+          <button data-view="document"   role="tab" aria-selected="false">Document</button>
+          <button data-view="vector"     role="tab" aria-selected="false">Vector</button>
+        </div>
+      </div>
+    </div>
+    <div class="insp-stage">
+      <!-- Flat -->
+      <div class="insp-view show" data-view="flat">
+        <div class="view-cap">A flat spreadsheet: site details repeat on every visit row.</div>
+        <table class="grid db-flat">
+          <thead><tr><th></th><th>site</th><th>type</th><th>capacity</th><th>date</th><th>visitors</th><th>revenue</th></tr></thead>
+          <tbody>
+            <tr><th>1</th><td class="rep">Harbour Museum</td><td class="rep">museum</td><td class="rep">400</td><td>2025-06-01</td><td>342</td><td>1710</td></tr>
+            <tr><th>2</th><td class="rep">Harbour Museum</td><td class="rep">museum</td><td class="rep">400</td><td>2025-06-02</td><td>389</td><td>1945</td></tr>
+            <tr><th>3</th><td class="rep">Old Lighthouse</td><td class="rep">monument</td><td class="rep">80</td><td>2025-06-01</td><td>118</td><td>590</td></tr>
+            <tr><th>4</th><td class="rep">Old Lighthouse</td><td class="rep">monument</td><td class="rep">80</td><td>2025-06-02</td><td>94</td><td>470</td></tr>
+            <tr><th>5</th><td class="rep">Cliff Gardens</td><td class="rep">garden</td><td class="rep">250</td><td>2025-06-01</td><td>231</td><td>0</td></tr>
+          </tbody>
+        </table>
+        <div class="gridnote">⚠ Shaded cells repeat — if a site's capacity changes, every row needs updating.</div>
+      </div>
+      <!-- Relational -->
+      <div class="insp-view" data-view="relational">
+        <div class="view-cap">Two linked tables: each site lives in one row; visits link back to it by site_id.</div>
+        <div class="rel-layout">
+          <div>
+            <div class="rel-label">Sites</div>
+            <table class="grid">
+              <thead><tr><th></th><th>site_id</th><th>site</th><th>type</th><th>capacity</th></tr></thead>
+              <tbody>
+                <tr><th>1</th><td class="pk">S1</td><td>Harbour Museum</td><td>museum</td><td>400</td></tr>
+                <tr><th>2</th><td class="pk">S2</td><td>Old Lighthouse</td><td>monument</td><td>80</td></tr>
+                <tr><th>3</th><td class="pk">S3</td><td>Cliff Gardens</td><td>garden</td><td>250</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="rel-arrow" aria-hidden="true">site_id →</div>
+          <div>
+            <div class="rel-label">Visits</div>
+            <table class="grid">
+              <thead><tr><th></th><th>site_id</th><th>date</th><th>visitors</th><th>revenue</th></tr></thead>
+              <tbody>
+                <tr><th>1</th><td class="fk">S1</td><td>2025-06-01</td><td>342</td><td>1710</td></tr>
+                <tr><th>2</th><td class="fk">S1</td><td>2025-06-02</td><td>389</td><td>1945</td></tr>
+                <tr><th>3</th><td class="fk">S2</td><td>2025-06-01</td><td>118</td><td>590</td></tr>
+                <tr><th>4</th><td class="fk">S2</td><td>2025-06-02</td><td>94</td><td>470</td></tr>
+                <tr><th>5</th><td class="fk">S3</td><td>2025-06-01</td><td>231</td><td>0</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <!-- Document -->
+      <div class="insp-view" data-view="document">
+        <div class="view-cap">A document database: each site is one self-contained record with its visits nested inside (like the JSON from 4.3).</div>
+        <pre class="json-view doc-view">[ &#123;
+  "site": "Harbour Museum",
+  "type": "museum",
+  "capacity": 400,
+  "visits": [
+    &#123; "date": "2025-06-01", "visitors": 342, "revenue_gbp": 1710 &#125;,
+    &#123; "date": "2025-06-02", "visitors": 389, "revenue_gbp": 1945 &#125;
+  ]
+&#125;,
+&#123;
+  "site": "Old Lighthouse",
+  "type": "monument",
+  "capacity": 80,
+  "visits": [
+    &#123; "date": "2025-06-01", "visitors": 118, "revenue_gbp": 590 &#125;
+  ]
+&#125; ]</pre>
+      </div>
+      <!-- Vector -->
+      <div class="insp-view" data-view="vector">
+        <div class="view-cap">A vector database: each site is placed in "meaning space". Similar things sit close together.</div>
+        <div class="vec-space">
+          <div class="vec-axes">
+            <span class="vec-ax-label ax-left">indoor</span>
+            <span class="vec-ax-label ax-right">outdoor</span>
+            <span class="vec-ax-label ax-top">heritage</span>
+            <span class="vec-ax-label ax-bottom">leisure</span>
+          </div>
+          <div class="vec-dot" id="vd-hm"  style="left:22%;top:28%">Harbour Museum</div>
+          <div class="vec-dot" id="vd-ol"  style="left:42%;top:18%">Old Lighthouse</div>
+          <div class="vec-dot" id="vd-cg"  style="left:78%;top:68%">Cliff Gardens</div>
+          <div class="vec-dot vec-ghost" id="vd-mt" style="left:52%;top:30%">Maritime Trail</div>
+        </div>
+        <button class="btn" id="vecFindBtn" style="margin-top:10px;font-size:13px">Find sites similar to Old Lighthouse</button>
+      </div>
+    </div>
+    <div class="askrow">
+      <span class="q">You search: <b>"Find sites similar to the Old Lighthouse."</b></span>
+      <span class="a" id="askAnswer45"></span>
+    </div>
+  </div>
+</section>
+
+<!-- 2 · WHAT YOU JUST SAW -->
+<section class="frame" data-frame="2">
+  <div class="step-eyebrow">Step 2 of 7 · The idea</div>
+  <h2>Four ways to store data. Each solves a different problem.</h2>
+  <div class="db-four-types">
+    <div class="db-type">
+      <div class="db-icon">≡</div>
+      <div class="db-name">Flat / Spreadsheet</div>
+      <div class="db-desc">Everything in one grid. Simple and familiar. Works until things repeat too much or get too big.</div>
+    </div>
+    <div class="db-type">
+      <div class="db-icon">⊞</div>
+      <div class="db-name">Relational</div>
+      <div class="db-desc">Split into linked tables. Each thing lives once. No repetition, no drift. The standard for most business data.</div>
+    </div>
+    <div class="db-type">
+      <div class="db-icon">{ }</div>
+      <div class="db-name">Document</div>
+      <div class="db-desc">Each record is self-contained. Good when records vary in shape and need nested detail. Close to JSON.</div>
+    </div>
+    <div class="db-type db-type-teal">
+      <div class="db-icon">·  ·  ·</div>
+      <div class="db-name">Vector</div>
+      <div class="db-desc">Stores meaning as numbers. Finds things by similarity rather than exact match. What AI uses to retrieve your content.</div>
+    </div>
+  </div>
+  <p class="takeline"><b>Most everyday data lives in relational or flat storage.</b> Vector databases are the new piece: AI tools use them to store the meaning of your documents, so retrieval finds relevant content even when exact words do not match.</p>
+  <details class="disclosure">
+    <summary><span class="chev">▶</span>New to this? Start here<span class="tag">30-second grounding</span></summary>
+    <div class="body">
+      A <b>relational database</b> splits data into linked tables so nothing repeats (one Sites table, one Visits table, joined by a key). A <b>document database</b> keeps each record self-contained with nested detail — close to JSON. A <b>vector database</b> converts text or images into lists of numbers that capture meaning, so a search for "coastal heritage" finds the Old Lighthouse even if those exact words never appear in the record. This is the engine behind "chat with your documents".
+    </div>
+  </details>
+</section>
+
+<!-- 3 · THE VECTOR IDEA -->
+<section class="frame" data-frame="3">
+  <div class="step-eyebrow">Step 3 of 7 · The vector idea</div>
+  <h2>Vector databases find things by meaning, not by matching words.</h2>
+  <div class="vec-concept">
+    <div class="vec-explain">
+      <p>When you upload documents to an AI tool, they are converted into numbers that capture their meaning. Similar things sit close together in "meaning space". A search does not look for exact words — it finds what is nearby in that space.</p>
+      <div class="vec-demo-strip">
+        <div class="vds-item vds-query">Query: <b>"coastal heritage attractions"</b></div>
+        <div class="vds-arrow">→ finds nearby →</div>
+        <div class="vds-results">
+          <div class="vds-result match">Old Lighthouse <span class="vds-score">similarity: 0.94</span></div>
+          <div class="vds-result match">Harbour Museum <span class="vds-score">similarity: 0.91</span></div>
+          <div class="vds-result dim">Cliff Gardens <span class="vds-score">similarity: 0.43</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <p class="sub" style="margin-top: 12px">This is how "chat with your documents" works: your documents become points in meaning space, and the AI retrieves the most relevant ones before generating its answer. Getting your data into clean, consistent shape (Modules 4.2 to 4.4) makes the meaning clearer, and the retrieval more accurate.</p>
+  <details class="disclosure" style="margin-top: auto">
+    <summary><span class="chev">▶</span>Why does this matter for tourism?<span class="tag">The practical link</span></summary>
+    <div class="body">
+      If you upload your site guides, policies, and FAQs to an AI tool, a vector database is what lets a visitor ask "what's there to do near the harbour?" and get back relevant results — even if your documents use the word "maritime" rather than "harbour". The AI converts both the question and your documents into meaning, then finds what is closest. Clean, well-labelled content retrieves far better than messy, inconsistently named files.
+    </div>
+  </details>
+</section>
+
+<!-- 4 · QUICK CHECK -->
+<section class="frame" data-frame="4">
+  <div class="step-eyebrow">Step 4 of 7 · Quick check</div>
+  <h2>One quick prediction before we move on.</h2>
+  <p class="sub">Why does a relational database keep Harbour Museum in its own Sites table instead of on every visit row?</p>
+  <div class="options" id="checkOptions">
+    <button class="opt" data-correct="false"><span class="key">A</span><span>To save a small amount of storage space.</span></button>
+    <button class="opt" data-correct="true"><span class="key">B</span><span>So the site's details live in one place, stay consistent, and are easy to update.</span></button>
+    <button class="opt" data-correct="false"><span class="key">C</span><span>Because spreadsheets are not allowed to do this.</span></button>
+  </div>
+  <div class="reveal" id="checkReveal">
+    <b>It's B.</b> With the site in one place, you update its capacity or type once and every linked visit reflects it. There is no risk of three slightly different spellings of "Harbour Museum" creeping in across hundreds of rows. Avoiding repeated, drifting copies is the core idea relational databases are built around.
+  </div>
+</section>
+
+<!-- 5 · CHOOSE YOUR APPROACH -->
+<section class="frame" data-frame="5">
+  <div class="step-eyebrow">Step 5 of 7 · Choose your approach</div>
+  <h2>Tools that bring database structure within reach.</h2>
+  <table class="tools">
+    <thead><tr><th>Tool</th><th>Cost</th><th>Best for</th></tr></thead>
+    <tbody>
+      <tr><td class="tool">Airtable</td><td><span class="pill mix">Free / Paid</span></td><td>A spreadsheet-database hybrid and the gentlest place to start. Looks like a spreadsheet, behaves like a database. Linked records give you relational structure without SQL.</td></tr>
+      <tr><td class="tool">Notion databases</td><td><span class="pill mix">Free / Paid</span></td><td>Good for light structure inside a workspace you already use. Not as powerful as Airtable for complex relations.</td></tr>
+      <tr><td class="tool">Supabase</td><td><span class="pill mix">Free / Paid</span></td><td>A real relational (SQL) database with far less setup than the traditional route. Good when you have developer support.</td></tr>
+      <tr><td class="tool">MongoDB</td><td><span class="pill mix">Free / Paid</span></td><td>The common document database, where each record is a self-contained document. Good for varied-shape records.</td></tr>
+      <tr><td class="tool">Pinecone</td><td><span class="pill mix">Free / Paid</span></td><td>A managed vector database of the kind AI tools use to retrieve content by meaning. Tends to sit behind other tools rather than being used directly.</td></tr>
+    </tbody>
+  </table>
+  <p class="neutral-note">Most people only ever touch Airtable or Notion directly. The others tend to sit behind tools that specialists build. Knowing what they do is more useful than knowing how to operate them.</p>
+</section>
+
+<!-- 6 · YOUR TURN -->
+<section class="frame" data-frame="6">
+  <div class="step-eyebrow">Step 6 of 7 · Your turn</div>
+  <h2>Split a flat table into two linked ones.</h2>
+  <div class="turn-grid">
+    <div class="card">
+      <h3>1 · The sample file</h3>
+      <p class="sub" style="margin-bottom:11px">Download the flat Harbourford table where the site details repeat on every row. This is the raw material for the split.</p>
+      <div class="row-actions"><button class="btn primary" id="dlBtn">Download harbourford-flat.csv</button></div>
+      <p class="sub" style="margin-top:11px;font-size:12.5px">Then try with a slice of your own repeating data.</p>
+    </div>
+    <div class="card">
+      <h3>2 · The prompt to paste</h3>
+      <div class="promptbox" id="promptText">I have a flat CSV of site visits where the site name and its details repeat on every row. Show me how to split it into two linked tables — a Sites table and a Visits table — explain what the linking key is, and explain why this is better than one flat table.</div>
+      <div class="row-actions"><button class="btn" id="copyBtn">Copy prompt</button></div>
+    </div>
+  </div>
+  <ol class="steps">
+    <li>Open your AI tool, attach <b>harbourford-flat.csv</b>, and paste the prompt.</li>
+    <li>In Airtable, import the CSV and follow the split into two linked tables.</li>
+    <li>Try with a slice of your own repeating data — any table where a name or category repeats.</li>
+  </ol>
+  <div class="selfcheck">
+    <div class="q">How did it go?</div>
+    <div class="sc-btns">
+      <button class="btn" data-sc="worked">It worked</button>
+      <button class="btn" data-sc="partly">Partly</button>
+      <button class="btn" data-sc="stuck">I got stuck</button>
+    </div>
+    <div class="sc-reply" id="scReply"></div>
+  </div>
+</section>
+
+<!-- 7 · CARRY FORWARD -->
+<section class="frame" data-frame="7">
+  <div class="step-eyebrow">Step 7 of 7 · Carry forward</div>
+  <h2>What to take with you.</h2>
+  <ul class="takeaways">
+    <li>A database differs from a spreadsheet mainly in keeping data consistent and unrepeated — each thing lives in one place and is referenced, not copied.</li>
+    <li>Relational splits into linked tables, document keeps nested records, and vector stores meaning so AI can retrieve by similarity.</li>
+    <li>Vector databases are what makes "chat with your documents" work — your content becomes points in meaning space, and retrieval finds what is nearest.</li>
+  </ul>
+  <div class="next-cards">
+    <div class="next-card"><div class="nlabel">NEXT</div><div class="ntitle">5.3 Embeddings</div><div class="nwhy">The meaning-as-numbers idea in full — coming soon.</div></div>
+    <div class="next-card"><div class="nlabel">NEXT</div><div class="ntitle">5.6 RAG and Retrieval</div><div class="nwhy">How AI chats with your own content — coming soon.</div></div>
+    <div class="next-card"><div class="nlabel">NEXT</div><div class="ntitle">4.6 Data Pipes</div><div class="nwhy">Moving data between these stores.</div></div>
+  </div>
+  <div class="complete-row">
+    <button class="btn primary" id="completeBtn">Mark module complete</button>
+    <span class="completed-msg" id="completedMsg">✓ Module complete. Progress saved.</span>
+  </div>
+</section>
+
+<script is:inline define:vars={{ SC }}>
+(function () {
+  var mainEl = document.querySelector('.lesson[data-module-id]');
+  var modId  = mainEl ? mainEl.dataset.moduleId : '';
+  var PK = 'dl_progress';
+  function pRead() { try { return JSON.parse(localStorage.getItem(PK) || '{}'); } catch (e) { return {}; } }
+  function pWrite(m) {
+    try { localStorage.setItem(PK, JSON.stringify(m)); } catch (e) {}
+    if (typeof window.__msWriteProgress === 'function') window.__msWriteProgress();
+  }
+
+  var currentView = 'flat';
+
+  function updateConsequence() {
+    var el = document.getElementById('askAnswer45');
+    if (!el) return;
+    var map = {
+      flat:       { cls: 'bad',  text: 'Can only filter by exact column values ✗' },
+      relational: { cls: 'bad',  text: 'Can only join on exact matching keys ✗' },
+      document:   { cls: 'bad',  text: 'Searches exact field values only ✗' },
+      vector:     { cls: 'good', text: 'Finds Harbour Museum and Maritime Trail by meaning ✓' },
+    };
+    var r = map[currentView] || map.flat;
+    el.className = 'a ' + r.cls;
+    el.textContent = r.text;
+  }
+
+  document.querySelectorAll('.viewtabs button').forEach(function (b) {
+    b.onclick = function () {
+      currentView = b.dataset.view;
+      document.querySelectorAll('.insp-view').forEach(function (el) {
+        el.classList.toggle('show', el.dataset.view === currentView);
+      });
+      document.querySelectorAll('.viewtabs button').forEach(function (x) {
+        var on = x === b; x.classList.toggle('on', on); x.setAttribute('aria-selected', on ? 'true' : 'false');
+      });
+      updateConsequence();
+    };
+  });
+
+  updateConsequence();
+
+  var vecFindBtn = document.getElementById('vecFindBtn');
+  if (vecFindBtn) {
+    var vecFound = false;
+    vecFindBtn.onclick = function () {
+      vecFound = !vecFound;
+      var hm = document.getElementById('vd-hm');
+      var ol = document.getElementById('vd-ol');
+      var cg = document.getElementById('vd-cg');
+      var mt = document.getElementById('vd-mt');
+      if (vecFound) {
+        if (hm) hm.classList.add('vec-similar');
+        if (ol) ol.classList.add('vec-selected');
+        if (cg) cg.classList.add('vec-dim');
+        if (mt) { mt.classList.remove('vec-ghost'); mt.classList.add('vec-similar'); }
+        vecFindBtn.textContent = 'Clear results';
+      } else {
+        [hm, ol, cg, mt].forEach(function (d) { if (d) d.className = d === mt ? 'vec-dot vec-ghost' : 'vec-dot'; });
+        vecFindBtn.textContent = 'Find sites similar to Old Lighthouse';
+      }
+    };
+  }
+
+  var answered = false;
+  document.querySelectorAll('#checkOptions .opt').forEach(function (opt) {
+    opt.onclick = function () {
+      if (answered) return; answered = true;
+      document.querySelectorAll('#checkOptions .opt').forEach(function (o) {
+        if (o.dataset.correct === 'true') o.classList.add('correct');
+        else if (o === opt) o.classList.add('wrong');
+        else o.classList.add('dim');
+      });
+      document.getElementById('checkReveal').classList.add('show');
+    };
+  });
+
+  document.getElementById('dlBtn').onclick = function () {
+    var a = document.createElement('a'); a.href = '/dttt/4-5/harbourford-flat.csv'; a.download = 'harbourford-flat.csv';
+    document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    this.textContent = 'Downloaded ✓';
+    var b = this; setTimeout(function () { b.textContent = 'Download harbourford-flat.csv'; }, 2200);
+  };
+
+  document.getElementById('copyBtn').onclick = function () {
+    var txt = document.getElementById('promptText').innerText; var b = this;
+    function done() { b.textContent = 'Copied ✓'; setTimeout(function () { b.textContent = 'Copy prompt'; }, 2200); }
+    if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(txt).then(done, done);
+    else { var ta = document.createElement('textarea'); ta.value = txt; document.body.appendChild(ta); ta.select(); try { document.execCommand('copy'); } catch (e) {} document.body.removeChild(ta); done(); }
+  };
+
+  document.querySelectorAll('[data-sc]').forEach(function (b) {
+    b.onclick = function () { var r = document.getElementById('scReply'); r.textContent = SC[b.dataset.sc]; r.classList.add('show'); };
+  });
+
+  document.getElementById('completeBtn').onclick = function () {
+    var m = pRead(); var cur = m[modId] || { complete: false, furthest: 0 };
+    m[modId] = Object.assign({}, cur, { complete: true }); pWrite(m);
+    document.getElementById('completedMsg').classList.add('show'); this.disabled = true; this.textContent = 'Completed';
+  };
+
+  var prog = pRead()[modId];
+  if (prog && prog.complete) {
+    var msg = document.getElementById('completedMsg'); var btn = document.getElementById('completeBtn');
+    if (msg) msg.classList.add('show');
+    if (btn) { btn.disabled = true; btn.textContent = 'Completed'; }
+  }
+})();
+</script>

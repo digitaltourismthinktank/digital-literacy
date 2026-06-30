@@ -1,11 +1,11 @@
 {
   "track": 4,
   "trackName": "Data Fundamentals",
-  "title": "Working with Your Own Data",
-  "hook": "From export to insight: a practical workflow",
-  "duration": "~12 min",
+  "title": "Databases",
+  "hook": "How tourism platforms store, retrieve, and relate data",
+  "duration": "~17 min",
   "isFree": false,
-  "status": "coming-soon",
+  "status": "published",
   "prev": "4-4",
-  "next": null
+  "next": "4-6"
 }

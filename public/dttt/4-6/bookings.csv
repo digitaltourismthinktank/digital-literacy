@@ -1,0 +1,6 @@
+booking_id,site,date,party_size,booking_type,contact_email,created_at
+B001,Harbour Museum,2025-07-10,4,standard,smith@example.com,2025-06-28T09:14:00Z
+B002,Old Lighthouse,2025-07-11,2,guided,jones@example.com,2025-06-28T11:30:00Z
+B003,Cliff Gardens,2025-07-10,6,standard,patel@example.com,2025-06-29T08:55:00Z
+B004,Harbour Museum,2025-07-12,3,school,admin@greenhill.edu,2025-06-29T14:20:00Z
+B005,Old Lighthouse,2025-07-13,2,guided,chen@example.com,2025-06-30T10:05:00Z

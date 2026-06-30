@@ -1,0 +1,82 @@
+---
+import { getCollection } from 'astro:content';
+import Shell from '../../layouts/Shell.astro';
+
+const allModules = await getCollection('modules');
+const track4 = allModules
+  .filter((m) => m.data.track === 4)
+  .sort((a, b) => a.id.localeCompare(b.id));
+---
+
+<Shell title="Track 04: Data Fundamentals — Digital Literacy for Effective AI">
+  <div class="t4-wrap">
+
+    <div class="t4-hero">
+      <div class="t4-hero-eyebrow">Track 04 &mdash; Data Fundamentals</div>
+      <h1>Data Fundamentals</h1>
+      <p class="t4-hero-lead">Understand the data layer that every AI tool depends on. Learn formats, schemas, databases, and automation pipes so you can work confidently alongside technical colleagues and AI systems.</p>
+    </div>
+
+    <div class="t4-why">
+      <b>Why this track matters.</b> Every tourism system — your property management system, booking engine, channel manager, CRM — has a data layer underneath. When AI tools fail or produce unexpected results, the cause is almost always a data problem: the wrong format, a broken schema, a missing field, or a pipe that was never set up. This track gives you the vocabulary and the models to diagnose what you are looking at and make good decisions.
+    </div>
+
+    <div class="t4-thread">
+      <b>Running thread: Harbourford.</b> Across all six modules you work with data from Harbourford, a fictional destination organisation running a harbour museum, an old lighthouse, and cliff gardens. You see the same messy real-world data as it moves through formats, gets cleaned, normalises into a database, and flows between tools. Each module builds on what came before.
+    </div>
+
+    <div class="t4-section-head">Modules in this track</div>
+    <div class="t4-modules">
+      {track4.map((mod) => {
+        const num = mod.id.replace('-', '.');
+        const isSoon = mod.data.status === 'coming-soon';
+        return (
+          <a
+            href={`/modules/${mod.id}`}
+            class:list={['t4-mod', isSoon ? 't4-mod-soon' : '']}
+            data-mod-id={mod.id}
+          >
+            <span class="t4-mod-num">{num}</span>
+            <div class="t4-mod-body">
+              <div class="t4-mod-title">{mod.data.title}</div>
+              <div class="t4-mod-hook">{mod.data.hook}</div>
+            </div>
+            <span class="t4-mod-meta">
+              {isSoon ? 'Coming soon' : (mod.data.duration || '')}
+            </span>
+            <span class="t4-mod-done" id={`t4Done-${mod.id}`} style="display:none">Done ✓</span>
+          </a>
+        );
+      })}
+    </div>
+
+    <div class="t4-nav-guide">
+      <h3>How to work through this track</h3>
+      <div class="t4-nav-steps">
+        <div class="t4-nav-step">Modules are self-contained but designed to build on each other. Start from 4.1 if data formats are new to you.</div>
+        <div class="t4-nav-step">Each module is 10 to 17 minutes. One interactive exercise makes the idea concrete before any explanatory text.</div>
+        <div class="t4-nav-step">Complete the Your Turn task in each module. The sample files and prompts are ready to use in any AI tool.</div>
+        <div class="t4-nav-step">Your progress is saved automatically. If you are signed in, it syncs across devices.</div>
+      </div>
+    </div>
+
+    <div class="t4-connects">
+      <b>This track connects to:</b> Track 03 (Images, Media and File Formats) for file format patterns you will recognise; Track 05 (AI Mechanics) for how models consume the data types covered here; Track 06 (Connecting AI to Your Work) for the automation patterns that depend on understanding data pipes.
+    </div>
+
+  </div>
+
+  <script is:inline>
+  (function () {
+    try {
+      var prog = JSON.parse(localStorage.getItem('dl_progress') || '{}');
+      Object.keys(prog).forEach(function (id) {
+        if (prog[id] && prog[id].complete) {
+          var el = document.getElementById('t4Done-' + id);
+          if (el) { el.style.display = ''; }
+        }
+      });
+    } catch (_) {}
+  })();
+  </script>
+</Shell>

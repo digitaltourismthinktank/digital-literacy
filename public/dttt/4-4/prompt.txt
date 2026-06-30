@@ -1,0 +1,1 @@
+Here is a CSV. First, infer the schema: for each column, what type of value it should hold and any rule it should follow. Then audit the data against that schema and list every problem you find, grouped by type (duplicates, inconsistent categories, missing values, wrong type, out of range). Do not fix it yet, just report.

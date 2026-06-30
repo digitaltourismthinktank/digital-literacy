@@ -1,0 +1,334 @@
+---
+interface Props { data: any; }
+const { data } = Astro.props;
+const INSP = {
+  rows:     data.inspector.rows,
+  badCells: data.inspector.badCells,
+  schema:   data.inspector.schema,
+  breaks:   data.inspector.breaks,
+};
+const SC = data.selfCheckReplies;
+---
+
+<!-- 0 · COVER -->
+<section class="frame cover show" data-frame="0">
+  <div class="cover-left">
+    <div class="step-eyebrow">Schemas, Fields, and Clean Data</div>
+    <h1>AI will give you a confident answer from filthy data</h1>
+    <p class="lead">And it will never mention the dirt. Most wrong AI answers in data work trace back to the input, not the model. A schema is the set of rules a dataset promises to follow — and clean data is data that keeps those promises.</p>
+    <div class="scene">
+      <div class="scene-row"><span class="k">What this is</span><span>What a schema is, and how to check a dataset is clean enough to trust before you feed it to AI.</span></div>
+      <div class="scene-row"><span class="k">Why you'd care</span><span>AI won't warn you that your data is dirty. Catching faults before they produce wrong answers is your job.</span></div>
+      <div class="scene-row"><span class="k">What you'll do</span><span>Run a quality check on a real dataset, find what's wrong, and see what each problem would break.</span></div>
+    </div>
+    <div class="signpost">
+      <b>The shape of the next fourteen minutes.</b> Six short steps. You'll inspect a dirty dataset first, then we'll name the patterns. You can open a <b>"new to this?"</b> panel anywhere for more grounding.
+    </div>
+  </div>
+  <div class="cover-right">
+    <div class="videoframe" role="img" aria-label="Orientation video, 75 seconds">
+      <div class="playdot"></div>
+      <div class="vlabel">Why this matters</div>
+      <div class="vtime">75 seconds</div>
+      <div class="vplaceholder">video · Vimeo embed</div>
+    </div>
+    <div class="promise"><b>By the end:</b> you'll know what a schema is, recognise the common ways data gets dirty, and know how to run a basic quality check before you trust AI's answer.</div>
+  </div>
+</section>
+
+<!-- 1 · SEE IT FOR YOURSELF -->
+<section class="frame" data-frame="1">
+  <div class="step-eyebrow">Step 1 of 6 · Try it first</div>
+  <h2>The Harbourford sites dataset, after someone handed it in without checking.</h2>
+  <div class="challenge">
+    <b>Your challenge:</b> click through the three views and find the problems before we name them.
+    <span class="lookfor">→ What to look for: in "The data", cells that break the rules their column should follow are flagged in red.</span>
+  </div>
+  <div class="inspector">
+    <div class="insp-controls">
+      <div class="ctrl">
+        <span class="ctrl-label">View</span>
+        <div class="viewtabs" role="tablist" aria-label="Choose a view">
+          <button data-view="data" class="on" role="tab" aria-selected="true">The data</button>
+          <button data-view="schema" role="tab" aria-selected="false">The schema</button>
+          <button data-view="breaks" role="tab" aria-selected="false">What each breaks</button>
+        </div>
+      </div>
+    </div>
+    <div class="insp-stage">
+      <div class="insp-view show" data-view="data">
+        <div class="view-cap">Red cells break the rule the schema sets for their column. The shaded row is a duplicate.</div>
+        <div id="dataView44"></div>
+      </div>
+      <div class="insp-view" data-view="schema">
+        <div class="view-cap">The rules each column in this dataset should follow.</div>
+        <div class="schema-cards" id="schemaView44"></div>
+      </div>
+      <div class="insp-view" data-view="breaks">
+        <div class="view-cap">Each fault, and the specific answer it breaks.</div>
+        <div id="breaksView44"></div>
+      </div>
+    </div>
+    <div class="askrow askrow-pair">
+      <span class="q">You ask: <b>"How many visitors came from the UK?"</b></span>
+      <span class="a-pair">
+        <span class="a bad">Three spellings → split three ways ✗</span>
+        <span class="a good">After cleanup → correct total ✓</span>
+      </span>
+    </div>
+  </div>
+</section>
+
+<!-- 2 · WHAT YOU JUST SAW -->
+<section class="frame" data-frame="2">
+  <div class="step-eyebrow">Step 2 of 6 · The idea</div>
+  <h2>A schema is just the rules each column should follow.</h2>
+  <div class="concept-visual schema-concept">
+    <div class="sc-row hdr-row">
+      <div>Column</div><div>Type</div><div>Rule</div><div>Status</div>
+    </div>
+    <div class="sc-row">
+      <div class="sc-col-name">country</div>
+      <div>Text</div>
+      <div>Consistent single value</div>
+      <div class="sc-status bad-status">3 different spellings ✗</div>
+    </div>
+    <div class="sc-row">
+      <div class="sc-col-name">date</div>
+      <div>Date</div>
+      <div>YYYY-MM-DD format</div>
+      <div class="sc-status bad-status">One row in wrong format ✗</div>
+    </div>
+    <div class="sc-row">
+      <div class="sc-col-name">visitors</div>
+      <div>Integer</div>
+      <div>0 or above</div>
+      <div class="sc-status bad-status">Negative value and text ✗</div>
+    </div>
+    <div class="sc-row">
+      <div class="sc-col-name">id</div>
+      <div>Integer</div>
+      <div>Unique, no gaps</div>
+      <div class="sc-status bad-status">One duplicate row ✗</div>
+    </div>
+  </div>
+  <p class="takeline"><b>Clean data keeps those rules.</b> The common faults are duplicates, inconsistent categories (the country problem), gaps where a value is required, wrong types (text in a number column), and out-of-range values (a negative count). Each one quietly breaks a different kind of answer.</p>
+  <details class="disclosure">
+    <summary><span class="chev">▶</span>New to this? Start here<span class="tag">30-second grounding</span></summary>
+    <div class="body">
+      A <b>schema</b> just describes what each column should contain: its name, its type (text, number, date), and sometimes its allowed values or range. Clean data matches its schema — no duplicates, no gaps where a value is required, and consistent categories. You need no special software to think this way: you can sketch a schema for any spreadsheet in two minutes. The skill is noticing when a column's values break the rule it should follow.
+    </div>
+  </details>
+</section>
+
+<!-- 3 · QUICK CHECK -->
+<section class="frame" data-frame="3">
+  <div class="step-eyebrow">Step 3 of 6 · Quick check</div>
+  <h2>One quick prediction before we move on.</h2>
+  <p class="sub">Your country column contains "UK", "U.K." and "United Kingdom". You ask an AI tool to count total visitors by country. What happens?</p>
+  <div class="options" id="checkOptions">
+    <button class="opt" data-correct="false"><span class="key">A</span><span>It merges them sensibly and gives you one UK total.</span></button>
+    <button class="opt" data-correct="true"><span class="key">B</span><span>It counts them as three different countries and your UK total splits three ways.</span></button>
+    <button class="opt" data-correct="false"><span class="key">C</span><span>It asks you to fix the values before it answers.</span></button>
+  </div>
+  <div class="reveal" id="checkReveal">
+    <b>It's B.</b> The AI takes the values at face value — "UK", "U.K." and "United Kingdom" look like three different things, so it counts them separately. Your UK total splits into three smaller numbers. Consistent categories are not tidiness for its own sake; they are what makes a count correct. This is one of the most common sources of quietly wrong AI answers.
+  </div>
+</section>
+
+<!-- 4 · CHOOSE YOUR APPROACH -->
+<section class="frame" data-frame="4">
+  <div class="step-eyebrow">Step 4 of 6 · Choose your approach</div>
+  <h2>Tools for checking and cleaning data quality.</h2>
+  <table class="tools">
+    <thead><tr><th>Tool</th><th>Cost</th><th>Best for</th></tr></thead>
+    <tbody>
+      <tr><td class="tool">OpenRefine</td><td><span class="pill free">Free</span></td><td>Built for exactly this. Its clustering feature finds near-duplicate values like the three UK spellings and merges them. Steeper to learn, but powerful on messy data.</td></tr>
+      <tr><td class="tool">Google Sheets</td><td><span class="pill free">Free</span></td><td>Fine for small cleans, spotting gaps, and sorting to surface odd values. Most people already have it.</td></tr>
+      <tr><td class="tool">Airtable</td><td><span class="pill mix">Free / Paid</span></td><td>Lets you set a field's type so bad values are rejected as they go in — which prevents mess rather than cleaning it later.</td></tr>
+    </tbody>
+  </table>
+  <p class="neutral-note">Prevention beats cleaning: setting field types in a tool like Airtable stops problems entering the data at all. For data you've already received, sorting and counting distinct values in each column is the fastest manual audit.</p>
+</section>
+
+<!-- 5 · YOUR TURN -->
+<section class="frame" data-frame="5">
+  <div class="step-eyebrow">Step 5 of 6 · Your turn</div>
+  <h2>Audit the messy dataset yourself.</h2>
+  <div class="turn-grid">
+    <div class="card">
+      <h3>1 · The sample file</h3>
+      <p class="sub" style="margin-bottom:11px">Download the same messy sites dataset you saw in the inspector. This is your raw material for the audit.</p>
+      <div class="row-actions"><button class="btn primary" id="dlBtn">Download messy-sites.csv</button></div>
+      <p class="sub" style="margin-top:11px;font-size:12.5px">Then try the same prompt on one of your own datasets.</p>
+    </div>
+    <div class="card">
+      <h3>2 · The prompt to paste</h3>
+      <div class="promptbox" id="promptText">Here is a CSV. First, infer the schema: for each column, what type of value it should hold and any rule it should follow. Then audit the data against that schema and list every problem you find, grouped by type (duplicates, inconsistent categories, missing values, wrong type, out of range). Do not fix it yet, just report.</div>
+      <div class="row-actions"><button class="btn" id="copyBtn">Copy prompt</button></div>
+    </div>
+  </div>
+  <ol class="steps">
+    <li>Open your AI tool, attach <b>messy-sites.csv</b>, and paste the prompt.</li>
+    <li>Read the grouped problem list. Does it catch everything you spotted in the inspector?</li>
+    <li>Now ask it for a cleaned version, then try the same audit on one of your own datasets.</li>
+  </ol>
+  <div class="selfcheck">
+    <div class="q">How did it go?</div>
+    <div class="sc-btns">
+      <button class="btn" data-sc="worked">It worked</button>
+      <button class="btn" data-sc="partly">Partly</button>
+      <button class="btn" data-sc="stuck">I got stuck</button>
+    </div>
+    <div class="sc-reply" id="scReply"></div>
+  </div>
+</section>
+
+<!-- 6 · CARRY FORWARD -->
+<section class="frame" data-frame="6">
+  <div class="step-eyebrow">Step 6 of 6 · Carry forward</div>
+  <h2>What to take with you.</h2>
+  <ul class="takeaways">
+    <li>A schema is just the rules each column should follow — its type, its allowed values, its constraints.</li>
+    <li>The common faults are duplicates, inconsistent categories, gaps, and wrong types. Each one quietly breaks a different kind of answer.</li>
+    <li>AI won't warn you that your data is dirty. A two-minute audit before you feed it in saves hours of confusion downstream.</li>
+  </ul>
+  <div class="next-cards">
+    <div class="next-card"><div class="nlabel">NEXT</div><div class="ntitle">4.2 Spreadsheets and CSVs</div><div class="nwhy">The mechanics of cleaning what you've found.</div></div>
+    <div class="next-card"><div class="nlabel">NEXT</div><div class="ntitle">4.5 Databases</div><div class="nwhy">Where schemas live and how they're enforced.</div></div>
+    <div class="next-card"><div class="nlabel">NEXT</div><div class="ntitle">7.3 Verification and Risk</div><div class="nwhy">Not trusting an answer you can't trace back — coming soon.</div></div>
+  </div>
+  <div class="complete-row">
+    <button class="btn primary" id="completeBtn">Mark module complete</button>
+    <span class="completed-msg" id="completedMsg">✓ Module complete. Progress saved.</span>
+  </div>
+</section>
+
+<script is:inline define:vars={{ INSP, SC }}>
+(function () {
+  var mainEl = document.querySelector('.lesson[data-module-id]');
+  var modId  = mainEl ? mainEl.dataset.moduleId : '';
+  var PK = 'dl_progress';
+  function pRead() { try { return JSON.parse(localStorage.getItem(PK) || '{}'); } catch (e) { return {}; } }
+  function pWrite(m) {
+    try { localStorage.setItem(PK, JSON.stringify(m)); } catch (e) {}
+    if (typeof window.__msWriteProgress === 'function') window.__msWriteProgress();
+  }
+
+  function esc(t) { return String(t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+  function isBad(r, c) {
+    for (var k = 0; k < INSP.badCells.length; k++) {
+      if (INSP.badCells[k][0] === r && INSP.badCells[k][1] === c) return true;
+    }
+    return false;
+  }
+
+  function isDupRow(r) {
+    for (var k = 0; k < INSP.badCells.length; k++) {
+      if (INSP.badCells[k][0] === r && INSP.badCells[k][1] === 0) return true;
+    }
+    return false;
+  }
+
+  function renderData() {
+    var rows = INSP.rows;
+    var cols = rows[0].length;
+    var lets = ['A','B','C','D','E','F'];
+    var html = '<table class="grid"><thead><tr><th></th>';
+    for (var c = 0; c < cols; c++) html += '<th>' + lets[c] + '</th>';
+    html += '</tr></thead><tbody>';
+    rows.forEach(function (row, r) {
+      var dup = r > 0 && isDupRow(r);
+      html += '<tr' + (dup ? ' class="dup-row"' : '') + '><th>' + (r === 0 ? '#' : r) + '</th>';
+      for (var c = 0; c < cols; c++) {
+        var cls = r > 0 && isBad(r, c) ? 'bad' : '';
+        html += '<td class="' + cls + '">' + esc(row[c]) + '</td>';
+      }
+      html += '</tr>';
+    });
+    html += '</tbody></table>';
+    document.getElementById('dataView44').innerHTML = html;
+  }
+
+  function renderSchema() {
+    var html = '';
+    INSP.schema.forEach(function (f) {
+      html += '<div class="schema-card">'
+        + '<div class="sc-name">' + esc(f.name) + '</div>'
+        + '<div class="sc-meta"><span class="sc-type">' + esc(f.type) + '</span></div>'
+        + '<div class="sc-rule">' + esc(f.rule) + '</div>'
+        + '<div class="sc-example">e.g. ' + esc(f.example) + '</div>'
+        + '</div>';
+    });
+    document.getElementById('schemaView44').innerHTML = html;
+  }
+
+  function renderBreaks() {
+    var html = '<table class="tools"><thead><tr><th>Fault</th><th>What it breaks</th></tr></thead><tbody>';
+    INSP.breaks.forEach(function (b) {
+      html += '<tr><td class="tool">' + esc(b.fault) + '</td><td>' + esc(b.what) + '</td></tr>';
+    });
+    html += '</tbody></table>';
+    document.getElementById('breaksView44').innerHTML = html;
+  }
+
+  renderData(); renderSchema(); renderBreaks();
+
+  document.querySelectorAll('.viewtabs button').forEach(function (b) {
+    b.onclick = function () {
+      var v = b.dataset.view;
+      document.querySelectorAll('.insp-view').forEach(function (el) {
+        el.classList.toggle('show', el.dataset.view === v);
+      });
+      document.querySelectorAll('.viewtabs button').forEach(function (x) {
+        var on = x === b; x.classList.toggle('on', on); x.setAttribute('aria-selected', on ? 'true' : 'false');
+      });
+    };
+  });
+
+  var answered = false;
+  document.querySelectorAll('#checkOptions .opt').forEach(function (opt) {
+    opt.onclick = function () {
+      if (answered) return; answered = true;
+      document.querySelectorAll('#checkOptions .opt').forEach(function (o) {
+        if (o.dataset.correct === 'true') o.classList.add('correct');
+        else if (o === opt) o.classList.add('wrong');
+        else o.classList.add('dim');
+      });
+      document.getElementById('checkReveal').classList.add('show');
+    };
+  });
+
+  document.getElementById('dlBtn').onclick = function () {
+    var a = document.createElement('a'); a.href = '/dttt/4-4/messy-sites.csv'; a.download = 'messy-sites.csv';
+    document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    this.textContent = 'Downloaded ✓';
+    var b = this; setTimeout(function () { b.textContent = 'Download messy-sites.csv'; }, 2200);
+  };
+
+  document.getElementById('copyBtn').onclick = function () {
+    var txt = document.getElementById('promptText').innerText; var b = this;
+    function done() { b.textContent = 'Copied ✓'; setTimeout(function () { b.textContent = 'Copy prompt'; }, 2200); }
+    if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(txt).then(done, done);
+    else { var ta = document.createElement('textarea'); ta.value = txt; document.body.appendChild(ta); ta.select(); try { document.execCommand('copy'); } catch (e) {} document.body.removeChild(ta); done(); }
+  };
+
+  document.querySelectorAll('[data-sc]').forEach(function (b) {
+    b.onclick = function () { var r = document.getElementById('scReply'); r.textContent = SC[b.dataset.sc]; r.classList.add('show'); };
+  });
+
+  document.getElementById('completeBtn').onclick = function () {
+    var m = pRead(); var cur = m[modId] || { complete: false, furthest: 0 };
+    m[modId] = Object.assign({}, cur, { complete: true }); pWrite(m);
+    document.getElementById('completedMsg').classList.add('show'); this.disabled = true; this.textContent = 'Completed';
+  };
+
+  var prog = pRead()[modId];
+  if (prog && prog.complete) {
+    var msg = document.getElementById('completedMsg'); var btn = document.getElementById('completeBtn');
+    if (msg) msg.classList.add('show');
+    if (btn) { btn.disabled = true; btn.textContent = 'Completed'; }
+  }
+})();
+</script>

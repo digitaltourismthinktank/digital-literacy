@@ -1,0 +1,41 @@
+[
+  {
+    "site": "Harbour Museum",
+    "type": "museum",
+    "location": "coastal",
+    "capacity": 400,
+    "visits": [
+      { "date": "2025-06-01", "visitors": 342, "revenue_gbp": 1710 },
+      { "date": "2025-06-02", "visitors": 389, "revenue_gbp": 1945 },
+      { "date": "2025-06-03", "visitors": 401, "revenue_gbp": 2005 },
+      { "date": "2025-06-04", "visitors": 298, "revenue_gbp": 1490 },
+      { "date": "2025-06-05", "visitors": 455, "revenue_gbp": 2275 }
+    ]
+  },
+  {
+    "site": "Old Lighthouse",
+    "type": "monument",
+    "location": "coastal",
+    "capacity": 80,
+    "visits": [
+      { "date": "2025-06-01", "visitors": 118, "revenue_gbp": 590 },
+      { "date": "2025-06-02", "visitors": 94, "revenue_gbp": 470 },
+      { "date": "2025-06-03", "visitors": 107, "revenue_gbp": 535 },
+      { "date": "2025-06-04", "visitors": 88, "revenue_gbp": 440 },
+      { "date": "2025-06-05", "visitors": 121, "revenue_gbp": 605 }
+    ]
+  },
+  {
+    "site": "Cliff Gardens",
+    "type": "garden",
+    "location": "coastal",
+    "capacity": 250,
+    "visits": [
+      { "date": "2025-06-01", "visitors": 231, "revenue_gbp": 0 },
+      { "date": "2025-06-02", "visitors": 278, "revenue_gbp": 0 },
+      { "date": "2025-06-03", "visitors": 312, "revenue_gbp": 0 },
+      { "date": "2025-06-04", "visitors": 195, "revenue_gbp": 0 },
+      { "date": "2025-06-05", "visitors": 344, "revenue_gbp": 0 }
+    ]
+  }
+]

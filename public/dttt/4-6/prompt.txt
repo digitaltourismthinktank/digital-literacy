@@ -1,0 +1,1 @@
+I want to connect [app A] to [app B] so that [what] flows automatically. List the ways I could do this (a native integration, a connector like Zapier or Make, or an API), the trade-offs of each, and the simplest one to start with for someone non-technical.

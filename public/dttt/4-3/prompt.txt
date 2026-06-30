@@ -1,0 +1,1 @@
+Here is a JSON file. In plain English, tell me what data it holds and how it is organised. Then convert it to a simple CSV table I could open in a spreadsheet, and explain what gets lost when you flatten it.

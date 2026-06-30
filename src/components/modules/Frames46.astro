@@ -1,0 +1,328 @@
+---
+interface Props { data: any; }
+const { data } = Astro.props;
+const SC = data.selfCheckReplies;
+---
+
+<!-- 0 · COVER -->
+<section class="frame cover show" data-frame="0">
+  <div class="cover-left">
+    <div class="step-eyebrow">Data Pipes: Getting Data In and Out</div>
+    <h1>Making data flow so you don't have to</h1>
+    <p class="lead">Most organisations still move data by hand: export a CSV, open another tool, import it again. There is a better way — automated connections that move data for you. There are three types, and they differ mainly in who sets them up and how much they can do.</p>
+    <div class="scene">
+      <div class="scene-row"><span class="k">What this is</span><span>A practical look at the three ways to connect two apps so data moves automatically between them.</span></div>
+      <div class="scene-row"><span class="k">Why you'd care</span><span>Manual exports waste time and create version drift. A connection, once set up, keeps running without you.</span></div>
+      <div class="scene-row"><span class="k">What you'll do</span><span>Explore the three connection types, compare the trade-offs, and prompt AI to recommend the right one for your situation.</span></div>
+    </div>
+    <div class="signpost">
+      <b>The shape of the next fifteen minutes.</b> Six short steps. You'll explore a data connection first, then we'll explain the types. Open a <b>"new to this?"</b> panel anywhere for more grounding.
+    </div>
+  </div>
+  <div class="cover-right">
+    <div class="videoframe" role="img" aria-label="Orientation video, 75 seconds">
+      <div class="playdot"></div>
+      <div class="vlabel">Why this matters</div>
+      <div class="vtime">75 seconds</div>
+      <div class="vplaceholder">video · Vimeo embed</div>
+    </div>
+    <div class="promise"><b>By the end:</b> you'll know the three ways to pipe data between apps, when to use each, and how to prompt AI to help you choose and set one up.</div>
+  </div>
+</section>
+
+<!-- 1 · SEE IT FOR YOURSELF (flow builder) -->
+<section class="frame" data-frame="1">
+  <div class="step-eyebrow">Step 1 of 6 · Try it first</div>
+  <h2>Connect two apps. See what flows — and how.</h2>
+  <div class="challenge">
+    <b>Your challenge:</b> switch between the three connection types and read what changes. Same apps, different pipes.
+    <span class="lookfor">→ Look for: how the complexity and who-does-the-work changes as you move from Native to API.</span>
+  </div>
+  <div class="flow-builder">
+    <div class="flow-visual">
+      <div class="flow-app">
+        <div class="flow-app-icon">📋</div>
+        <div class="flow-app-name">Booking Form</div>
+        <div class="flow-app-type">Source</div>
+      </div>
+      <div class="flow-middle">
+        <div class="flow-pipe-track">
+          <div class="flow-pipe-fill" id="pipeFill"></div>
+          <div class="flow-dot" id="flowDot"></div>
+        </div>
+        <div class="flow-pipe-label" id="pipeLabel">Select a connection type below</div>
+      </div>
+      <div class="flow-app">
+        <div class="flow-app-icon">📊</div>
+        <div class="flow-app-name">Airtable</div>
+        <div class="flow-app-type">Destination</div>
+      </div>
+    </div>
+    <div class="flow-controls">
+      <span class="ctrl-label">Connection type</span>
+      <div class="viewtabs" role="tablist" aria-label="Choose a connection type">
+        <button data-pipe="native" class="on" role="tab" aria-selected="true">Native</button>
+        <button data-pipe="connector" role="tab" aria-selected="false">Connector</button>
+        <button data-pipe="api" role="tab" aria-selected="false">API</button>
+      </div>
+    </div>
+    <div class="flow-detail">
+      <div class="fd-row">
+        <div class="fd-col">
+          <div class="fd-label">How it works</div>
+          <div class="fd-value" id="fdHow"></div>
+        </div>
+        <div class="fd-col">
+          <div class="fd-label">Complexity</div>
+          <div class="fd-value" id="fdComplex"></div>
+        </div>
+        <div class="fd-col">
+          <div class="fd-label">Best for</div>
+          <div class="fd-value" id="fdBest"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 2 · WHAT YOU JUST SAW -->
+<section class="frame" data-frame="2">
+  <div class="step-eyebrow">Step 2 of 6 · The idea</div>
+  <h2>Three types of connection. One right fit for each situation.</h2>
+  <div class="pipe-types">
+    <div class="pipe-type">
+      <div class="pt-num">1</div>
+      <div class="pt-body">
+        <div class="pt-name">Native integration</div>
+        <div class="pt-desc">Built into one or both apps. Usually a toggle in settings — no third-party tool needed. Works when both apps are designed to talk to each other.</div>
+        <div class="pt-when"><b>When to use:</b> check this first. If a native connection exists, it's almost always the simplest starting point.</div>
+      </div>
+    </div>
+    <div class="pipe-type">
+      <div class="pt-num">2</div>
+      <div class="pt-body">
+        <div class="pt-name">Connector / middleware</div>
+        <div class="pt-desc">A third tool (Zapier, Make, n8n) sits between your apps and watches for triggers. When it sees new data in app A, it sends it to app B. No code required, widely supported.</div>
+        <div class="pt-when"><b>When to use:</b> no native integration exists but both apps appear in Zapier or Make. The default for most non-technical setups.</div>
+      </div>
+    </div>
+    <div class="pipe-type">
+      <div class="pt-num">3</div>
+      <div class="pt-body">
+        <div class="pt-name">API</div>
+        <div class="pt-desc">Your system sends data directly to the other app's API (Application Programming Interface). Maximum control, no third-party dependency, but needs a developer or technical knowledge to set up.</div>
+        <div class="pt-when"><b>When to use:</b> high volume, sensitive data, or requirements that connectors can't handle.</div>
+      </div>
+    </div>
+  </div>
+  <details class="disclosure">
+    <summary><span class="chev">▶</span>New to this? Start here<span class="tag">30-second grounding</span></summary>
+    <div class="body">
+      A <b>native integration</b> is like a direct door between two offices. A <b>connector</b> (Zapier / Make) is like a courier service — it picks up a package from one office and delivers it to another on a schedule. An <b>API</b> is like writing your own delivery system from scratch. Direct doors are easiest; couriers are flexible; your own system is most powerful but takes more expertise. Most organisations only need the first two.
+    </div>
+  </details>
+</section>
+
+<!-- 3 · QUICK CHECK -->
+<section class="frame" data-frame="3">
+  <div class="step-eyebrow">Step 3 of 6 · Quick check</div>
+  <h2>One quick prediction before we move on.</h2>
+  <p class="sub">A colleague wants to automatically add new Typeform responses to a Google Sheet. Typeform has no direct Google Sheets integration built in. The simplest non-technical option is:</p>
+  <div class="options" id="checkOptions">
+    <button class="opt" data-correct="false"><span class="key">A</span><span>Hire a developer to build a custom API connection between Typeform and Google Sheets.</span></button>
+    <button class="opt" data-correct="true"><span class="key">B</span><span>Use Zapier or Make to connect Typeform and Google Sheets with a no-code trigger.</span></button>
+    <button class="opt" data-correct="false"><span class="key">C</span><span>Export Typeform results as a CSV each week and import them manually into the sheet.</span></button>
+  </div>
+  <div class="reveal" id="checkReveal">
+    <b>It's B.</b> Both Typeform and Google Sheets appear in Zapier and Make. A connector watches for new form submissions and adds each one as a row automatically. It's a 15-minute no-code setup. The API option gives more control but requires code. Manual exports are a last resort — they create version drift and require ongoing human effort every single time.
+  </div>
+</section>
+
+<!-- 4 · CHOOSE YOUR APPROACH -->
+<section class="frame" data-frame="4">
+  <div class="step-eyebrow">Step 4 of 6 · Choose your approach</div>
+  <h2>Tools for building data pipes.</h2>
+  <table class="tools">
+    <thead><tr><th>Tool</th><th>Type</th><th>Best for</th></tr></thead>
+    <tbody>
+      <tr><td class="tool">Zapier</td><td><span class="pill mix">Free / Paid</span></td><td>The most widely supported connector. 6,000+ app integrations. Good default for non-technical teams.</td></tr>
+      <tr><td class="tool">Make</td><td><span class="pill mix">Free / Paid</span></td><td>More powerful than Zapier for complex flows. Steeper learning curve but handles multi-step logic well.</td></tr>
+      <tr><td class="tool">n8n</td><td><span class="pill free">Free / Open-source</span></td><td>Self-hosted connector. Free to run on your own server. Good if you need to keep data inside your infrastructure.</td></tr>
+      <tr><td class="tool">Native integrations</td><td><span class="pill free">Usually free</span></td><td>Check your app's integration or "Connect" settings first — often built-in and zero cost.</td></tr>
+      <tr><td class="tool">REST API + developer</td><td><span class="pill paid">Developer cost</span></td><td>Maximum control. Necessary for high volume, sensitive data, or when connectors can't do what you need.</td></tr>
+    </tbody>
+  </table>
+  <p class="neutral-note">Start with native. If that doesn't exist, try a connector. If that can't handle the volume or rules you need, then consider an API. Work up in complexity only when the simpler option fails.</p>
+</section>
+
+<!-- 5 · YOUR TURN -->
+<section class="frame" data-frame="5">
+  <div class="step-eyebrow">Step 5 of 6 · Your turn</div>
+  <h2>Design a pipe for your own data.</h2>
+  <div class="turn-grid">
+    <div class="card">
+      <h3>1 · The sample file</h3>
+      <p class="sub" style="margin-bottom:11px">A small bookings export to give the AI something concrete to work from. Or swap in two apps from your own work.</p>
+      <div class="row-actions"><button class="btn primary" id="dlBtn">Download bookings.csv</button></div>
+      <p class="sub" style="margin-top:11px;font-size:12.5px">Replace the apps in the prompt with tools you actually use.</p>
+    </div>
+    <div class="card">
+      <h3>2 · The prompt to paste</h3>
+      <div class="promptbox" id="promptText">I want to connect [app A] to [app B] so that [what] flows automatically. List the ways I could do this (a native integration, a connector like Zapier or Make, or an API), the trade-offs of each, and the simplest one to start with for someone non-technical.</div>
+      <div class="row-actions"><button class="btn" id="copyBtn">Copy prompt</button></div>
+    </div>
+  </div>
+  <ol class="steps">
+    <li>Replace [app A], [app B], and [what] with your own tools — e.g. Typeform, Airtable, new booking responses.</li>
+    <li>Read the AI's recommendation. Does it match what you know about your apps?</li>
+    <li>Ask a follow-up: "What are the exact steps to set up the connector option?"</li>
+  </ol>
+  <div class="selfcheck">
+    <div class="q">How did it go?</div>
+    <div class="sc-btns">
+      <button class="btn" data-sc="worked">It worked</button>
+      <button class="btn" data-sc="partly">Partly</button>
+      <button class="btn" data-sc="stuck">I got stuck</button>
+    </div>
+    <div class="sc-reply" id="scReply"></div>
+  </div>
+</section>
+
+<!-- 6 · CARRY FORWARD -->
+<section class="frame" data-frame="6">
+  <div class="step-eyebrow">Step 6 of 6 · Carry forward</div>
+  <h2>What to take with you.</h2>
+  <ul class="takeaways">
+    <li>There are three ways to connect two apps: native (built-in), connector (Zapier / Make), and API (code). Start with the simplest one that exists.</li>
+    <li>A connector takes 15 minutes to set up and removes manual exports indefinitely. The cost of not doing it compounds every week you leave it.</li>
+    <li>When asking AI to recommend a connection, give it both app names and what data should flow — it can then compare options and walk you through setup.</li>
+    <li>A live connection runs once and keeps running. A manual export runs once and stops. They look the same in the short term; in the long term they diverge completely.</li>
+  </ul>
+  <div class="next-cards">
+    <div class="next-card"><div class="nlabel">ALSO IN TRACK 4</div><div class="ntitle">4.4 Schemas, Fields, and Clean Data</div><div class="nwhy">What makes data reliable enough to pipe automatically.</div></div>
+    <div class="next-card"><div class="nlabel">ALSO IN TRACK 4</div><div class="ntitle">4.5 Databases</div><div class="nwhy">Where data lives when it outgrows a spreadsheet.</div></div>
+    <div class="next-card"><div class="nlabel">COMING NEXT</div><div class="ntitle">Track 6: Connecting AI to Your Work</div><div class="nwhy">Applying these pipes to real AI-powered workflows.</div></div>
+  </div>
+  <div class="complete-row">
+    <button class="btn primary" id="completeBtn">Mark module complete</button>
+    <span class="completed-msg" id="completedMsg">✓ Module complete. Progress saved.</span>
+  </div>
+</section>
+
+<script is:inline define:vars={{ SC }}>
+(function () {
+  var mainEl = document.querySelector('.lesson[data-module-id]');
+  var modId  = mainEl ? mainEl.dataset.moduleId : '';
+  var PK = 'dl_progress';
+  function pRead() { try { return JSON.parse(localStorage.getItem(PK) || '{}'); } catch (e) { return {}; } }
+  function pWrite(m) {
+    try { localStorage.setItem(PK, JSON.stringify(m)); } catch (e) {}
+    if (typeof window.__msWriteProgress === 'function') window.__msWriteProgress();
+  }
+
+  /* ---- flow builder ---- */
+  var PIPE = {
+    native:    { how: 'Both apps talk directly — usually a toggle in one app\'s settings. No extra tool needed.', complex: 'Low — just a setting', best: 'When both apps natively support each other' },
+    connector: { how: 'A third tool (Zapier, Make) watches for new data in the booking form and sends it to Airtable automatically.', complex: 'Medium — no-code visual setup, small monthly cost', best: 'When apps have no native connection but both appear in Zapier or Make' },
+    api:       { how: 'Your system sends HTTP requests directly to Airtable\'s API. Needs code or a developer to build.', complex: 'High — developer or technical knowledge required', best: 'High volume, sensitive data, or requirements connectors can\'t meet' }
+  };
+
+  function setPipe(type) {
+    var d = PIPE[type];
+    var fdHow     = document.getElementById('fdHow');
+    var fdComplex = document.getElementById('fdComplex');
+    var fdBest    = document.getElementById('fdBest');
+    var pipeLabel = document.getElementById('pipeLabel');
+    var pipeFill  = document.getElementById('pipeFill');
+    if (fdHow)     fdHow.textContent     = d.how;
+    if (fdComplex) fdComplex.textContent = d.complex;
+    if (fdBest)    fdBest.textContent    = d.best;
+    if (pipeLabel) pipeLabel.textContent = type === 'native' ? 'Native integration (direct)' : type === 'connector' ? 'Via connector (e.g. Zapier)' : 'Via API (custom code)';
+    if (pipeFill) pipeFill.className = 'flow-pipe-fill flow-pipe-' + type;
+    var dot = document.getElementById('flowDot');
+    if (dot) { dot.classList.remove('flow-dot-go'); void dot.offsetWidth; dot.classList.add('flow-dot-go'); }
+    document.querySelectorAll('[data-pipe]').forEach(function (b) {
+      var on = b.dataset.pipe === type;
+      b.classList.toggle('on', on);
+      b.setAttribute('aria-selected', on ? 'true' : 'false');
+    });
+  }
+
+  document.querySelectorAll('[data-pipe]').forEach(function (b) {
+    b.onclick = function () { setPipe(b.dataset.pipe); };
+  });
+  setPipe('native');
+
+  /* ---- quick check ---- */
+  var answered = false;
+  document.querySelectorAll('#checkOptions .opt').forEach(function (opt) {
+    opt.onclick = function () {
+      if (answered) return; answered = true;
+      document.querySelectorAll('#checkOptions .opt').forEach(function (o) {
+        if (o.dataset.correct === 'true') o.classList.add('correct');
+        else if (o === opt) o.classList.add('wrong');
+        else o.classList.add('dim');
+      });
+      var rev = document.getElementById('checkReveal');
+      if (rev) rev.classList.add('show');
+    };
+  });
+
+  /* ---- download ---- */
+  var dlBtn = document.getElementById('dlBtn');
+  if (dlBtn) {
+    dlBtn.onclick = function () {
+      var a = document.createElement('a');
+      a.href = '/dttt/4-6/bookings.csv'; a.download = 'bookings.csv';
+      document.body.appendChild(a); a.click(); document.body.removeChild(a);
+      this.textContent = 'Downloaded ✓';
+      var b = this; setTimeout(function () { b.textContent = 'Download bookings.csv'; }, 2200);
+    };
+  }
+
+  /* ---- copy prompt ---- */
+  var copyBtn = document.getElementById('copyBtn');
+  if (copyBtn) {
+    copyBtn.onclick = function () {
+      var txt = document.getElementById('promptText').innerText;
+      var b = this;
+      function done() { b.textContent = 'Copied ✓'; setTimeout(function () { b.textContent = 'Copy prompt'; }, 2200); }
+      if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(txt).then(done, done);
+      else {
+        var ta = document.createElement('textarea'); ta.value = txt;
+        document.body.appendChild(ta); ta.select();
+        try { document.execCommand('copy'); } catch (e) {}
+        document.body.removeChild(ta); done();
+      }
+    };
+  }
+
+  /* ---- self check ---- */
+  document.querySelectorAll('[data-sc]').forEach(function (b) {
+    b.onclick = function () {
+      var r = document.getElementById('scReply');
+      if (r) { r.textContent = SC[b.dataset.sc]; r.classList.add('show'); }
+    };
+  });
+
+  /* ---- mark complete ---- */
+  var completeBtn = document.getElementById('completeBtn');
+  if (completeBtn) {
+    completeBtn.onclick = function () {
+      var m = pRead(); var cur = m[modId] || { complete: false, furthest: 0 };
+      m[modId] = Object.assign({}, cur, { complete: true }); pWrite(m);
+      var msg = document.getElementById('completedMsg');
+      if (msg) msg.classList.add('show');
+      this.disabled = true; this.textContent = 'Completed';
+    };
+  }
+
+  var prog = pRead()[modId];
+  if (prog && prog.complete) {
+    var msg = document.getElementById('completedMsg');
+    var btn = document.getElementById('completeBtn');
+    if (msg) msg.classList.add('show');
+    if (btn) { btn.disabled = true; btn.textContent = 'Completed'; }
+  }
+})();
+</script>
