@@ -1,0 +1,10 @@
+{
+  "track": 4,
+  "trackName": "Data Fundamentals",
+  "title": "Data Pipes: Getting Data In and Out",
+  "hook": "How data moves between tools and systems",
+  "isFree": false,
+  "status": "coming-soon",
+  "prev": "4-5",
+  "next": null
+}

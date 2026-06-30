@@ -1,13 +1,84 @@
 ---
+import { getCollection } from 'astro:content';
+import Shell from '../layouts/Shell.astro';
+
+const allModules = await getCollection('modules');
+const track4 = allModules
+  .filter((m) => m.data.track === 4)
+  .sort((a, b) => a.id.localeCompare(b.id));
 ---
-<!doctype html>
-<html lang="en-GB">
-<head>
-  <meta charset="utf-8">
-  <meta http-equiv="refresh" content="0; url=/modules/4-2">
-  <title>Digital Literacy for Effective AI</title>
-</head>
-<body>
-  <a href="/modules/4-2">Go to Module 4.2</a>
-</body>
-</html>
+
+<Shell title="Digital Literacy for Effective AI — DTTT Academy">
+  <div class="ov-wrap">
+    <div class="ov-hero">
+      <h1>Digital Literacy for Effective AI</h1>
+      <p>Practical skills for tourism professionals working with AI tools. Start at your level, go at your pace.</p>
+    </div>
+
+    <div class="ov-auth-notice" id="ovAuthNotice" style="display:none">
+      <span>Sign in to track your progress across devices.</span>
+      <button id="ovSignInBtn">Sign in</button>
+    </div>
+
+    <div class="ov-section">
+      <div class="ov-track-head">
+        <span class="ov-track-num">Track 04</span>
+        <span class="ov-track-title">Data Fundamentals</span>
+        <span class="ov-track-badge">Live now</span>
+      </div>
+      <div class="ov-modules">
+        {track4.map((mod) => {
+          const num = mod.id.replace('-', '.');
+          const isSoon = mod.data.status === 'coming-soon';
+          return (
+            <a
+              href={`/modules/${mod.id}`}
+              class:list={['ov-mod', isSoon ? 'ov-mod-soon' : 'ov-mod-open']}
+              data-mod-id={mod.id}
+            >
+              <span class="ov-mod-num">{num}</span>
+              <div>
+                <div class="ov-mod-title">{mod.data.title}</div>
+                <div class="ov-mod-hook">{mod.data.hook}</div>
+              </div>
+              {mod.data.isFree && !isSoon && (
+                <span class="ov-mod-badge free">Free</span>
+              )}
+              {isSoon && (
+                <span class="ov-mod-badge soon">Coming soon</span>
+              )}
+              <span class="ov-mod-badge done" id={`ovDone-${mod.id}`} style="display:none">Done ✓</span>
+            </a>
+          );
+        })}
+      </div>
+    </div>
+
+    <div class="ov-other-tracks">
+      <b>More tracks coming.</b> Getting Started, How the Web Works, Content and Code, Images and Media, AI Mechanics, Connecting AI to Your Work, Judgement and Risk, and three more are in development.
+    </div>
+  </div>
+
+  <script is:inline>
+  (function () {
+    // Mark completed modules from localStorage
+    try {
+      var prog = JSON.parse(localStorage.getItem('dl_progress') || '{}');
+      Object.keys(prog).forEach(function (id) {
+        if (prog[id] && prog[id].complete) {
+          var el = document.getElementById('ovDone-' + id);
+          if (el) el.style.display = '';
+        }
+      });
+    } catch (_) {}
+
+    // Sign-in button delegates to Shell's Memberstack bridge
+    var btn = document.getElementById('ovSignInBtn');
+    if (btn) {
+      btn.addEventListener('click', function () {
+        if (typeof window.__msOpenLogin === 'function') window.__msOpenLogin();
+      });
+    }
+  })();
+  </script>
+</Shell>

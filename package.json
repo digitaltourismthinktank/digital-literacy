@@ -9,6 +9,7 @@
     "preview": "astro preview"
   },
   "dependencies": {
+    "@memberstack/dom": "^2.0.13",
     "astro": "^5"
   },
   "devDependencies": {

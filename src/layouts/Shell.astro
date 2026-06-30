@@ -4,8 +4,9 @@ import '../styles/global.css';
 interface Props {
   title: string;
   description?: string;
+  moduleId?: string;
 }
-const { title, description = 'Digital Literacy for Effective AI — DTTT Academy' } = Astro.props;
+const { title, description = 'Digital Literacy for Effective AI — DTTT Academy', moduleId = '' } = Astro.props;
 ---
 <!doctype html>
 <html lang="en-GB">
@@ -18,7 +19,234 @@ const { title, description = 'Digital Literacy for Effective AI — DTTT Academy
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 </head>
-<body>
-  <slot />
+<body data-module-id={moduleId}>
+  <div class="app">
+    <aside class="sidebar" aria-label="Course navigation">
+      <div class="sb-top">
+        <div class="sb-brand">DTTT Academy <span>/ Digital Literacy</span></div>
+        <div class="sb-user-row">
+          <div class="sb-ava" id="sbAva">?</div>
+          <div class="sb-user-info">
+            <div class="sb-user-name" id="sbUserName">Guest</div>
+            <div class="sb-user-meta" id="sbUserMeta">Not signed in</div>
+          </div>
+        </div>
+      </div>
+      <nav class="sb-nav">
+        <a href="/" class="sb-back">
+          <svg viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M8.5 11L4 7l4.5-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Programme overview
+        </a>
+
+        <span class="sb-section-label">Track 04 — Live</span>
+        <div class="sb-track live">
+          <span class="sb-track-num">04</span>
+          <span class="sb-track-name">Data Fundamentals</span>
+          <span class="sb-track-badge">Live</span>
+        </div>
+        <div class="sb-modules">
+          <a href="/modules/4-1" class="sb-mod soon" data-mod-id="4-1">
+            <span class="sb-mod-num">4.1</span>
+            <span class="sb-mod-title">Structured vs Unstructured Data</span>
+          </a>
+          <a href="/modules/4-2" class="sb-mod" data-mod-id="4-2">
+            <span class="sb-mod-num">4.2</span>
+            <span class="sb-mod-title">Spreadsheets and CSVs</span>
+          </a>
+          <a href="/modules/4-3" class="sb-mod soon" data-mod-id="4-3">
+            <span class="sb-mod-num">4.3</span>
+            <span class="sb-mod-title">JSON and Data Interchange</span>
+          </a>
+          <a href="/modules/4-4" class="sb-mod soon" data-mod-id="4-4">
+            <span class="sb-mod-num">4.4</span>
+            <span class="sb-mod-title">Databases vs Flat Files</span>
+          </a>
+          <a href="/modules/4-5" class="sb-mod soon" data-mod-id="4-5">
+            <span class="sb-mod-num">4.5</span>
+            <span class="sb-mod-title">Working with Your Own Data</span>
+          </a>
+          <a href="/modules/4-6" class="sb-mod soon" data-mod-id="4-6">
+            <span class="sb-mod-num">4.6</span>
+            <span class="sb-mod-title">Data Pipes: Getting Data In and Out</span>
+          </a>
+        </div>
+
+        <span class="sb-section-label">Coming soon</span>
+        <div class="sb-track"><span class="sb-track-num">00</span><span class="sb-track-name">Getting Started</span><span class="sb-track-soon">Soon</span></div>
+        <div class="sb-track"><span class="sb-track-num">01</span><span class="sb-track-name">How the Web Works</span><span class="sb-track-soon">Soon</span></div>
+        <div class="sb-track"><span class="sb-track-num">02</span><span class="sb-track-name">Content and Code</span><span class="sb-track-soon">Soon</span></div>
+        <div class="sb-track"><span class="sb-track-num">03</span><span class="sb-track-name">Images, Media and File Formats</span><span class="sb-track-soon">Soon</span></div>
+        <div class="sb-track"><span class="sb-track-num">05</span><span class="sb-track-name">AI Mechanics</span><span class="sb-track-soon">Soon</span></div>
+        <div class="sb-track"><span class="sb-track-num">06</span><span class="sb-track-name">Connecting AI to Your Work</span><span class="sb-track-soon">Soon</span></div>
+        <div class="sb-track"><span class="sb-track-num">07</span><span class="sb-track-name">Judgement, Risk and Responsibility</span><span class="sb-track-soon">Soon</span></div>
+        <div class="sb-track"><span class="sb-track-num">08</span><span class="sb-track-name">Publishing and End-to-End</span><span class="sb-track-soon">Soon</span></div>
+        <div class="sb-track"><span class="sb-track-num">09</span><span class="sb-track-name">Workflow and Daily Practice</span><span class="sb-track-soon">Soon</span></div>
+        <div class="sb-track"><span class="sb-track-num">10</span><span class="sb-track-name">AI in Tourism</span><span class="sb-track-soon">Soon</span></div>
+      </nav>
+      <div class="sb-foot">
+        <button class="sb-auth-btn" id="sbAuthBtn" data-state="signin">Sign in</button>
+      </div>
+    </aside>
+    <div class="main-col">
+      <slot />
+    </div>
+  </div>
+
+  <script>
+    const PK = import.meta.env.PUBLIC_MEMBERSTACK_KEY;
+
+    let _msPromise: Promise<any> | null = null;
+    function getMs() {
+      if (!_msPromise) {
+        _msPromise = import('@memberstack/dom')
+          .then((mod: any) => mod.default.init({ publicKey: PK }))
+          .catch(() => null);
+      }
+      return _msPromise!;
+    }
+
+    function initials(first: string, last: string, email: string) {
+      const f = (first || '').trim();
+      const l = (last || '').trim();
+      const e = (email || '').trim();
+      if (f && l) return (f[0] + l[0]).toUpperCase();
+      if (f) return f.slice(0, 2).toUpperCase();
+      if (e) return e[0].toUpperCase();
+      return '?';
+    }
+
+    function updateSidebarProgress() {
+      try {
+        const modId = document.body.dataset.moduleId || '';
+        const prog: Record<string, { complete?: boolean; furthest?: number }> =
+          JSON.parse(localStorage.getItem('dl_progress') || '{}');
+        document.querySelectorAll<HTMLElement>('[data-mod-id]').forEach((el) => {
+          const id = el.dataset.modId || '';
+          if (id && id === modId) {
+            el.classList.add('active');
+          } else if (prog[id] && prog[id].complete) {
+            el.classList.remove('soon');
+            el.classList.add('done');
+          }
+        });
+      } catch (_) {}
+    }
+
+    function showMember(member: any) {
+      const first = (member.customFields && member.customFields['first-name']) || '';
+      const last  = (member.customFields && member.customFields['last-name'])  || '';
+      const email = (member.auth && member.auth.email) || '';
+      const name  = [first, last].filter(Boolean).join(' ') || email || 'Member';
+
+      const ava    = document.getElementById('sbAva');
+      const nameEl = document.getElementById('sbUserName');
+      const metaEl = document.getElementById('sbUserMeta');
+      const btn    = document.getElementById('sbAuthBtn') as HTMLButtonElement | null;
+
+      if (ava)    ava.textContent    = initials(first, last, email);
+      if (nameEl) nameEl.textContent = name;
+      if (metaEl) metaEl.textContent = email;
+      if (btn)  { btn.textContent = 'Sign out'; btn.dataset.state = 'signout'; }
+    }
+
+    function showGuest() {
+      const ava    = document.getElementById('sbAva');
+      const nameEl = document.getElementById('sbUserName');
+      const metaEl = document.getElementById('sbUserMeta');
+      const btn    = document.getElementById('sbAuthBtn') as HTMLButtonElement | null;
+      const notice = document.getElementById('ovAuthNotice') as HTMLElement | null;
+
+      if (ava)    ava.textContent    = '?';
+      if (nameEl) nameEl.textContent = 'Guest';
+      if (metaEl) metaEl.textContent = 'Not signed in';
+      if (btn)  { btn.textContent = 'Sign in'; btn.dataset.state = 'signin'; }
+      if (notice) notice.style.display = 'flex';
+    }
+
+    function syncProgress(member: any) {
+      const raw = member.customFields && member.customFields['dl-progress'];
+      if (!raw) return;
+      try {
+        const remote: Record<string, any> = JSON.parse(raw);
+        const local: Record<string, any>  = JSON.parse(localStorage.getItem('dl_progress') || '{}');
+        const merged: Record<string, any> = {};
+        const seen = new Set([...Object.keys(remote), ...Object.keys(local)]);
+        seen.forEach((id) => {
+          const r = remote[id] || {};
+          const l = local[id]  || {};
+          merged[id] = {
+            complete: !!(r.complete || l.complete),
+            furthest: Math.max(r.furthest || 0, l.furthest || 0),
+          };
+        });
+        localStorage.setItem('dl_progress', JSON.stringify(merged));
+        updateSidebarProgress();
+      } catch (_) {}
+    }
+
+    // Mark active and done sidebar items on page load
+    updateSidebarProgress();
+
+    // Bridge called by lesson scripts after saving to localStorage
+    (window as any).__msWriteProgress = () => {
+      getMs().then((ms: any) => {
+        if (!ms) return;
+        ms.getCurrentMember().then((r: any) => {
+          if (!r || !r.data) return;
+          const stored = localStorage.getItem('dl_progress') || '{}';
+          ms.updateMember({ customFields: { 'dl-progress': stored } }).catch(() => {});
+        }).catch(() => {});
+      }).catch(() => {});
+    };
+
+    // Overview page can call this to open the login modal
+    (window as any).__msOpenLogin = () => {
+      getMs().then((ms: any) => {
+        if (!ms) return;
+        ms.openModal('LOGIN').then(() => {
+          ms.getCurrentMember().then((r: any) => {
+            if (r && r.data) { showMember(r.data); syncProgress(r.data); }
+            else showGuest();
+          }).catch(() => showGuest());
+        }).catch(() => {});
+      }).catch(() => {});
+    };
+
+    // Auth button
+    const authBtn = document.getElementById('sbAuthBtn') as HTMLButtonElement | null;
+    if (authBtn) {
+      authBtn.addEventListener('click', () => {
+        if (authBtn.dataset.state === 'signout') {
+          getMs().then((ms: any) => {
+            if (!ms) return;
+            ms.logout().then(() => showGuest()).catch(() => showGuest());
+          }).catch(() => showGuest());
+        } else {
+          getMs().then((ms: any) => {
+            if (!ms) return;
+            ms.openModal('LOGIN').then(() => {
+              ms.getCurrentMember().then((r: any) => {
+                if (r && r.data) { showMember(r.data); syncProgress(r.data); }
+                else showGuest();
+              }).catch(() => showGuest());
+            }).catch(() => {});
+          }).catch(() => {});
+        }
+      });
+    }
+
+    // Init on page load
+    getMs()
+      .then((ms: any) => {
+        if (!ms) { showGuest(); return null; }
+        return ms.getCurrentMember();
+      })
+      .then((result: any) => {
+        if (!result) return;
+        if (result.data) { showMember(result.data); syncProgress(result.data); }
+        else showGuest();
+      })
+      .catch(() => showGuest());
+  </script>
 </body>
 </html>
