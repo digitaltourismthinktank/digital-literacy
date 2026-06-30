@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Module 4.2 · Spreadsheets and CSVs · Digital Literacy for Effective AI</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   Module 4.2 — paginated lesson.
+   One part per frame, advanced with back/next. The lesson opens
+   on a designed cover (the orientation video as the centrepiece,
+   not an edge thumbnail), then steps through: do it, make sense
+   of it, check, choose, your turn, carry forward. Same DTTT shell
+   and tokens as the member platform.
+   ============================================================ */
+:root{
+  --navy:#0F2044;--navy-deep:#0A1733;--navy-mid:#1A3060;--navy-light:#E8EDF5;--navy-rule:#CBD5E8;
+  --teal:#00857C;--teal-dark:#006B63;--teal-light:#E6F3F2;--teal-text:#006B63;
+  --white:#FFFFFF;--bg:#F7F8FA;--surface:#FFFFFF;--border:#E2E6EF;
+  --text:#0F2044;--sub:#4A5568;--muted:#8A94A6;
+  --green:#1A7A4A;--green-l:#E6F4ED;
+  --warn:#925A00;--warn-dark:#6E4400;--warn-l:#FEF3E2;--warn-line:#E8C98A;
+  --font:'Inter',-apple-system,sans-serif;
+  --font-alt:'IBM Plex Sans',sans-serif;
+  --font-mono:'IBM Plex Mono',monospace;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{font-size:16px}
+body{background:var(--bg);color:var(--text);font-family:var(--font);font-size:.875rem;line-height:1.6;-webkit-font-smoothing:antialiased;min-height:100vh}
+.app{display:flex;min-height:100vh}
+a{color:inherit;text-decoration:none}
+button{font-family:inherit}
+
+/* ───────── SIDEBAR (canonical Context 3 — identical to the member platform) ───────── */
+.sidebar{width:256px;min-width:256px;background:var(--navy-deep);display:flex;flex-direction:column;position:sticky;top:0;height:100vh;overflow:hidden;box-shadow:inset -1px 0 0 rgba(255,255,255,.07),6px 0 28px rgba(10,23,51,.22);z-index:2}
+.sb-top{padding:20px 18px 16px;border-bottom:1px solid rgba(255,255,255,.08)}
+.sb-logo{height:28px;width:auto;margin-bottom:15px;opacity:.96}
+.sb-org{display:flex;align-items:center;gap:10px;padding:9px 10px;border-radius:4px;background:rgba(255,255,255,.05);cursor:pointer;transition:background .14s}
+.sb-org:hover{background:rgba(255,255,255,.09)}
+.sb-org-mark{width:30px;height:30px;border-radius:4px;background:linear-gradient(135deg,#27457E,#16284E);display:flex;align-items:center;justify-content:center;font-family:var(--font-alt);font-weight:700;font-size:.8125rem;color:#fff;flex-shrink:0}
+.sb-org-info{min-width:0;flex:1}
+.sb-org-name{font-family:var(--font-alt);font-size:.8125rem;font-weight:600;color:#fff;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sb-org-tier{display:flex;align-items:center;gap:5px;font-size:.625rem;color:rgba(255,255,255,.5);font-family:var(--font-mono);letter-spacing:.02em;margin-top:2px}
+.sb-org-tier .dot{width:5px;height:5px;border-radius:50%;background:#8FA4C8}
+.sb-nav{flex:1;overflow-y:auto;padding:10px 12px}
+.sb-nav::-webkit-scrollbar{width:0}
+.sb-back{display:flex;align-items:center;gap:8px;padding:8px 11px;margin:0 0 6px;font-size:.75rem;font-weight:500;color:rgba(255,255,255,.5);font-family:var(--font-alt);cursor:pointer;border-radius:4px;transition:all .14s;border:none;background:none;width:100%;text-align:left;text-decoration:none}
+.sb-back:hover{color:#fff;background:rgba(255,255,255,.06)}
+.sb-back svg{width:14px;height:14px;flex-shrink:0;opacity:.85}
+.sb-section{font-size:.5625rem;font-weight:600;letter-spacing:.13em;text-transform:uppercase;color:rgba(255,255,255,.26);padding:14px 10px 6px;font-family:var(--font-alt)}
+.ni{display:flex;align-items:center;gap:11px;padding:8px 11px;cursor:pointer;font-size:.8125rem;font-weight:400;color:rgba(255,255,255,.55);transition:all .14s;border-radius:4px;margin-bottom:1px;border:none;background:none;width:100%;text-align:left;text-decoration:none}
+.ni:hover{color:rgba(255,255,255,.9);background:rgba(255,255,255,.06)}
+.ni.on{color:#fff;background:rgba(255,255,255,.1);font-weight:500}
+.ni svg{width:17px;height:17px;flex-shrink:0;opacity:.85}
+.chev{margin-left:auto;font-size:.55rem;transition:transform .2s;opacity:.5}
+.acc-open .chev{transform:rotate(180deg)}
+.track-head .tk-n{font-family:var(--font-mono);font-size:.625rem;font-weight:500;color:rgba(255,255,255,.4);min-width:16px;flex-shrink:0}
+.track-head .tk-nm{flex:1;text-align:left;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.track-head .tk-badge{font-size:.5rem;font-weight:600;letter-spacing:.05em;text-transform:uppercase;font-family:var(--font-alt);color:#7FD8CF;background:rgba(0,133,124,.22);padding:.1rem .35rem;border-radius:2px;margin-left:auto}
+.track-head .tk-badge+.chev{margin-left:.4rem}
+.sb-prog-sub{padding-left:8px;margin-top:2px}
+.ni-sub{display:flex;align-items:center;gap:10px;padding:7px 11px;cursor:pointer;font-size:.75rem;color:rgba(255,255,255,.42);transition:all .14s;border-radius:4px;margin-bottom:1px;border:none;background:none;width:100%;text-align:left}
+.ni-sub:hover{color:rgba(255,255,255,.78);background:rgba(255,255,255,.05)}
+.ni-sub.on{color:#fff;background:rgba(255,255,255,.08)}
+.ni-sub .pico{width:18px;height:18px;border-radius:3px;background:rgba(255,255,255,.1);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:.5625rem;font-family:var(--font-mono);font-weight:500}
+.ni-sub.on .pico{background:var(--teal);color:#fff}
+.ni-sub .pico.done{background:var(--green);color:#fff}
+.ni-sub .msub-t{flex:1;text-align:left;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;line-height:1.3}
+.sb-foot{padding:10px 12px 14px;border-top:1px solid rgba(255,255,255,.07)}
+.sb-user{display:flex;align-items:center;gap:10px;padding:9px 10px 9px;margin-top:6px;border-top:1px solid rgba(255,255,255,.07)}
+.sb-ava{width:30px;height:30px;border-radius:50%;background:#27457E;display:flex;align-items:center;justify-content:center;font-size:.6875rem;font-weight:600;color:#fff;font-family:var(--font-alt);flex-shrink:0}
+.sb-user-info{min-width:0;flex:1}
+.sb-user-name{font-size:.75rem;font-weight:500;color:rgba(255,255,255,.85);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sb-user-role{font-size:.625rem;color:rgba(255,255,255,.4)}
+
+/* ───────── MAIN + TOPBAR ───────── */
+.main-col{flex:1;min-width:0;background:var(--bg);display:flex;flex-direction:column}
+.top-bar{background:var(--navy)}
+.top-bar-inner{padding:.95rem 2.75rem;max-width:1100px;margin:0 auto;width:100%;display:flex;align-items:center;justify-content:space-between;gap:2rem}
+.bc{font-size:.6875rem;font-weight:500;letter-spacing:.06em;text-transform:uppercase;color:rgba(255,255,255,.45);display:flex;align-items:center;gap:.5rem;font-family:var(--font-alt)}
+.bc .sep{color:rgba(255,255,255,.22)}
+.bc .cur{color:rgba(255,255,255,.85)}
+.tb-exit{font-family:var(--font-alt);font-size:.72rem;font-weight:600;color:rgba(255,255,255,.6);display:inline-flex;align-items:center;gap:.4rem;cursor:pointer}
+.tb-exit:hover{color:#fff}
+.tb-exit svg{width:13px;height:13px}
+
+/* ───────── LESSON STAGE ───────── */
+.wrap{flex:1;display:flex;align-items:flex-start;justify-content:center;padding:2rem 2rem 2.6rem}
+.stage{width:100%;max-width:940px;background:var(--surface);border:1px solid var(--border);border-radius:10px;box-shadow:0 18px 50px -28px rgba(15,32,68,.28);display:flex;flex-direction:column;height:min(86vh,710px);overflow:hidden}
+
+/* progress segments */
+.stage-prog{display:flex;gap:5px;padding:14px 18px 13px}
+.seg{flex:1;height:5px;border-radius:3px;background:var(--navy-rule);transition:background .3s}
+.seg.past{background:var(--teal)}
+.seg.on{background:var(--teal);box-shadow:0 0 0 3px rgba(0,133,124,.16)}
+
+/* body (one frame, vertically settled) */
+.stage-body{flex:1;display:flex;flex-direction:column;overflow:auto;padding:1.35rem 2.4rem .5rem}
+.stage-body::-webkit-scrollbar{width:8px}
+.stage-body::-webkit-scrollbar-thumb{background:var(--navy-rule);border-radius:4px}
+.frame{margin:auto 0;width:100%;animation:fin .26s ease}
+@keyframes fin{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.fr-eyebrow{display:inline-flex;align-items:center;gap:.5rem;font-family:var(--font-alt);font-size:.625rem;font-weight:600;letter-spacing:.11em;text-transform:uppercase;color:var(--teal-text);margin-bottom:.7rem}
+.fr-eyebrow .n{font-family:var(--font-mono);color:var(--muted)}
+.fr-title{font-family:var(--font-alt);font-size:1.5rem;font-weight:600;color:var(--navy);letter-spacing:-.02em;line-height:1.16;margin-bottom:1rem;text-wrap:balance}
+.fr-intro{font-size:.95rem;font-weight:300;color:var(--sub);line-height:1.6;max-width:62ch;margin-bottom:1.2rem}
+.fr-intro .em{color:var(--navy);font-weight:500}
+
+/* footer nav */
+.stage-foot{display:flex;align-items:center;justify-content:space-between;gap:1rem;padding:1rem 1.6rem;border-top:1px solid var(--border);background:var(--bg)}
+.nav-btn{display:inline-flex;align-items:center;gap:.5rem;font-family:var(--font-alt);font-size:.8125rem;font-weight:600;padding:.6rem 1.1rem;border-radius:4px;cursor:pointer;border:1.5px solid var(--border);background:var(--surface);color:var(--navy);transition:all .14s}
+.nav-btn:hover{border-color:var(--navy-rule)}
+.nav-btn svg{width:15px;height:15px}
+.nav-btn.primary{background:var(--navy);border-color:var(--navy);color:#fff}
+.nav-btn.primary:hover{background:var(--navy-mid)}
+.nav-btn.complete{background:var(--teal);border-color:var(--teal);color:#fff}
+.nav-btn.complete:hover{background:var(--teal-dark)}
+.nav-btn[disabled]{opacity:.35;cursor:default;pointer-events:none}
+.foot-mid{font-family:var(--font-mono);font-size:.6875rem;font-weight:500;color:var(--muted);letter-spacing:.03em;text-align:center}
+.foot-mid b{color:var(--navy);font-family:var(--font-alt)}
+
+/* ───────── COVER FRAME ───────── */
+.stage-body.flush{padding:0;display:block;overflow:hidden;height:100%}
+.cover{background:var(--navy);height:100%;display:grid;grid-template-columns:1.15fr .85fr;gap:2.4rem;align-items:center;padding:2.6rem 2.8rem;position:relative;overflow:hidden}
+.cover::after{content:"";position:absolute;right:-120px;top:-120px;width:420px;height:420px;border-radius:50%;background:radial-gradient(circle,rgba(0,133,124,.16),transparent 68%);pointer-events:none}
+.cv-eyebrow{display:inline-flex;align-items:center;gap:.5rem;font-family:var(--font-alt);font-size:.625rem;font-weight:600;letter-spacing:.13em;text-transform:uppercase;color:#8FA4C8;margin-bottom:1.1rem}
+.cv-h{font-family:var(--font-alt);font-size:2.3rem;font-weight:600;color:#fff;letter-spacing:-.03em;line-height:1.05;margin-bottom:1rem;text-wrap:balance}
+.cv-hook{font-size:1.05rem;font-weight:300;color:rgba(255,255,255,.74);line-height:1.55;max-width:34ch;margin-bottom:1.4rem}
+.cv-hook .em{color:#fff;font-weight:500}
+.cv-outcome{display:flex;gap:.65rem;align-items:flex-start;background:rgba(0,133,124,.16);border:1px solid rgba(0,133,124,.34);border-radius:6px;padding:.85rem 1rem;max-width:44ch;position:relative;z-index:1}
+.cv-outcome svg{width:16px;height:16px;color:#7FD8CF;flex-shrink:0;margin-top:.15rem}
+.cv-outcome .ot{font-size:.5625rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:#7FD8CF;font-family:var(--font-alt);margin-bottom:.2rem}
+.cv-outcome .ob{font-size:.85rem;font-weight:400;color:rgba(255,255,255,.9);line-height:1.5}
+.cv-meta{display:flex;align-items:center;gap:.6rem;margin-top:1.1rem;font-family:var(--font-mono);font-size:.625rem;font-weight:500;color:rgba(255,255,255,.45);letter-spacing:.02em}
+.cv-meta .d{opacity:.5}
+/* the video, as the cover's deliberate right-hand piece */
+.cv-video{position:relative;z-index:1;justify-self:center;width:100%;max-width:300px}
+.cv-vlabel{font-family:var(--font-alt);font-size:.5625rem;font-weight:600;letter-spacing:.11em;text-transform:uppercase;color:#8FA4C8;margin-bottom:.7rem;text-align:center}
+.cv-vcard{aspect-ratio:1/1;border-radius:10px;overflow:hidden;position:relative;background:#0A1733;border:1px solid rgba(255,255,255,.12);cursor:pointer;display:block;width:100%;padding:0;box-shadow:0 20px 50px -20px rgba(0,0,0,.5)}
+.cv-vcard .vsk{position:absolute;inset:0;background:linear-gradient(150deg,#16284E,#0A1733)}
+.cv-vspk{position:absolute;top:.85rem;left:.85rem;z-index:2;display:flex;align-items:center;gap:.5rem}
+.cv-vava{width:30px;height:30px;border-radius:50%;background:#27457E;display:flex;align-items:center;justify-content:center;font-family:var(--font-alt);font-size:.6875rem;font-weight:600;color:#fff}
+.cv-vspk .t{font-family:var(--font-alt);font-size:.6875rem;font-weight:500;color:rgba(255,255,255,.85);text-align:left;line-height:1.2}
+.cv-vplay{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;z-index:2}
+.cv-vplay i{width:64px;height:64px;border-radius:50%;background:rgba(255,255,255,.16);border:1.5px solid rgba(255,255,255,.46);display:flex;align-items:center;justify-content:center;transition:all .15s}
+.cv-vcard:hover .cv-vplay i{background:rgba(255,255,255,.28);transform:scale(1.05)}
+.cv-vplay svg{width:22px;height:22px;margin-left:3px;color:#fff}
+.cv-vdur{position:absolute;bottom:.85rem;left:0;right:0;z-index:2;text-align:center;font-family:var(--font-mono);font-size:.625rem;color:rgba(255,255,255,.7)}
+.cv-vcap{text-align:center;font-size:.7rem;color:rgba(255,255,255,.5);margin-top:.7rem;font-style:italic}
+
+/* ───────── shared learning components ───────── */
+/* split: what you see vs what AI receives */
+.cc-wrap{display:grid;grid-template-columns:1fr 1fr;gap:1.6rem;align-items:center;background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:1.4rem 1.6rem;margin-bottom:1.2rem}
+.cc-lead .l-t{font-family:var(--font-alt);font-size:1rem;font-weight:600;color:var(--navy);line-height:1.3;margin-bottom:.5rem}
+.cc-lead .l-b{font-size:.85rem;font-weight:300;color:var(--sub);line-height:1.6}
+.term-btn{font:inherit;font-weight:600;color:var(--navy);background:none;border:none;border-bottom:1.5px dashed var(--teal);padding:0;cursor:pointer}
+.term-btn:hover{color:var(--teal-text)}
+.term-panel{margin:.55rem 0 0;background:var(--surface);border:1px solid var(--border);border-left:3px solid var(--navy);border-radius:4px;padding:.75rem .9rem;font-size:.8rem;font-weight:300;color:var(--sub);line-height:1.55}
+.term-panel .tl{font-size:.5625rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--navy);font-family:var(--font-alt);margin-bottom:.3rem}
+.cc-split{display:grid;grid-template-columns:1fr auto 1fr;gap:.6rem;align-items:center}
+.cc-pane{border:1px solid var(--border);border-radius:6px;overflow:hidden;background:var(--surface)}
+.cc-pl{font-family:var(--font-alt);font-size:.5rem;font-weight:600;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);padding:.4rem .55rem;border-bottom:1px solid var(--border);background:var(--bg)}
+.cc-pane.ai .cc-pl{color:var(--teal-text)}
+.cc-grid{display:grid;grid-template-columns:repeat(3,1fr);font-family:var(--font-mono);font-size:.56rem}
+.cc-grid span{padding:.32rem .35rem;border-right:1px solid var(--border);border-bottom:1px solid var(--border);color:var(--sub);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cc-grid span:nth-child(3n){border-right:none}
+.cc-grid span.h{background:var(--navy-light);color:var(--navy);font-weight:500}
+.cc-grid span:nth-last-child(-n+3){border-bottom:none}
+.cc-text{font-family:var(--font-mono);font-size:.56rem;line-height:1.75;color:var(--sub);padding:.5rem .55rem;white-space:pre-wrap;word-break:break-word}
+.cc-arrow{color:var(--muted);font-size:1rem;display:flex;align-items:center;justify-content:center}
+.sense-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+.sense-card{background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:1.1rem 1.2rem;display:flex;gap:.75rem}
+.sense-card svg{width:18px;height:18px;flex-shrink:0;margin-top:.1rem}
+.sense-card.warnc svg{color:var(--warn)}
+.sense-card.eyec svg{color:var(--teal)}
+.sense-card .sc-t{font-family:var(--font-alt);font-size:.9rem;font-weight:600;color:var(--navy);line-height:1.3;margin-bottom:.3rem}
+.sense-card .sc-b{font-size:.82rem;font-weight:300;color:var(--sub);line-height:1.55}
+.sense-card .sc-b b{font-weight:500;color:var(--navy)}
+
+/* inspector */
+.insp{background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden;box-shadow:0 8px 26px -16px rgba(15,32,68,.22)}
+.insp-top{display:flex;align-items:center;gap:1rem;padding:.65rem .9rem;border-bottom:1px solid var(--border);background:var(--bg)}
+.insp-file{display:flex;align-items:center;gap:.5rem;font-family:var(--font-mono);font-size:.6875rem;font-weight:500;color:var(--muted)}
+.insp-file .dots{display:flex;gap:.3rem}
+.insp-file .dots i{width:8px;height:8px;border-radius:50%;background:var(--navy-rule)}
+.views{display:flex;gap:.25rem;margin-left:auto;background:var(--surface);border:1px solid var(--border);padding:.22rem;border-radius:4px}
+.view-tab{font-family:var(--font-alt);font-size:.72rem;font-weight:600;color:var(--muted);padding:.4rem .75rem;border-radius:3px;cursor:pointer;border:none;background:none;white-space:nowrap}
+.view-tab:hover{color:var(--navy)}
+.view-tab.on{color:#fff;background:var(--navy)}
+.insp-body{min-height:208px;padding:1.1rem 1.2rem;background:var(--surface)}
+.raw{font-family:var(--font-mono);font-size:.72rem;line-height:1.95;color:var(--sub);white-space:pre-wrap;word-break:break-word}
+.raw .ln{display:block;padding:.05rem .4rem;border-radius:2px}
+.raw .ln .gut{display:inline-block;width:1.6em;color:var(--muted);opacity:.6;user-select:none}
+.raw .ln.head{color:var(--navy);font-weight:500}
+.raw .ln.bad{background:var(--warn-l);box-shadow:inset 2px 0 0 var(--warn)}
+.raw .ln.bad .gut{color:var(--warn)}
+.raw .flagchip{margin-left:.6rem;font-family:var(--font-alt);font-size:.6rem;font-weight:600;color:var(--warn);background:#fff;border:1px solid var(--warn-line);padding:.05rem .4rem;border-radius:2px}
+.grid-wrap{overflow-x:auto}
+table.grid{border-collapse:collapse;font-family:var(--font-mono);font-size:.72rem;width:100%}
+table.grid th,table.grid td{border:1px solid var(--border);padding:.42rem .65rem;text-align:left;white-space:nowrap}
+table.grid thead th{background:var(--bg);color:var(--navy);font-weight:500}
+table.grid .rownum{background:var(--bg);color:var(--muted);width:30px;text-align:center}
+table.grid th.ph{color:var(--warn);background:var(--warn-l)}
+table.grid td.bad{background:var(--warn-l);color:var(--warn-dark);box-shadow:inset 0 0 0 1.5px var(--warn)}
+table.grid td.empty{background:repeating-linear-gradient(45deg,#fff,#fff 4px,var(--bg) 4px,var(--bg) 8px)}
+.ai-reads{display:flex;flex-direction:column;gap:.9rem}
+.ai-line{display:flex;align-items:center;gap:.6rem;font-family:var(--font-alt);font-size:.82rem;font-weight:600;color:var(--navy)}
+.ai-line .ai-glyph{width:26px;height:26px;border-radius:6px;background:var(--navy);color:#fff;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.ai-line .ai-glyph svg{width:14px;height:14px}
+.ai-cols{display:flex;flex-wrap:wrap;gap:.45rem}
+.ai-col{display:flex;flex-direction:column;gap:.15rem;background:var(--bg);border:1px solid var(--border);border-radius:3px;padding:.5rem .7rem;min-width:104px}
+.ai-col .acn{font-family:var(--font-mono);font-size:.7rem;font-weight:500;color:var(--navy)}
+.ai-col .act{font-family:var(--font-alt);font-size:.58rem;font-weight:600;letter-spacing:.04em;text-transform:uppercase;color:var(--teal-text)}
+.ai-col.bad{background:var(--warn-l);border-color:var(--warn-line)}
+.ai-col.bad .act{color:var(--warn)}
+.ai-stat{display:flex;align-items:center;gap:.5rem;font-family:var(--font-mono);font-size:.68rem;font-weight:500;color:var(--sub)}
+.ai-stat svg{width:13px;height:13px}
+.ai-ok{display:flex;align-items:center;gap:.55rem;font-family:var(--font-alt);font-size:.82rem;font-weight:500;color:var(--teal-text);background:var(--teal-light);border:1px solid #B2D8D5;border-radius:3px;padding:.65rem .8rem}
+.ai-ok svg{width:16px;height:16px;flex-shrink:0}
+.ai-warn{display:flex;align-items:flex-start;gap:.6rem;font-size:.8rem;font-weight:300;color:var(--warn-dark);line-height:1.5;background:var(--warn-l);border:1px solid var(--warn-line);border-left:3px solid var(--warn);border-radius:3px;padding:.6rem .8rem}
+.ai-warn svg{width:15px;height:15px;color:var(--warn);flex-shrink:0;margin-top:.12rem}
+.ai-warn b{font-weight:600;color:var(--warn-dark)}
+.insp-foot{padding:.9rem 1.2rem 1.05rem;border-top:1px solid var(--border);background:var(--bg)}
+.bf-l{display:flex;align-items:center;gap:.5rem;font-size:.5625rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-family:var(--font-alt);margin-bottom:.7rem}
+.bf-l svg{width:12px;height:12px}
+.scn{display:flex;flex-wrap:wrap;gap:.45rem}
+.scn-btn{font-family:var(--font-alt);font-size:.74rem;font-weight:500;color:var(--sub);background:var(--surface);border:1px solid var(--border);padding:.45rem .75rem;border-radius:20px;cursor:pointer;transition:all .14s}
+.scn-btn:hover{border-color:var(--navy-rule);color:var(--navy)}
+.scn-btn.on{background:var(--navy);border-color:var(--navy);color:#fff}
+.scn-btn.clean.on{background:var(--teal);border-color:var(--teal)}
+
+/* check */
+.mm-check{background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:1.3rem 1.4rem;max-width:640px}
+.mm-check .ck-q{font-size:.92rem;font-weight:400;color:var(--navy);line-height:1.6;margin-bottom:1rem}
+.mm-check .ck-q b{font-weight:600;font-family:var(--font-mono);font-size:.86rem}
+.reveal-btn{font-family:var(--font-alt);font-size:.8125rem;font-weight:600;color:#fff;background:var(--navy);border:none;padding:.55rem 1rem;border-radius:3px;cursor:pointer;display:inline-flex;align-items:center;gap:.5rem}
+.reveal-btn:hover{background:var(--navy-mid)}
+.reveal-btn svg{width:14px;height:14px}
+.reveal-ans{margin-top:.9rem;background:var(--teal-light);border:1px solid #B2D8D5;border-left:3px solid var(--teal);border-radius:3px;padding:.85rem 1rem;font-size:.85rem;font-weight:300;color:#1F5C57;line-height:1.6}
+.reveal-ans b{font-weight:600;color:var(--teal-dark)}
+
+/* tools */
+.tools{border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.tools table{width:100%;border-collapse:collapse}
+.tools th{font-size:.5625rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);text-align:left;padding:.75rem .95rem;background:var(--bg);border-bottom:1px solid var(--border);font-family:var(--font-alt)}
+.tools td{padding:.85rem .95rem;border-bottom:1px solid var(--border);vertical-align:top;font-size:.8rem;font-weight:300;color:var(--sub);line-height:1.5}
+.tools tr:last-child td{border-bottom:none}
+.tools td.tname{font-family:var(--font-alt);font-weight:600;color:var(--navy);font-size:.84rem;white-space:nowrap}
+.neutral-note{display:flex;align-items:flex-start;gap:.55rem;font-size:.78rem;font-weight:300;color:var(--muted);line-height:1.55;margin-top:.9rem}
+.neutral-note svg{width:14px;height:14px;flex-shrink:0;margin-top:.15rem}
+
+/* exercise */
+.exercise{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:1.4rem 1.5rem;max-width:640px}
+.ex-top{display:flex;align-items:center;gap:.6rem;margin-bottom:.9rem}
+.ex-ic{width:32px;height:32px;border-radius:4px;background:var(--navy);color:#fff;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.ex-ic svg{width:16px;height:16px}
+.ex-h{font-family:var(--font-alt);font-size:1rem;font-weight:600;color:var(--navy)}
+.ex-step{display:flex;gap:.85rem;padding:.65rem 0;border-top:1px solid var(--border)}
+.ex-step:first-of-type{border-top:none}
+.ex-step .sn{font-family:var(--font-mono);font-size:.7rem;font-weight:500;color:var(--teal-text);flex-shrink:0;width:1.4rem;padding-top:.1rem}
+.ex-step .sx{font-size:.83rem;font-weight:300;color:var(--sub);line-height:1.55}
+.ex-step .sx b{font-weight:500;color:var(--navy)}
+
+/* recap + next */
+.recap{display:flex;flex-direction:column;gap:.7rem;max-width:680px;margin-bottom:1.4rem}
+.recap-item{display:flex;align-items:flex-start;gap:.65rem;font-size:.88rem;font-weight:300;color:var(--sub);line-height:1.55}
+.recap-item svg{width:17px;height:17px;color:var(--teal);flex-shrink:0;margin-top:.12rem}
+.recap-item b{font-weight:500;color:var(--navy)}
+.next-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:.9rem;max-width:680px}
+.next-card{display:flex;flex-direction:column;gap:.35rem;background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:.95rem 1.05rem}
+.next-card .nc-r{font-family:var(--font-alt);font-size:.5rem;font-weight:600;letter-spacing:.09em;text-transform:uppercase;color:var(--muted)}
+.next-card .nc-c{font-family:var(--font-mono);font-size:.7rem;font-weight:500;color:var(--teal-text)}
+.next-card .nc-t{font-family:var(--font-alt);font-size:.82rem;font-weight:600;color:var(--navy);line-height:1.25}
+
+/* lightbox */
+.vid-lightbox{position:fixed;inset:0;z-index:200;background:rgba(10,23,51,.74);backdrop-filter:blur(4px);display:none;align-items:center;justify-content:center;padding:2rem}
+.vid-lightbox.open{display:flex}
+.vlb-card{width:min(460px,86vw);background:var(--navy);border-radius:9px;overflow:hidden;position:relative;box-shadow:0 30px 80px -28px rgba(0,0,0,.65)}
+.vlb-screen{aspect-ratio:1/1;background:linear-gradient(150deg,#16284E,#0A1733);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.9rem;position:relative;color:#fff}
+.vlb-screen .vplay i{width:66px;height:66px;border-radius:50%;background:rgba(255,255,255,.16);border:1.5px solid rgba(255,255,255,.46);display:flex;align-items:center;justify-content:center}
+.vlb-screen .vplay svg{width:22px;height:22px;margin-left:3px;color:#fff}
+.vlb-screen .vlb-cap{font-family:var(--font-mono);font-size:.625rem;color:rgba(255,255,255,.5);padding:0 2rem;text-align:center}
+.vlb-foot{padding:.85rem 1rem;display:flex;align-items:center;gap:.55rem}
+.vlb-foot .cv-vava{width:30px;height:30px}
+.vlb-foot .vf-t{font-family:var(--font-alt);font-size:.8rem;font-weight:500;color:#fff;line-height:1.25}
+.vlb-foot .vf-s{font-size:.625rem;color:rgba(255,255,255,.5);font-family:var(--font-mono)}
+.vlb-close{position:absolute;top:.65rem;right:.65rem;z-index:3;width:30px;height:30px;border-radius:50%;background:rgba(255,255,255,.16);border:none;color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.vlb-close:hover{background:rgba(255,255,255,.3)}
+.vlb-close svg{width:15px;height:15px}
+
+@media(max-width:1080px){.sidebar{display:none}}
+@media(max-width:760px){
+  .wrap{padding:1rem}
+  .stage-body{padding:1.3rem 1.3rem .6rem}
+  .cover{grid-template-columns:1fr;text-align:center;padding:2rem 1.4rem}
+  .cv-hook,.cv-outcome{max-width:none}
+  .cv-outcome{text-align:left}
+  .cv-video{max-width:240px;margin:0 auto}
+  .cc-wrap,.sense-grid,.cc-split,.next-grid{grid-template-columns:1fr}
+  .cc-split .cc-arrow{transform:rotate(90deg)}
+  .turn-body{grid-template-columns:1fr}
+  .turn-assets{border-right:none;border-bottom:1px solid var(--border)}
+}
+
+/* legibility: lift reading text off the lightest weight */
+.fr-intro,.cc-lead .l-b,.sense-card .sc-b,.ex-step .sx,.recap-item,.tools td,.reveal-ans,.neutral-note,.term-panel{font-weight:400}
+.cv-hook{color:rgba(255,255,255,.84)}
+
+/* ── Your turn: the consistent do-it-yourself component ── */
+.turn{border:1px solid var(--border);border-radius:8px;overflow:hidden;max-width:780px}
+.turn-band{display:flex;align-items:center;gap:.6rem;background:var(--teal);color:#fff;padding:.6rem 1rem;font-family:var(--font-alt);font-weight:600;font-size:.88rem}
+.turn-band svg{width:16px;height:16px}
+.turn-band .turn-sub{margin-left:auto;font-size:.66rem;font-weight:400;color:rgba(255,255,255,.88)}
+.turn-body{display:grid;grid-template-columns:1.2fr 1fr}
+.turn-assets{display:flex;flex-direction:column;gap:.55rem;padding:.85rem 1rem;border-right:1px solid var(--border)}
+.asset{border:1px solid var(--border);border-radius:6px;background:var(--bg)}
+.asset.dl{display:flex;align-items:center;gap:.65rem;padding:.65rem .8rem;cursor:pointer;text-decoration:none;color:var(--navy);transition:all .14s}
+.asset.dl:hover{border-color:var(--teal);background:var(--teal-light)}
+.asset.dl svg{width:19px;height:19px;color:var(--teal-dark);flex-shrink:0}
+.asset.dl b{font-family:var(--font-alt);font-size:.8rem;font-weight:600;color:var(--navy);display:block;line-height:1.2}
+.asset .as-s{font-family:var(--font-mono);font-size:.6rem;color:var(--muted)}
+.asset.prompt{padding:0;display:flex;flex-direction:column}
+.pr-top{display:flex;align-items:center;gap:.5rem;padding:.5rem .75rem .3rem}
+.pr-top svg{width:15px;height:15px;color:var(--teal-dark)}
+.pr-top b{font-family:var(--font-alt);font-weight:600;font-size:.78rem;color:var(--navy)}
+.copy-btn{margin-left:auto;font-family:var(--font-alt);font-size:.66rem;font-weight:600;color:#fff;background:var(--navy);border:none;border-radius:3px;padding:.26rem .68rem;cursor:pointer;transition:background .14s}
+.copy-btn:hover{background:var(--navy-mid)}
+.copy-btn.done{background:var(--teal)}
+.pr-box{font-family:var(--font-mono);font-size:.65rem;line-height:1.55;color:var(--sub);padding:0 .75rem .65rem;white-space:pre-wrap}
+.turn-steps{display:flex;flex-direction:column;justify-content:center;gap:.1rem;padding:.85rem 1rem}
+.turn-steps .ex-step{padding:.38rem 0}
+.turn-steps .ex-step:first-of-type{border-top:none;padding-top:0}
+.turn-check{border-top:1px solid var(--border);background:var(--bg);padding:.8rem 1rem}
+.tc-q{font-family:var(--font-alt);font-size:.82rem;font-weight:600;color:var(--navy);margin-bottom:.55rem}
+.tc-opts{display:flex;gap:.5rem;flex-wrap:wrap}
+.tc-opt{font-family:var(--font-alt);font-size:.76rem;font-weight:500;color:var(--sub);background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:.4rem .9rem;cursor:pointer;transition:all .14s}
+.tc-opt:hover{border-color:var(--navy-rule);color:var(--navy)}
+.tc-opt.sel{background:var(--navy);border-color:var(--navy);color:#fff}
+.tc-resp{margin-top:.65rem;font-size:.8rem;font-weight:400;color:#1F5C57;background:var(--teal-light);border:1px solid #B2D8D5;border-left:3px solid var(--teal);border-radius:3px;padding:.6rem .8rem;line-height:1.5}
+</style>
+</head>
+<body>
+<template id="__bundler_thumbnail">
+<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><rect width="100" height="100" fill="#0A1733"/><rect x="20" y="24" width="60" height="52" rx="4" fill="#fff"/><rect x="26" y="31" width="10" height="3" rx="1.5" fill="#00857C"/><rect x="38" y="31" width="10" height="3" rx="1.5" fill="#CBD5E8"/><rect x="50" y="31" width="10" height="3" rx="1.5" fill="#CBD5E8"/><rect x="26" y="42" width="34" height="5" rx="2" fill="#0F2044"/><rect x="26" y="52" width="48" height="3" rx="1.5" fill="#CBD5E8"/><rect x="26" y="59" width="40" height="3" rx="1.5" fill="#CBD5E8"/><rect x="26" y="68" width="16" height="4" rx="2" fill="#0F2044"/><rect x="58" y="68" width="16" height="4" rx="2" fill="#00857C"/></svg>
+</template>
+<div class="app">
+  <aside class="sidebar">
+    <div class="sb-top">
+      <img class="sb-logo" src="assets/dttt-lockup-white.svg" alt="Digital Tourism Think Tank">
+      <div class="sb-org">
+        <div class="sb-org-mark">VS</div>
+        <div class="sb-org-info">
+          <div class="sb-org-name">Visit Skåne</div>
+          <div class="sb-org-tier"><span class="dot"></span>Evolve member</div>
+        </div>
+      </div>
+    </div>
+    <nav class="sb-nav" id="sbnav"></nav>
+    <div class="sb-foot" id="sbfoot"></div>
+  </aside>
+  <div class="main-col">
+    <div class="top-bar"><div class="top-bar-inner">
+      <div class="bc">DTTT Academy <span class="sep">·</span> Digital Literacy <span class="sep">·</span> Track 4 · Data Fundamentals <span class="sep">·</span> <span class="cur">4.2 Spreadsheets and CSVs</span></div>
+      <div class="tb-exit" id="exit">Save and exit</div>
+    </div></div>
+    <div class="wrap">
+      <div class="stage">
+        <div class="stage-prog" id="prog"></div>
+        <div class="stage-body" id="body"></div>
+        <div class="stage-foot">
+          <button class="nav-btn" id="back">Back</button>
+          <div class="foot-mid" id="mid"></div>
+          <button class="nav-btn primary" id="next">Next</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="vid-lightbox" id="vidLightbox">
+  <div class="vlb-card">
+    <button class="vlb-close" data-vidclose aria-label="Close"></button>
+    <div class="vlb-screen"><span class="vplay"><i></i></span><span class="vlb-cap">90-second orientation · placeholder for the Vimeo embed</span></div>
+    <div class="vlb-foot"><span class="cv-vava">NH</span><div><div class="vf-t">Why spreadsheets and CSVs matter</div><div class="vf-s">Nicholas Hall · DTTT</div></div></div>
+  </div>
+</div>
+
+<script>
+function ic(p,w){return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="'+(w||2)+'" stroke-linecap="round" stroke-linejoin="round">'+p+'</svg>';}
+var ICONS={
+  check:'<path d="M20 6 9 17l-5-5"></path>',
+  play:'<path d="M8 5v14l11-7z"></path>',
+  eye:'<path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7z"></path><circle cx="12" cy="12" r="3"></circle>',
+  warn:'<path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"></path><path d="M12 9v4M12 17h.01"></path>',
+  info:'<circle cx="12" cy="12" r="9"></circle><path d="M12 8h.01"></path><path d="M11 12h1v4h1"></path>',
+  doc:'<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><path d="M14 2v6h6M9 13h6M9 17h6"></path>',
+  spark:'<path d="M12 2a3 3 0 0 0-3 3v1a3 3 0 0 0-3 3 3 3 0 0 0 0 6 3 3 0 0 0 3 3 3 3 0 0 0 6 0 3 3 0 0 0 3-3 3 3 0 0 0 0-6 3 3 0 0 0-3-3V5a3 3 0 0 0-3-3z"></path>',
+  bars:'<path d="M3 3v18h18"></path><rect x="7" y="11" width="3" height="6"></rect><rect x="12" y="7" width="3" height="10"></rect><rect x="17" y="13" width="3" height="4"></rect>',
+  back:'<path d="M19 12H5"></path><path d="m12 19-7-7 7-7"></path>',
+  arrow:'<path d="M5 12h14M13 6l6 6-6 6"></path>',
+  x:'<path d="M18 6 6 18M6 6l12 12"></path>',
+  exit:'<path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><path d="m16 17 5-5-5-5M21 12H9"></path>',
+  download:'<path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><path d="M7 10l5 5 5-5"></path><path d="M12 15V3"></path>',
+  hand:'<path d="M18 11V6a2 2 0 0 0-4 0M14 10V4a2 2 0 0 0-4 0v2M10 10.5V6a2 2 0 0 0-4 0v8"></path><path d="M18 8a2 2 0 1 1 4 0v6a8 8 0 0 1-8 8h-2c-2.8 0-4.5-.86-5.99-2.34l-3.6-3.6a2 2 0 0 1 2.83-2.82L7 15"></path>',
+  compass:'<circle cx="12" cy="12" r="9"></circle><path d="m15.5 8.5-2 5-5 2 2-5z"></path>',
+  membership:'<path d="m12 2 2.4 5 5.6.8-4 4 1 5.6L12 20l-5 2.4 1-5.6-4-4 5.6-.8z"></path>',
+  help:'<circle cx="12" cy="12" r="9"></circle><path d="M9.5 9a2.5 2.5 0 0 1 4 1.5c0 1.5-2 2-2 3"></path><path d="M12 17h.01"></path>'
+};
+document.querySelector('.vlb-close').innerHTML=ic(ICONS.x,2.2);
+document.querySelector('#vidLightbox .vplay i').innerHTML=ic(ICONS.play,1.6);
+document.getElementById('exit').insertAdjacentHTML('afterbegin',ic(ICONS.exit,2));
+
+/* sidebar — canonical Context 3 (course-only nav, matches the member platform) */
+var TRACKS=[['00','Getting Started'],['01','How the Web Works'],['02','Content and Code'],['03','Images, Media and File Formats'],['04','Data Fundamentals'],['05','AI Mechanics'],['06','Connecting AI to Your Work'],['07','Judgement, Risk and Responsibility'],['08','Publishing and the End-to-End Picture'],['09','Workflow and Daily Practice'],['10','AI in Tourism and Destination Management']];
+var TRACK4=[['4.1','Structured vs Unstructured Data','done'],['4.2','Spreadsheets and CSVs','cur'],['4.3','JSON and Data Interchange',''],['4.4','Schemas, Fields and Clean Data',''],['4.5','Databases',''],['4.6','Data Pipes: Getting Data In and Out','']];
+var LIVE={'00':1,'01':1,'04':1,'10':1};
+(function(){
+  var nav='<a class="sb-back" href="Programme Landing Page.html">'+ic(ICONS.back,2)+' Back to Dashboard</a>';
+  nav+='<div class="sb-section">Digital Literacy for AI</div>';
+  nav+='<button class="ni" data-noop>'+ic(ICONS.compass)+' Programme overview</button>';
+  TRACKS.forEach(function(t){
+    if(t[0]==='04'){
+      nav+='<button class="ni track-head acc-open" data-noop><span class="tk-n">04</span><span class="tk-nm">Data Fundamentals</span><span class="chev">▼</span></button>';
+      nav+='<div class="sb-prog-sub">';
+      TRACK4.forEach(function(m){
+        var isDone=m[2]==='done',isCur=m[2]==='cur';
+        var pico='<span class="pico'+(isDone?' done':'')+'">'+(isDone?ic(ICONS.check,3):m[0].split('.')[1])+'</span>';
+        nav+='<button class="ni-sub'+(isCur?' on':'')+'" data-noop>'+pico+'<span class="msub-t">'+m[0]+' · '+m[1]+'</span></button>';
+      });
+      nav+='</div>';
+    } else {
+      var badge=(t[0]==='10')?'<span class="tk-badge">Sector</span>':'';
+      nav+='<button class="ni track-head" data-noop'+(LIVE[t[0]]?'':' style="opacity:.5"')+'><span class="tk-n">'+t[0]+'</span><span class="tk-nm">'+t[1]+'</span>'+badge+'<span class="chev">▼</span></button>';
+    }
+  });
+  document.getElementById('sbnav').innerHTML=nav;
+  var foot='<button class="ni" data-noop>'+ic(ICONS.membership)+' Membership &amp; tier</button>';
+  foot+='<button class="ni" data-noop>'+ic(ICONS.help)+' Help</button>';
+  foot+='<div class="sb-user"><div class="sb-ava">NH</div><div class="sb-user-info"><div class="sb-user-name">Nicholas Hall</div><div class="sb-user-role">Head of Digital</div></div></div>';
+  document.getElementById('sbfoot').innerHTML=foot;
+})();
+
+/* inspector data + render */
+var SCN={
+  clean:{file:'bookings_q3.csv',raw:[{t:'date,property,guests,revenue',head:true},{t:'2026-07-01,Harbour View,3,420.00'},{t:'2026-07-02,Old Town Loft,5,710.50'},{t:'2026-07-03,Seaside Cabin,2,280.00'}],headers:['date','property','guests','revenue'],rows:[['2026-07-01','Harbour View','3','420.00'],['2026-07-02','Old Town Loft','5','710.50'],['2026-07-03','Seaside Cabin','2','280.00']],ai:{cols:[['date','date'],['property','text'],['guests','integer'],['revenue','decimal']],rowCount:3,ok:'Parsed cleanly. Four columns, three rows, every value in the column it belongs to.',warnings:[]}},
+  comma:{file:'bookings_q3.csv',raw:[{t:'date,property,guests,revenue',head:true},{t:'2026-07-01,Harbour View,3,420.00'},{t:'2026-07-02,Naoussa, Paros,5,710.50',bad:true,flag:'comma in value'},{t:'2026-07-03,Seaside Cabin,2,280.00'}],headers:['date','property','guests','revenue'],maxCols:5,rows:[['2026-07-01','Harbour View','3','420.00'],['2026-07-02','Naoussa',{v:' Paros',bad:true},{v:'5',bad:true},{v:'710.50',bad:true}],['2026-07-03','Seaside Cabin','2','280.00']],ai:{cols:[['date','date'],['property','text'],['guests','mixed',true],['revenue','mixed',true]],rowCount:3,warnings:[['Row 2 split into 5 fields, not 4.','The property <b>Naoussa, Paros</b> contains a comma and was not wrapped in quotation marks, so the comma was read as a separator.'],['Everything after the comma shifted one column right.','<b>Paros</b> was read as the guest count and <b>5</b> as the revenue. The model now has wrong numbers for that booking, with no warning.']]}},
+  header:{file:'bookings_q3.csv',raw:[{t:'2026-07-01,Harbour View,3,420.00',bad:true,flag:'read as header'},{t:'2026-07-02,Old Town Loft,5,710.50'},{t:'2026-07-03,Seaside Cabin,2,280.00'}],headers:[{v:'2026-07-01',bad:true},{v:'Harbour View',bad:true},{v:'3',bad:true},{v:'420.00',bad:true}],rows:[['2026-07-02','Old Town Loft','5','710.50'],['2026-07-03','Seaside Cabin','2','280.00']],ai:{cols:[['2026-07-01','date?',true],['Harbour View','text?',true],['3','integer?',true],['420.00','decimal?',true]],rowCount:2,warnings:[['No header row was declared.','The first booking was read as the column names, so the columns are now called <b>2026-07-01</b>, <b>Harbour View</b> and so on.'],['The file now looks like 2 rows, not 3.','One real booking has disappeared into the header. Any total or count will be short by one.']]}},
+  dates:{file:'bookings_q3.csv',raw:[{t:'date,property,guests,revenue',head:true},{t:'2026-07-01,Harbour View,3,420.00'},{t:'02/07/2026,Old Town Loft,5,710.50',bad:true,flag:'different format'},{t:'2026-07-03,Seaside Cabin,2,280.00'}],headers:['date','property','guests','revenue'],rows:[['2026-07-01','Harbour View','3','420.00'],[{v:'02/07/2026',bad:true},'Old Town Loft','5','710.50'],['2026-07-03','Seaside Cabin','2','280.00']],ai:{cols:[['date','mixed',true],['property','text'],['guests','integer'],['revenue','decimal']],rowCount:3,warnings:[['Three date styles in one column.','<b>2026-07-01</b>, <b>02/07/2026</b> and <b>2026-07-03</b> are not the same format, so the column is no longer reliably a date.'],['<b>02/07/2026</b> is ambiguous.','It could be 2 July or 7 February depending on locale. Sorting by date, or any date maths, will be quietly wrong.']]}},
+  count:{file:'bookings_q3.csv',raw:[{t:'date,property,guests,revenue',head:true},{t:'2026-07-01,Harbour View,3,420.00'},{t:'2026-07-02,Old Town Loft,5,710.50'},{t:'2026-07-03,Seaside Cabin,280.00',bad:true,flag:'missing value'}],headers:['date','property','guests','revenue'],rows:[['2026-07-01','Harbour View','3','420.00'],['2026-07-02','Old Town Loft','5','710.50'],['2026-07-03','Seaside Cabin',{v:'280.00',bad:true},{v:'',bad:true,empty:true}]],ai:{cols:[['date','date'],['property','text'],['guests','mixed',true],['revenue','decimal']],rowCount:3,warnings:[['Row 3 has 3 fields, not 4.','The <b>guests</b> value is missing, so every value after it shifted left.'],['<b>280.00</b> was read as the guest count and revenue was left empty.','One missing value silently corrupted two columns at once.']]}}
+};
+var INS={scn:'clean',view:'raw'};
+function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+function cellVal(c){return (c&&typeof c==='object')?c:{v:c};}
+function renderInsp(){
+  var d=SCN[INS.scn];var body=document.getElementById('inspBody');if(!body)return;
+  document.getElementById('inspFile').textContent=d.file;var html='';
+  if(INS.view==='raw'){
+    html='<div class="raw">'+d.raw.map(function(line,i){var cls='ln'+(line.head?' head':'')+(line.bad?' bad':'');var flag=line.flag?'<span class="flagchip">'+esc(line.flag)+'</span>':'';return '<span class="'+cls+'"><span class="gut">'+(i+1)+'</span>'+esc(line.t)+flag+'</span>';}).join('')+'</div>';
+  } else if(INS.view==='grid'){
+    var maxCols=d.maxCols||d.headers.length;html='<div class="grid-wrap"><table class="grid"><thead><tr><th class="rownum">#</th>';
+    for(var i=0;i<maxCols;i++){var h=d.headers[i];if(h===undefined){html+='<th class="ph">(extra)</th>';}else{var hc=cellVal(h);html+='<th'+(hc.bad?' class="ph"':'')+'>'+esc(hc.v)+'</th>';}}
+    html+='</tr></thead><tbody>';
+    d.rows.forEach(function(row,r){html+='<tr><td class="rownum">'+(r+1)+'</td>';for(var i=0;i<maxCols;i++){var c=cellVal(row[i]!==undefined?row[i]:'');var cls=(c.bad?'bad':'')+(c.empty?' empty':'');html+='<td'+(cls.trim()?' class="'+cls.trim()+'"':'')+'>'+esc(c.empty?'\u2014':c.v)+'</td>';}html+='</tr>';});
+    html+='</tbody></table></div>';
+  } else {
+    var a=d.ai;html='<div class="ai-reads"><div class="ai-line"><span class="ai-glyph">'+ic(ICONS.spark,2)+'</span>What the model parses</div><div class="ai-cols">';
+    a.cols.forEach(function(c){html+='<div class="ai-col'+(c[2]?' bad':'')+'"><span class="acn">'+esc(c[0])+'</span><span class="act">'+esc(c[1])+'</span></div>';});
+    html+='</div><div class="ai-stat">'+ic(ICONS.bars,2)+' Detected '+a.cols.length+' columns · '+a.rowCount+' data rows</div>';
+    if(a.ok)html+='<div class="ai-ok">'+ic(ICONS.check,2.4)+a.ok+'</div>';
+    a.warnings.forEach(function(w){html+='<div class="ai-warn">'+ic(ICONS.warn,2)+'<span><b>'+w[0]+'</b> '+w[1]+'</span></div>';});
+    html+='</div>';
+  }
+  body.innerHTML=html;
+}
+function bindInsp(){
+  var views=document.getElementById('views');if(!views)return;
+  views.addEventListener('click',function(e){var b=e.target.closest('.view-tab');if(!b)return;INS.view=b.dataset.v;document.querySelectorAll('#views .view-tab').forEach(function(x){x.classList.toggle('on',x===b)});renderInsp();});
+  var scn=document.getElementById('scn');
+  scn.addEventListener('click',function(e){var b=e.target.closest('.scn-btn');if(!b)return;INS.scn=b.dataset.s;document.querySelectorAll('#scn .scn-btn').forEach(function(x){x.classList.toggle('on',x===b)});if(INS.scn!=='clean'&&INS.view==='raw'){INS.view='ai';document.querySelectorAll('#views .view-tab').forEach(function(x){x.classList.toggle('on',x.dataset.v==='ai')});}renderInsp();});
+  renderInsp();
+}
+
+/* ── the frames (one part each) ── */
+var FRAMES=[
+{kind:'cover',html:function(){return ''+
+  '<div class="cover">'+
+    '<div>'+
+      '<div class="cv-eyebrow"><span style="width:6px;height:6px;border-radius:50%;background:var(--teal);display:inline-block"></span>Track 4 · Data Fundamentals · Module 4.2</div>'+
+      '<div class="cv-h">Spreadsheets and CSVs</div>'+
+      '<div class="cv-hook">Hand an AI a messy table and it answers you <span class="em">confidently, and wrong</span>. The fault is almost never the model. It is the shape of the file underneath.</div>'+
+      '<div class="cv-outcome">'+ic(ICONS.check,2.4)+'<div><div class="ot">By the end</div><div class="ob">You can open any spreadsheet or CSV and predict how an AI will read it, before you ever paste it in.</div></div></div>'+
+      '<div class="cv-meta"><span>~15 min</span><span class="d">·</span><span>6 steps</span><span class="d">·</span><span>Interactive</span></div>'+
+    '</div>'+
+    '<div class="cv-video">'+
+      '<div class="cv-vlabel">Start with a quick word</div>'+
+      '<button class="cv-vcard" data-vidopen><span class="vsk"></span>'+
+        '<span class="cv-vspk"><span class="cv-vava">NH</span><span class="t">Nicholas Hall<br>DTTT</span></span>'+
+        '<span class="cv-vplay"><i>'+ic(ICONS.play,1.6)+'</i></span>'+
+        '<span class="cv-vdur">Why this matters · 90 sec</span>'+
+      '</button>'+
+      '<div class="cv-vcap">Optional. Or press Begin to jump in.</div>'+
+    '</div>'+
+  '</div>';}},
+{kind:'inspector',label:'See it for yourself',html:function(){return ''+
+  '<div class="frame">'+
+    '<div class="fr-eyebrow"><span class="n">Step 1</span> · See it for yourself</div>'+
+    '<div class="fr-title">The same data, three ways</div>'+
+    '<div class="fr-intro">Before any explanation, have a go. Leave the file clean, then <span class="em">switch on a broken example</span> and watch what happens to the numbers in each view. These are the faults that slip past a human eye and quietly mislead a machine.</div>'+
+    '<div class="insp"><div class="insp-top"><span class="insp-file"><span class="dots"><i></i><i></i><i></i></span><span id="inspFile">bookings_q3.csv</span></span>'+
+      '<div class="views" id="views"><button class="view-tab on" data-v="raw">Raw text</button><button class="view-tab" data-v="grid">Spreadsheet</button><button class="view-tab" data-v="ai">How AI reads it</button></div></div>'+
+      '<div class="insp-body" id="inspBody"></div>'+
+      '<div class="insp-foot"><div class="bf-l">'+ic(ICONS.warn,2)+'Switch on a broken example</div><div class="scn" id="scn">'+
+        '<button class="scn-btn clean on" data-s="clean">Clean data</button>'+
+        '<button class="scn-btn" data-s="comma">Comma inside a value</button>'+
+        '<button class="scn-btn" data-s="header">Missing header row</button>'+
+        '<button class="scn-btn" data-s="dates">Mixed date formats</button>'+
+        '<button class="scn-btn" data-s="count">A missing value</button>'+
+      '</div></div></div>'+
+  '</div>';}},
+{kind:'sense',label:'What you just saw',html:function(){return ''+
+  '<div class="frame">'+
+    '<div class="fr-eyebrow"><span class="n">Step 2</span> · What you just saw</div>'+
+    '<div class="fr-title">The model reads text, not your grid</div>'+
+    '<div class="cc-wrap">'+
+      '<div class="cc-lead"><div class="l-t">Your spreadsheet never reaches the AI. The plain text underneath does.</div>'+
+        '<div class="l-b">That stripped-down text is a <button class="term-btn" data-term="csv">CSV</button>. Because it is only values and the separators between them, its <b>shape</b> decides whether the answer is right, not its contents.</div>'+
+        '<div class="term-panel" id="term-csv" hidden><div class="tl">CSV · comma-separated values</div>A plain text data file. One row per line, each value separated by a comma. No colour, no formulas, no formatting, just the values and the separators, which is why the separators have to be exactly right.</div>'+
+      '</div>'+
+      '<div class="cc-split">'+
+        '<div class="cc-pane"><div class="cc-pl">What you see</div><div class="cc-grid"><span class="h">date</span><span class="h">property</span><span class="h">revenue</span><span>2026-07-01</span><span>Harbour View</span><span>420.00</span></div></div>'+
+        '<div class="cc-arrow">\u2192</div>'+
+        '<div class="cc-pane ai"><div class="cc-pl">What AI receives</div><div class="cc-text">date,property,revenue\n2026-07-01,Harbour View,420.00</div></div>'+
+      '</div>'+
+    '</div>'+
+    '<div class="sense-grid">'+
+      '<div class="sense-card warnc">'+ic(ICONS.warn,2)+'<div><div class="sc-t">One slip shifts everything after it</div><div class="sc-b">An unquoted comma or a missing value pushes <b>every later column one place across</b>, silently. No error is raised. The model simply has the wrong numbers.</div></div></div>'+
+      '<div class="sense-card eyec">'+ic(ICONS.eye,2)+'<div><div class="sc-t">You learn to see them coming</div><div class="sc-b">You do not fix these like a developer. You <b>recognise the shape of a broken file</b>, so when a demo or a colleague\u2019s automation looks off, you know where to look first.</div></div></div>'+
+    '</div>'+
+  '</div>';}},
+{kind:'check',label:'Quick check',html:function(){return ''+
+  '<div class="frame">'+
+    '<div class="fr-eyebrow"><span class="n">Step 3</span> · Quick check</div>'+
+    '<div class="fr-title">Have a guess before you reveal</div>'+
+    '<div class="mm-check" data-reveal><div class="ck-q">A row reads <b>2026-07-03,Seaside Cabin,280.00</b> in a file whose columns are date, property, guests, revenue. What will the model think the guest count was?</div>'+
+      '<button class="reveal-btn">'+ic(ICONS.eye,2.2)+' Reveal the answer</button>'+
+      '<div class="reveal-ans" hidden><b>280 guests.</b> The guests value is missing, so 280.00 slid into its place and revenue was left empty. One absent value corrupted two columns at once, with no error.</div></div>'+
+  '</div>';}},
+{kind:'tools',label:'Choosing your approach',html:function(){return ''+
+  '<div class="frame">'+
+    '<div class="fr-eyebrow"><span class="n">Step 4</span> · Choosing your approach</div>'+
+    '<div class="fr-title">Four ways to open the same file</div>'+
+    '<div class="tools"><table><thead><tr><th>Approach</th><th>What it is</th><th>Good for</th><th>Worth knowing</th></tr></thead><tbody>'+
+      '<tr><td class="tname">Spreadsheet app</td><td>Excel, Sheets, Numbers: a visual grid editor.</td><td>Reading and editing data as a person.</td><td>Can hide problems by auto-formatting dates.</td></tr>'+
+      '<tr><td class="tname">Plain text editor</td><td>Notepad, TextEdit: shows the file as stored.</td><td>Seeing the real commas and line breaks.</td><td>No grid, so large files are hard to read.</td></tr>'+
+      '<tr><td class="tname">Notebook or script</td><td>Python with a library reads the file in code.</td><td>Repeatable checks on big or recurring files.</td><td>Needs some code, and copies any fault faithfully.</td></tr>'+
+      '<tr><td class="tname">Database import</td><td>Loading into a table with defined types.</td><td>Catching bad rows on the way in.</td><td>Rejects rows that do not fit, strict by design.</td></tr>'+
+    '</tbody></table></div>'+
+    '<div class="neutral-note">'+ic(ICONS.info,2)+'<span>This is a comparison, not a recommendation. The right approach depends on your task, the size of the file and what your team already uses.</span></div>'+
+  '</div>';}},
+{kind:'exercise',label:'Your turn',html:function(){return ''+
+  '<div class="frame">'+
+    '<div class="fr-eyebrow"><span class="n">Step 5</span> · Your turn</div>'+
+    '<div class="fr-title">Try it on a real file</div>'+
+    '<div class="turn">'+
+      '<div class="turn-band">'+ic(ICONS.hand,2)+'<span>Your turn</span><span class="turn-sub">Everything you need to try this yourself</span></div>'+
+      '<div class="turn-body">'+
+        '<div class="turn-assets">'+
+          '<a class="asset dl" id="dlSample" download="bookings_q3.csv">'+ic(ICONS.download,2)+'<span><b>Sample file</b><span class="as-s">bookings_q3.csv · the messy one</span></span></a>'+
+          '<div class="asset prompt"><div class="pr-top">'+ic(ICONS.spark,2)+'<b>Prompt to paste</b><button class="copy-btn" id="copyPrompt">Copy</button></div>'+
+            '<div class="pr-box" id="promptText">Summarise this CSV: the columns you detect, the row count and total revenue. Flag any rows that look malformed or shifted, and don\u2019t silently fix anything.</div></div>'+
+        '</div>'+
+        '<div class="turn-steps">'+
+          '<div class="ex-step"><span class="sn">01</span><span class="sx">Open the sample in a <b>plain text editor</b>. Header present? Same comma count per line?</span></div>'+
+          '<div class="ex-step"><span class="sn">02</span><span class="sx">Paste the file and prompt into your AI tool, then compare with the inspector.</span></div>'+
+          '<div class="ex-step"><span class="sn">03</span><span class="sx">Swap in <b>your own export</b> and run the same prompt.</span></div>'+
+        '</div>'+
+      '</div>'+
+      '<div class="turn-check" id="turnCheck"><div class="tc-q">How did it go?</div>'+
+        '<div class="tc-opts">'+
+          '<button class="tc-opt" data-r="worked">It worked</button>'+
+          '<button class="tc-opt" data-r="partly">Partly</button>'+
+          '<button class="tc-opt" data-r="stuck">I got stuck</button>'+
+        '</div>'+
+        '<div class="tc-resp" id="tcResp" hidden></div>'+
+      '</div>'+
+    '</div>'+
+  '</div>';}},
+{kind:'recap',label:'Carry forward',html:function(){return ''+
+  '<div class="frame">'+
+    '<div class="fr-eyebrow"><span class="n">Step 6</span> · Carry forward</div>'+
+    '<div class="fr-title">What to take with you</div>'+
+    '<div class="recap">'+
+      '<div class="recap-item">'+ic(ICONS.check,2.4)+'<span>A <b>spreadsheet</b> is for people; a <b>CSV</b> is the same data as plain text, for machines. AI reads the text, not the grid.</span></div>'+
+      '<div class="recap-item">'+ic(ICONS.check,2.4)+'<span>Most data faults are <b>structural</b>: an unquoted comma, a missing header, mixed formats, a missing value. Each shifts meaning silently.</span></div>'+
+      '<div class="recap-item">'+ic(ICONS.check,2.4)+'<span>You do not fix these as a developer. You <b>see them coming</b>, and know which tool to open to confirm.</span></div>'+
+    '</div>'+
+    '<div class="next-grid">'+
+      '<div class="next-card"><span class="nc-r">Next module</span><span class="nc-c">4.3</span><span class="nc-t">JSON and Data Interchange</span></div>'+
+      '<div class="next-card"><span class="nc-r">Related</span><span class="nc-c">4.4</span><span class="nc-t">Schemas, Fields and Clean Data</span></div>'+
+      '<div class="next-card"><span class="nc-r">Related</span><span class="nc-c">4.5</span><span class="nc-t">Databases</span></div>'+
+    '</div>'+
+  '</div>';}}
+];
+
+/* ── pager ── */
+var cur=0;var LAST=FRAMES.length-1;
+function renderProg(){
+  var p='';for(var i=0;i<FRAMES.length;i++){p+='<div class="seg'+(i<cur?' past':'')+(i===cur?' on':'')+'"></div>';}
+  document.getElementById('prog').innerHTML=p;
+}
+function renderFrame(){
+  var f=FRAMES[cur];var body=document.getElementById('body');
+  body.className='stage-body'+(f.kind==='cover'?' flush':'');
+  body.innerHTML=f.html();
+  body.scrollTop=0;
+  // footer
+  var back=document.getElementById('back'),next=document.getElementById('next'),mid=document.getElementById('mid');
+  back.disabled=(cur===0);
+  back.innerHTML=ic(ICONS.back,2.2)+' Back';
+  if(cur===0){mid.innerHTML='Introduction';next.className='nav-btn primary';next.innerHTML='Begin '+ic(ICONS.arrow,2.2);}
+  else if(cur===LAST){mid.innerHTML='<b>Step 6</b> of 6';next.className='nav-btn complete';next.innerHTML='Mark complete '+ic(ICONS.check,2.4);}
+  else {mid.innerHTML='<b>Step '+cur+'</b> of 6';next.className='nav-btn primary';next.innerHTML='Next '+ic(ICONS.arrow,2.2);}
+  renderProg();
+  // per-frame wiring
+  if(f.kind==='inspector')bindInsp();
+  var cv=body.querySelector('[data-vidopen]');if(cv)cv.addEventListener('click',openLb);
+  body.querySelectorAll('.term-btn').forEach(function(b){b.addEventListener('click',function(){var p=document.getElementById('term-'+b.dataset.term);if(p)p.hidden=!p.hidden;});});
+  body.querySelectorAll('[data-reveal]').forEach(function(r){var btn=r.querySelector('.reveal-btn');btn.addEventListener('click',function(){r.querySelector('.reveal-ans').hidden=false;btn.style.display='none';});});
+  if(f.kind==='exercise'){
+    var dl=document.getElementById('dlSample');
+    if(dl){var csv="date,property,guests,revenue\n2026-07-01,Harbour View,3,420.00\n2026-07-02,Naoussa, Paros,5,710.50\n2026-07-03,Seaside Cabin,280.00\n04/07/2026,Old Town Loft,5,710.50\n";dl.href=URL.createObjectURL(new Blob([csv],{type:'text/csv'}));}
+    var cp=document.getElementById('copyPrompt');
+    if(cp)cp.addEventListener('click',function(){var t=document.getElementById('promptText').textContent;if(navigator.clipboard)navigator.clipboard.writeText(t).catch(function(){});cp.textContent='Copied';cp.classList.add('done');setTimeout(function(){cp.textContent='Copy';cp.classList.remove('done');},1600);});
+    var tc=document.getElementById('turnCheck');
+    if(tc){var RESP={worked:'Nice. You can now predict how a file will read before you paste it, which is the whole point of this module.',partly:'That is normal, the faults are subtle by design. Step back and watch where the columns shift when you switch one on.',stuck:'No problem. Run the sample file with the prompt first, then try your own. The sample is built to show the faults clearly.'};
+      tc.addEventListener('click',function(e){var b=e.target.closest('.tc-opt');if(!b)return;tc.querySelectorAll('.tc-opt').forEach(function(x){x.classList.toggle('sel',x===b)});var r=document.getElementById('tcResp');r.textContent=RESP[b.dataset.r];r.hidden=false;});}
+  }
+}
+function go(n){cur=Math.max(0,Math.min(LAST,n));renderFrame();}
+document.getElementById('back').addEventListener('click',function(){go(cur-1);});
+document.getElementById('next').addEventListener('click',function(){if(cur===LAST){go(0);return;}go(cur+1);});
+document.addEventListener('keydown',function(e){if(e.target.closest('input,textarea'))return;if(e.key==='ArrowRight')go(cur+1);if(e.key==='ArrowLeft')go(cur-1);});
+
+/* lightbox */
+var lb=document.getElementById('vidLightbox');
+function openLb(){lb.classList.add('open');}
+function closeLb(){lb.classList.remove('open');}
+document.querySelectorAll('[data-vidclose]').forEach(function(b){b.addEventListener('click',closeLb);});
+lb.addEventListener('click',function(e){if(e.target===lb)closeLb();});
+
+renderFrame();
+</script>
+</body>
+</html>

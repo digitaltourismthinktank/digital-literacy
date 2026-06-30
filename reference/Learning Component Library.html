@@ -1,0 +1,734 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Learning Interaction Kit — Digital Literacy for Effective AI</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="shared-styles.css">
+<style>
+body{background:var(--learn-bg)}
+
+/* top bar */
+.lbar{position:sticky;top:0;z-index:60;background:rgba(251,251,250,.86);backdrop-filter:blur(10px);border-bottom:1px solid var(--learn-rule)}
+.lbar-row{display:flex;align-items:center;gap:1.4rem;height:60px;max-width:1240px;margin:0 auto;padding:0 2rem}
+.lbar-brand{display:flex;align-items:center;gap:.7rem}
+.lbar-brand img{height:22px}
+.lbar-brand .pd{font-family:var(--font-alt);font-size:.8125rem;font-weight:600;color:var(--navy);border-left:1px solid var(--learn-rule-2);padding-left:.7rem}
+.lbar-tag{font-family:var(--font-mono);font-size:.625rem;font-weight:500;letter-spacing:.06em;text-transform:uppercase;color:var(--learn-muted)}
+.lbar-spacer{flex:1}
+.lbar-back{font-family:var(--font-alt);font-size:.78rem;font-weight:600;color:var(--navy);display:inline-flex;align-items:center;gap:.4rem}
+
+.work{max-width:1240px;margin:0 auto;padding:2.6rem 2rem 0;display:grid;grid-template-columns:210px 1fr;gap:2.6rem;align-items:start}
+.rail{position:sticky;top:84px}
+.rail-lbl{font-family:var(--font-mono);font-size:.5625rem;font-weight:500;letter-spacing:.12em;text-transform:uppercase;color:var(--learn-muted);margin-bottom:.9rem}
+.rail-nav{display:flex;flex-direction:column;border-left:1px solid var(--learn-rule)}
+.rail-nav a{font-family:var(--font-alt);font-size:.8125rem;font-weight:500;color:var(--learn-sub);padding:.4rem 0 .4rem .85rem;margin-left:-1px;border-left:2px solid transparent;transition:color .14s,border-color .14s}
+.rail-nav a:hover{color:var(--navy)}
+.rail-nav a.on{color:var(--navy);font-weight:600;border-left-color:var(--teal)}
+
+.col{min-width:0;max-width:760px}
+.col > section{scroll-margin-top:84px;margin-bottom:3rem}
+
+.page-head{margin-bottom:2.8rem}
+.page-eyebrow{font-family:var(--font-mono);font-size:.625rem;font-weight:500;letter-spacing:.12em;text-transform:uppercase;color:var(--teal-text);margin-bottom:1rem}
+h1.page-title{font-family:var(--font-alt);font-size:2.3rem;font-weight:600;color:var(--navy);line-height:1.08;letter-spacing:-.025em;margin-bottom:.9rem;text-wrap:balance}
+.page-stand{font-size:1.0625rem;font-weight:300;color:var(--learn-sub);line-height:1.6;max-width:62ch;margin-bottom:1.6rem}
+.page-stand b{font-weight:500;color:var(--navy)}
+.principles{display:grid;grid-template-columns:repeat(3,1fr);gap:.8rem}
+.principle{background:var(--card);border:1px solid var(--learn-rule-2);border-radius:var(--r);padding:1rem 1.1rem}
+.principle .pn{font-family:var(--font-mono);font-size:.5625rem;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:var(--teal-text);margin-bottom:.5rem}
+.principle .pt{font-size:.8rem;font-weight:300;color:var(--learn-sub);line-height:1.5}
+.principle .pt b{font-weight:600;color:var(--navy)}
+
+/* group + item framing */
+.grp-head{border-bottom:1.5px solid var(--navy);padding-bottom:.7rem;margin-bottom:1.6rem}
+.grp-k{font-family:var(--font-mono);font-size:.625rem;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:var(--navy);opacity:.6;margin-bottom:.4rem}
+.grp-t{font-family:var(--font-alt);font-size:1.4rem;font-weight:600;color:var(--navy);letter-spacing:-.02em}
+.item{margin-bottom:2.2rem}
+.item-meta{margin-bottom:.85rem}
+.item-name{font-family:var(--font-alt);font-size:1rem;font-weight:600;color:var(--navy);display:flex;align-items:center;gap:.6rem}
+.item-name .tagm{font-family:var(--font-mono);font-size:.5rem;font-weight:500;letter-spacing:.06em;text-transform:uppercase;color:var(--learn-muted);border:1px solid var(--learn-rule-2);padding:.14rem .4rem;border-radius:2px}
+.item-use{font-size:.82rem;font-weight:300;color:var(--learn-muted);line-height:1.5;margin-top:.25rem}
+.item-use b{font-weight:500;color:var(--learn-sub)}
+
+.stage{background:var(--card);border:1px solid var(--learn-rule-2);border-radius:var(--r-lg);padding:1.4rem 1.5rem}
+
+/* ── callouts ── */
+.callout{display:flex;gap:.85rem;padding:1rem 1.1rem;border-radius:var(--r);border:1px solid var(--learn-rule-2);margin-bottom:.7rem}
+.callout:last-child{margin-bottom:0}
+.callout .co-ic{width:30px;height:30px;border-radius:var(--r-sm);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.callout .co-ic svg{width:16px;height:16px}
+.callout .co-l{font-family:var(--font-mono);font-size:.5625rem;font-weight:500;letter-spacing:.1em;text-transform:uppercase;margin-bottom:.25rem}
+.callout .co-b{font-size:.85rem;font-weight:300;color:var(--learn-sub);line-height:1.55}
+.callout .co-b b{font-weight:500;color:var(--navy)}
+.callout.def{border-left:3px solid var(--navy)}.callout.def .co-ic{background:var(--navy-light);color:var(--navy)}.callout.def .co-l{color:var(--navy)}
+.callout.key{border-left:3px solid var(--teal)}.callout.key .co-ic{background:var(--teal-light);color:var(--teal-dark)}.callout.key .co-l{color:var(--teal-text)}
+.callout.note{border-left:3px solid var(--learn-rule-2)}.callout.note .co-ic{background:var(--learn-soft);color:var(--learn-sub)}.callout.note .co-l{color:var(--learn-muted)}
+.callout.caution{border-left:3px solid var(--warn)}.callout.caution .co-ic{background:var(--warn-soft);color:var(--warn)}.callout.caution .co-l{color:var(--warn)}
+.callout.turn{border-left:3px solid var(--teal);background:var(--teal-light)}.callout.turn .co-ic{background:#fff;color:var(--teal-dark)}.callout.turn .co-l{color:var(--teal-text)}
+
+/* ── shared body text in stages ── */
+.stage p{font-size:.92rem;font-weight:300;color:var(--learn-sub);line-height:1.7}
+.stage p b{font-weight:500;color:var(--navy)}
+
+/* ── define-on-demand ── */
+.term-btn{font:inherit;font-weight:500;color:var(--navy);background:none;border:none;border-bottom:1.5px dashed var(--teal);padding:0 0 .5px;cursor:pointer;transition:color .14s}
+.term-btn:hover{color:var(--teal-text)}
+.term-btn.open{border-bottom-style:solid}
+.term-panel{margin-top:.9rem;background:var(--learn-soft);border:1px solid var(--learn-rule);border-left:3px solid var(--navy);border-radius:var(--r);padding:.85rem 1rem;font-size:.82rem;font-weight:300;color:var(--learn-sub);line-height:1.55}
+.term-panel .tl{font-family:var(--font-mono);font-size:.5625rem;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:var(--navy);margin-bottom:.3rem}
+
+/* ── accordion ── */
+.acc{border:1px solid var(--learn-rule-2);border-radius:var(--r);overflow:hidden}
+.acc + .acc{margin-top:.6rem}
+.acc-head{width:100%;display:flex;align-items:center;justify-content:space-between;gap:1rem;font-family:var(--font-alt);font-size:.9rem;font-weight:600;color:var(--navy);background:#fff;border:none;padding:.95rem 1.1rem;cursor:pointer;text-align:left;transition:background .14s}
+.acc-head:hover{background:var(--learn-soft)}
+.acc-head .chev{width:16px;height:16px;color:var(--learn-muted);transition:transform .2s;flex-shrink:0}
+.acc.open .acc-head .chev{transform:rotate(180deg)}
+.acc-body{max-height:0;overflow:hidden;transition:max-height .26s ease}
+.acc-body .inner{padding:0 1.1rem 1.05rem;font-size:.85rem;font-weight:300;color:var(--learn-sub);line-height:1.6}
+
+/* ── try-then-reveal ── */
+.reveal .r-prompt{font-size:.92rem;font-weight:400;color:var(--navy);line-height:1.6;margin-bottom:1rem}
+.reveal-btn,.kit-btn{font-family:var(--font-alt);font-size:.8125rem;font-weight:600;color:#fff;background:var(--navy);border:1.5px solid var(--navy);padding:.55rem 1rem;border-radius:var(--r-sm);cursor:pointer;transition:background .16s,transform .16s;display:inline-flex;align-items:center;gap:.5rem}
+.reveal-btn:hover,.kit-btn:hover{background:var(--navy-deep);transform:translateY(-1px)}
+.kit-btn.ghost{background:#fff;color:var(--navy);border-color:var(--learn-rule-2)}
+.kit-btn.ghost:hover{border-color:var(--navy);background:#fff}
+.reveal-ans{margin-top:1rem;background:var(--teal-light);border:1px solid rgba(0,133,124,.22);border-left:3px solid var(--teal);border-radius:var(--r);padding:.9rem 1rem;font-size:.85rem;font-weight:300;color:var(--learn-sub);line-height:1.6}
+.reveal-ans b{font-weight:600;color:var(--teal-text)}
+
+/* ── multiple choice ── */
+.mcq-q{font-size:.92rem;font-weight:500;color:var(--navy);line-height:1.55;margin-bottom:1rem}
+.mcq-opts{display:flex;flex-direction:column;gap:.5rem}
+.mcq-opt{display:flex;align-items:center;gap:.7rem;font-family:var(--font-alt);font-size:.85rem;font-weight:500;color:var(--navy);background:#fff;border:1px solid var(--learn-rule-2);border-radius:var(--r);padding:.7rem .9rem;cursor:pointer;text-align:left;transition:border-color .14s,background .14s}
+.mcq-opt:hover{border-color:var(--navy)}
+.mcq-opt .key{width:22px;height:22px;border-radius:50%;border:1.5px solid var(--learn-rule-2);display:flex;align-items:center;justify-content:center;font-family:var(--font-mono);font-size:.68rem;flex-shrink:0;color:var(--learn-muted)}
+.mcq-opt.right{border-color:var(--teal);background:var(--teal-light)}
+.mcq-opt.right .key{border-color:var(--teal);background:var(--teal);color:#fff}
+.mcq-opt.wrong{border-color:var(--warn);background:var(--warn-soft)}
+.mcq-opt.wrong .key{border-color:var(--warn);background:var(--warn);color:#fff}
+.mcq-opt.dim{opacity:.55}
+.mcq-fb{margin-top:.9rem;font-size:.83rem;font-weight:300;line-height:1.6;padding:.8rem .95rem;border-radius:var(--r)}
+.mcq-fb.ok{background:var(--teal-light);border:1px solid rgba(0,133,124,.22);color:var(--learn-sub)}
+.mcq-fb.no{background:var(--warn-soft);border:1px solid var(--warn-line);color:var(--warn-dark)}
+.mcq-fb b{font-weight:600}
+
+/* ── sort into buckets ── */
+.sort-row{display:grid;grid-template-columns:1fr auto;gap:.8rem;align-items:center;padding:.6rem 0;border-bottom:1px solid var(--learn-rule)}
+.sort-row .sl{font-family:var(--font-alt);font-size:.85rem;font-weight:500;color:var(--navy)}
+.seg{display:flex;background:var(--learn-soft);border-radius:var(--r-sm);padding:.2rem}
+.seg button{font-family:var(--font-alt);font-size:.72rem;font-weight:600;color:var(--learn-muted);background:none;border:none;padding:.35rem .7rem;border-radius:var(--r-sm);cursor:pointer;transition:color .14s,background .14s}
+.seg button.sel{color:var(--navy);background:#fff;box-shadow:0 1px 3px rgba(15,32,68,.08)}
+.seg button.correct{color:#fff;background:var(--teal)}
+.seg button.incorrect{color:#fff;background:var(--warn)}
+.sort-foot{display:flex;align-items:center;gap:1rem;margin-top:1rem}
+.sort-result{font-family:var(--font-alt);font-size:.82rem;font-weight:600}
+.sort-result.ok{color:var(--teal-text)}.sort-result.partial{color:var(--warn)}
+
+/* ── before/after ── */
+.ba-toggle{display:inline-flex;background:var(--learn-soft);border-radius:var(--r-sm);padding:.25rem;margin-bottom:1rem}
+.ba-toggle button{font-family:var(--font-alt);font-size:.78rem;font-weight:600;color:var(--learn-muted);background:none;border:none;padding:.45rem .9rem;border-radius:var(--r-sm);cursor:pointer;transition:color .14s,background .14s}
+.ba-toggle button.on{color:var(--navy);background:#fff;box-shadow:0 1px 3px rgba(15,32,68,.08)}
+.ba-panel{font-family:var(--font-mono);font-size:.72rem;line-height:1.9;color:var(--learn-sub);background:var(--learn-soft);border:1px solid var(--learn-rule);border-radius:var(--r);padding:.85rem 1rem;white-space:pre-wrap}
+.ba-take{margin-top:.85rem;display:flex;align-items:flex-start;gap:.55rem;font-size:.83rem;font-weight:300;line-height:1.55}
+.ba-take svg{width:15px;height:15px;flex-shrink:0;margin-top:.15rem}
+.ba-take.tidy{color:var(--teal-text)}.ba-take.tidy svg{color:var(--teal)}
+.ba-take.messy{color:var(--warn-dark)}.ba-take.messy svg{color:var(--warn)}
+
+/* ── three-lens ── */
+.lens-tabs{display:flex;gap:.3rem;background:var(--learn-soft);padding:.25rem;border-radius:var(--r-sm);margin-bottom:1rem;width:max-content}
+.lens-tabs button{font-family:var(--font-alt);font-size:.75rem;font-weight:600;color:var(--learn-muted);background:none;border:none;padding:.42rem .8rem;border-radius:var(--r-sm);cursor:pointer;transition:color .14s,background .14s}
+.lens-tabs button.on{color:var(--navy);background:#fff;box-shadow:0 1px 3px rgba(15,32,68,.08)}
+.lens-stage{min-height:96px}
+.lens-plain{font-family:var(--font-alt);font-size:1rem;font-weight:400;color:var(--navy);line-height:1.6}
+.lens-tokens{display:flex;flex-wrap:wrap;gap:.32rem}
+.lens-tok{font-family:var(--font-mono);font-size:.72rem;font-weight:500;color:var(--navy);background:var(--navy-light);border:1px solid var(--navy-rule);border-radius:3px;padding:.22rem .45rem}
+.lens-store{font-family:var(--font-mono);font-size:.7rem;color:var(--learn-sub);background:var(--learn-soft);border:1px solid var(--learn-rule);border-radius:var(--r);padding:.7rem .85rem;line-height:1.7;word-break:break-all}
+.lens-note{font-size:.78rem;font-weight:300;color:var(--learn-muted);line-height:1.5;margin-top:.8rem}
+
+/* ── parameter playground ── */
+.play-ctrl{display:flex;align-items:center;gap:1rem;margin-bottom:1.2rem}
+.play-ctrl label{font-family:var(--font-alt);font-size:.82rem;font-weight:600;color:var(--navy);white-space:nowrap}
+input[type=range].rng{-webkit-appearance:none;appearance:none;height:4px;border-radius:2px;background:var(--learn-rule-2);flex:1;outline:none}
+input[type=range].rng::-webkit-slider-thumb{-webkit-appearance:none;width:18px;height:18px;border-radius:50%;background:var(--teal);cursor:pointer;border:3px solid #fff;box-shadow:0 1px 4px rgba(15,32,68,.25)}
+input[type=range].rng::-moz-range-thumb{width:18px;height:18px;border-radius:50%;background:var(--teal);cursor:pointer;border:3px solid #fff}
+.play-val{font-family:var(--font-mono);font-size:.8rem;font-weight:500;color:var(--teal-text);min-width:1.6rem;text-align:center}
+.play-bars{display:flex;align-items:flex-end;gap:.4rem;height:80px;margin-bottom:.9rem}
+.play-bars i{flex:1;background:linear-gradient(180deg,var(--teal),rgba(0,133,124,.35));border-radius:2px 2px 0 0;transition:height .25s ease}
+.play-read{display:flex;align-items:baseline;gap:.5rem}
+.play-read .v{font-family:var(--font-alt);font-size:1.4rem;font-weight:600;color:var(--navy);letter-spacing:-.02em}
+.play-read .k{font-size:.78rem;font-weight:300;color:var(--learn-muted);line-height:1.4}
+
+/* ── pipeline walkthrough ── */
+.pipe-track{display:flex;align-items:stretch;margin-bottom:1.2rem}
+.pipe-stage{flex:1;text-align:center;padding:.85rem .5rem;border:1px solid var(--learn-rule-2);border-right:none;background:#fff;position:relative;transition:background .16s,border-color .16s}
+.pipe-stage:first-child{border-radius:var(--r) 0 0 var(--r)}
+.pipe-stage:last-child{border-right:1px solid var(--learn-rule-2);border-radius:0 var(--r) var(--r) 0}
+.pipe-stage.on{background:var(--navy);border-color:var(--navy)}
+.pipe-stage.on .ps-n{color:var(--teal-light)}.pipe-stage.on .ps-l{color:#fff}
+.pipe-stage.done{background:var(--teal-light);border-color:rgba(0,133,124,.25)}
+.pipe-stage .ps-n{font-family:var(--font-mono);font-size:.6rem;font-weight:500;color:var(--learn-muted);display:block;margin-bottom:.25rem}
+.pipe-stage .ps-l{font-family:var(--font-alt);font-size:.82rem;font-weight:600;color:var(--navy)}
+.pipe-exp{background:var(--learn-soft);border:1px solid var(--learn-rule);border-radius:var(--r);padding:.95rem 1.1rem;font-size:.85rem;font-weight:300;color:var(--learn-sub);line-height:1.6;min-height:64px;margin-bottom:1rem}
+.pipe-exp b{font-weight:600;color:var(--navy)}
+.pipe-foot{display:flex;align-items:center;gap:.7rem}
+.pipe-dots{display:flex;gap:.35rem;margin-left:auto}
+.pipe-dots i{width:7px;height:7px;border-radius:50%;background:var(--learn-rule-2)}
+.pipe-dots i.on{background:var(--teal)}
+
+/* ── paged module: cover, stage + controls, your turn ── */
+.pm-cover{background:var(--navy);border-radius:var(--r-lg);overflow:hidden;display:grid;grid-template-columns:1.15fr .85fr;gap:1.6rem;align-items:center;padding:1.8rem 1.9rem;position:relative}
+.pm-cover::after{content:"";position:absolute;right:-90px;top:-90px;width:280px;height:280px;border-radius:50%;background:radial-gradient(circle,rgba(0,133,124,.18),transparent 68%);pointer-events:none}
+.pm-cv-eyebrow{display:inline-flex;align-items:center;gap:.5rem;font-family:var(--font-alt);font-size:.5625rem;font-weight:600;letter-spacing:.13em;text-transform:uppercase;color:#8FA4C8;margin-bottom:.9rem}
+.pm-cv-eyebrow .pip{width:6px;height:6px;border-radius:50%;background:var(--teal)}
+.pm-cv-h{font-family:var(--font-alt);font-size:1.8rem;font-weight:600;color:#fff;letter-spacing:-.03em;line-height:1.06;margin-bottom:.8rem}
+.pm-cv-hook{font-size:.92rem;font-weight:400;color:rgba(255,255,255,.78);line-height:1.55;max-width:34ch;margin-bottom:1.1rem}
+.pm-cv-hook .em{color:#fff;font-weight:500}
+.pm-cv-outcome{display:flex;gap:.6rem;align-items:flex-start;background:rgba(0,133,124,.16);border:1px solid rgba(0,133,124,.34);border-radius:var(--r);padding:.75rem .9rem;position:relative;z-index:1}
+.pm-cv-outcome svg{width:15px;height:15px;color:#7FD8CF;flex-shrink:0;margin-top:.15rem}
+.pm-cv-outcome .ot{font-size:.5rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:#7FD8CF;font-family:var(--font-alt);margin-bottom:.2rem}
+.pm-cv-outcome .ob{font-size:.78rem;font-weight:400;color:rgba(255,255,255,.9);line-height:1.45}
+.pm-cv-video{position:relative;z-index:1;justify-self:center;width:100%;max-width:210px}
+.pm-cv-vlabel{font-family:var(--font-alt);font-size:.5rem;font-weight:600;letter-spacing:.11em;text-transform:uppercase;color:#8FA4C8;margin-bottom:.55rem;text-align:center}
+.pm-cv-vcard{aspect-ratio:1/1;border-radius:var(--r-lg);overflow:hidden;position:relative;background:linear-gradient(150deg,#16284E,#0A1733);border:1px solid rgba(255,255,255,.12);cursor:pointer;display:block;width:100%;padding:0;box-shadow:0 16px 40px -18px rgba(0,0,0,.5)}
+.pm-cv-vspk{position:absolute;top:.7rem;left:.7rem;z-index:2;display:flex;align-items:center;gap:.45rem}
+.pm-cv-vava{width:26px;height:26px;border-radius:50%;background:#27457E;display:flex;align-items:center;justify-content:center;font-family:var(--font-alt);font-size:.625rem;font-weight:600;color:#fff;flex-shrink:0}
+.pm-cv-vspk .t{font-family:var(--font-alt);font-size:.6rem;font-weight:500;color:rgba(255,255,255,.85);text-align:left;line-height:1.2}
+.pm-cv-vplay{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;z-index:2}
+.pm-cv-vplay i{width:52px;height:52px;border-radius:50%;background:rgba(255,255,255,.16);border:1.5px solid rgba(255,255,255,.46);display:flex;align-items:center;justify-content:center;transition:all .15s}
+.pm-cv-vcard:hover .pm-cv-vplay i{background:rgba(255,255,255,.28)}
+.pm-cv-vplay svg{width:18px;height:18px;margin-left:2px;color:#fff}
+.pm-cv-vdur{position:absolute;bottom:.7rem;left:0;right:0;z-index:2;text-align:center;font-family:var(--font-mono);font-size:.56rem;color:rgba(255,255,255,.7)}
+.pm-cv-cap{text-align:center;font-size:.62rem;color:rgba(255,255,255,.5);margin-top:.55rem;font-style:italic}
+
+.pm-stage{border:1px solid var(--learn-rule-2);border-radius:var(--r-lg);overflow:hidden;display:flex;flex-direction:column;height:360px;background:var(--card)}
+.pm-prog{display:flex;gap:5px;padding:12px 16px 11px}
+.pm-seg{flex:1;height:5px;border-radius:3px;background:var(--navy-rule);transition:background .3s}
+.pm-seg.past{background:var(--teal)}
+.pm-seg.on{background:var(--teal);box-shadow:0 0 0 3px rgba(0,133,124,.16)}
+.pm-body{flex:1;display:flex;flex-direction:column;overflow:auto;padding:1rem 1.6rem .4rem}
+.pm-frame{margin:auto 0;width:100%;animation:pmin .26s ease}
+@keyframes pmin{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.pm-frame[hidden]{display:none}
+.pm-fr-eyebrow{display:inline-flex;align-items:center;gap:.4rem;font-family:var(--font-alt);font-size:.5625rem;font-weight:600;letter-spacing:.11em;text-transform:uppercase;color:var(--teal-text);margin-bottom:.6rem}
+.pm-fr-eyebrow .n{font-family:var(--font-mono);color:var(--learn-muted)}
+.pm-fr-title{font-family:var(--font-alt);font-size:1.2rem;font-weight:600;color:var(--navy);letter-spacing:-.02em;line-height:1.16;margin-bottom:.6rem}
+.pm-fr-intro{font-size:.85rem;font-weight:400;color:var(--learn-sub);line-height:1.6;max-width:54ch}
+.pm-foot{display:flex;align-items:center;justify-content:space-between;gap:1rem;padding:.8rem 1.2rem;border-top:1px solid var(--learn-rule);background:var(--learn-bg)}
+.pm-nav{display:inline-flex;align-items:center;gap:.45rem;font-family:var(--font-alt);font-size:.78rem;font-weight:600;padding:.5rem 1rem;border-radius:var(--r);cursor:pointer;border:1.5px solid var(--learn-rule-2);background:var(--card);color:var(--navy);transition:all .14s}
+.pm-nav:hover{border-color:var(--navy-rule)}
+.pm-nav svg{width:14px;height:14px}
+.pm-nav.primary{background:var(--navy);border-color:var(--navy);color:#fff}
+.pm-nav.primary:hover{background:var(--navy-deep)}
+.pm-nav[disabled]{opacity:.35;cursor:default;pointer-events:none}
+.pm-foot-mid{font-family:var(--font-mono);font-size:.66rem;font-weight:500;color:var(--learn-muted);letter-spacing:.03em}
+.pm-foot-mid b{color:var(--navy);font-family:var(--font-alt)}
+
+.pm-turn{border:1px solid var(--learn-rule-2);border-radius:var(--r-lg);overflow:hidden}
+.pm-turn-band{display:flex;align-items:center;gap:.55rem;background:var(--teal);color:#fff;padding:.6rem 1rem;font-family:var(--font-alt);font-weight:600;font-size:.84rem}
+.pm-turn-band svg{width:15px;height:15px}
+.pm-turn-band .sub{margin-left:auto;font-size:.62rem;font-weight:400;color:rgba(255,255,255,.88)}
+.pm-turn-body{display:grid;grid-template-columns:1.2fr 1fr}
+.pm-turn-assets{display:flex;flex-direction:column;gap:.5rem;padding:.85rem 1rem;border-right:1px solid var(--learn-rule)}
+.pm-asset{border:1px solid var(--learn-rule-2);border-radius:var(--r);background:var(--learn-bg)}
+.pm-asset.dl{display:flex;align-items:center;gap:.6rem;padding:.6rem .8rem;cursor:pointer;text-decoration:none;transition:all .14s}
+.pm-asset.dl:hover{border-color:var(--teal);background:var(--teal-light)}
+.pm-asset.dl svg{width:18px;height:18px;color:var(--teal-dark);flex-shrink:0}
+.pm-asset.dl b{font-family:var(--font-alt);font-size:.78rem;font-weight:600;color:var(--navy);display:block;line-height:1.2}
+.pm-asset .as-s{font-family:var(--font-mono);font-size:.58rem;color:var(--learn-muted)}
+.pm-asset.prompt{padding:0;display:flex;flex-direction:column}
+.pm-pr-top{display:flex;align-items:center;gap:.45rem;padding:.5rem .75rem .3rem}
+.pm-pr-top svg{width:14px;height:14px;color:var(--teal-dark)}
+.pm-pr-top b{font-family:var(--font-alt);font-weight:600;font-size:.75rem;color:var(--navy)}
+.pm-copy{margin-left:auto;font-family:var(--font-alt);font-size:.62rem;font-weight:600;color:#fff;background:var(--navy);border:none;border-radius:var(--r-sm);padding:.26rem .65rem;cursor:pointer;transition:background .14s}
+.pm-copy:hover{background:var(--navy-deep)}
+.pm-copy.done{background:var(--teal)}
+.pm-pr-box{font-family:var(--font-mono);font-size:.62rem;line-height:1.55;color:var(--learn-sub);padding:0 .75rem .6rem;white-space:pre-wrap}
+.pm-turn-steps{display:flex;flex-direction:column;justify-content:center;gap:.1rem;padding:.85rem 1rem}
+.pm-turn-steps .st{display:flex;gap:.7rem;padding:.36rem 0}
+.pm-turn-steps .st .sn{font-family:var(--font-mono);font-size:.66rem;font-weight:500;color:var(--teal-text);flex-shrink:0;width:1.3rem}
+.pm-turn-steps .st .sx{font-size:.78rem;font-weight:400;color:var(--learn-sub);line-height:1.5}
+.pm-turn-steps .st .sx b{font-weight:500;color:var(--navy)}
+.pm-turn-check{border-top:1px solid var(--learn-rule);background:var(--learn-bg);padding:.8rem 1rem}
+.pm-tc-q{font-family:var(--font-alt);font-size:.8rem;font-weight:600;color:var(--navy);margin-bottom:.55rem}
+.pm-tc-opts{display:flex;gap:.5rem;flex-wrap:wrap}
+.pm-tc-opt{font-family:var(--font-alt);font-size:.74rem;font-weight:500;color:var(--learn-sub);background:var(--card);border:1px solid var(--learn-rule-2);border-radius:20px;padding:.4rem .9rem;cursor:pointer;transition:all .14s}
+.pm-tc-opt:hover{border-color:var(--navy-rule);color:var(--navy)}
+.pm-tc-opt.sel{background:var(--navy);border-color:var(--navy);color:#fff}
+.pm-tc-resp{margin-top:.6rem;font-size:.78rem;font-weight:400;color:#1F5C57;background:var(--teal-light);border:1px solid rgba(0,133,124,.22);border-left:3px solid var(--teal);border-radius:var(--r-sm);padding:.6rem .8rem;line-height:1.5}
+@media(max-width:560px){.pm-cover,.pm-turn-body{grid-template-columns:1fr}.pm-cv-video{max-width:180px;margin:0 auto}.pm-turn-assets{border-right:none;border-bottom:1px solid var(--learn-rule)}}
+
+@media(max-width:920px){
+  .work{grid-template-columns:1fr;gap:1.6rem}
+  .rail{display:none}
+  .principles{grid-template-columns:1fr}
+  h1.page-title{font-size:1.8rem}
+}
+</style>
+</head>
+<template id="__bundler_thumbnail">
+<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><rect width="100" height="100" fill="#FBFBFA"/><rect x="22" y="24" width="30" height="9" rx="3" fill="#00857C"/><rect x="22" y="40" width="56" height="9" rx="3" fill="#0F2044"/><rect x="22" y="56" width="56" height="9" rx="3" fill="#E8EDF5"/><rect x="22" y="72" width="40" height="9" rx="3" fill="#E8EDF5"/></svg>
+</template>
+<body>
+
+<div class="lbar">
+  <div class="lbar-row">
+    <span class="lbar-brand"><img src="assets/dttt-icon-black.svg" alt="DTTT"><span class="pd">Digital Literacy</span></span>
+    <span class="lbar-tag">Learning interaction kit</span>
+    <span class="lbar-spacer"></span>
+    <a class="lbar-back" href="Module Template - Paged Lesson.html">See it in a module
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+  </div>
+</div>
+
+<div class="work">
+  <aside class="rail">
+    <div class="rail-lbl">The kit</div>
+    <nav class="rail-nav" id="railNav">
+      <a href="#containers" class="on">Containers &amp; callouts</a>
+      <a href="#reveal">Reveal &amp; disclose</a>
+      <a href="#check">Check &amp; recall</a>
+      <a href="#explore">Explore &amp; visualise</a>
+      <a href="#paged">The paged module</a>
+    </nav>
+  </aside>
+
+  <div class="col">
+    <header class="page-head">
+      <div class="page-eyebrow">Foundations · the learning surface</div>
+      <h1 class="page-title">A kit of interactive parts every module draws from.</h1>
+      <p class="page-stand">The course leans on <b>doing over watching</b>. Rather than design seventy modules by hand, we build a small set of reusable interactions, then each module is assembled from them. This keeps the experience contained and consistent, and pushes engagement well past a video and a quiz.</p>
+      <div class="principles">
+        <div class="principle"><div class="pn">Contained</div><div class="pt">Everything for an idea lives in <b>one bounded surface</b>. The learner never leaves the page to act.</div></div>
+        <div class="principle"><div class="pn">Two-way</div><div class="pt">Predict, choose or adjust <b>before</b> the answer appears. The interaction earns the reveal.</div></div>
+        <div class="principle"><div class="pn">Consistent</div><div class="pt">Same parts, same rhythm, same slot. <b>Learn the shape once</b>, use it across every track.</div></div>
+      </div>
+    </header>
+
+    <!-- GROUP 1 -->
+    <section id="containers">
+      <div class="grp-head"><div class="grp-k">Group 01</div><div class="grp-t">Containers &amp; callouts</div></div>
+
+      <div class="item">
+        <div class="item-meta">
+          <div class="item-name">Callout family <span class="tagm">Static</span></div>
+          <div class="item-use"><b>Use for</b> punctuating reading with a fixed set of roles, so a definition always looks like a definition.</div>
+        </div>
+        <div class="stage">
+          <div class="callout def"><span class="co-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg></span><div><div class="co-l">Definition</div><div class="co-b"><b>CSV:</b> comma-separated values. A plain text data file, one row per line, values split by commas.</div></div></div>
+          <div class="callout key"><span class="co-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.3 1 2.1V18h6v-1.2c0-.8.4-1.6 1-2.1A7 7 0 0 0 12 2z"/></svg></span><div><div class="co-l">Key idea</div><div class="co-b">AI reads the text underneath your spreadsheet, <b>not the grid you see on screen</b>.</div></div></div>
+          <div class="callout note"><span class="co-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg></span><div><div class="co-l">Note</div><div class="co-b">Spreadsheet apps can hide problems by auto-formatting dates as you open the file.</div></div></div>
+          <div class="callout caution"><span class="co-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.3 3.9L1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/><path d="M12 9v4M12 17h.01"/></svg></span><div><div class="co-l">Caution</div><div class="co-b">A single missing value can silently shift every column after it.</div></div></div>
+          <div class="callout turn"><span class="co-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 3l14 9-14 9V3z"/></svg></span><div><div class="co-l">Your turn</div><div class="co-b">Open a real export from your own work and find one value that contains a comma.</div></div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- GROUP 2 -->
+    <section id="reveal">
+      <div class="grp-head"><div class="grp-k">Group 02</div><div class="grp-t">Reveal &amp; disclose</div></div>
+
+      <div class="item">
+        <div class="item-meta">
+          <div class="item-name">Define on demand <span class="tagm">Inline</span></div>
+          <div class="item-use"><b>Use for</b> defining a term the first time it appears without breaking the reading flow.</div>
+        </div>
+        <div class="stage">
+          <p>Most data faults are not bugs in the model. They are problems in the <button class="term-btn" data-term="t1">delimiter</button>, the small character that separates one value from the next. Get it wrong and the meaning shifts.</p>
+          <div class="term-panel" id="t1" hidden><div class="tl">Delimiter</div>The character that marks where one value ends and the next begins. In a CSV it is the comma. The trouble starts when a value contains the delimiter itself.</div>
+        </div>
+      </div>
+
+      <div class="item">
+        <div class="item-meta">
+          <div class="item-name">Go deeper <span class="tagm">Accordion</span></div>
+          <div class="item-use"><b>Use for</b> optional depth, so a confident learner moves on while a curious one expands.</div>
+        </div>
+        <div class="stage">
+          <div class="acc" data-acc><button class="acc-head">Why does an unquoted comma break the row?<svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M6 9l6 6 6-6"/></svg></button><div class="acc-body"><div class="inner">The parser counts commas to find columns. A name like Naoussa, Paros adds a comma the parser was not told to ignore, so the row gains a column and every value after it slides one place to the right.</div></div></div>
+          <div class="acc" data-acc><button class="acc-head">How do you tell it to ignore a comma?<svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M6 9l6 6 6-6"/></svg></button><div class="acc-body"><div class="inner">Wrap the value in quotation marks. "Naoussa, Paros" is read as one value, comma and all. Most exports do this automatically, but not all, which is exactly why it is worth checking.</div></div></div>
+        </div>
+      </div>
+
+      <div class="item">
+        <div class="item-meta">
+          <div class="item-name">Try, then reveal <span class="tagm">Two-way</span></div>
+          <div class="item-use"><b>Use for</b> making the learner commit to a prediction before the explanation lands.</div>
+        </div>
+        <div class="stage">
+          <div class="reveal" data-reveal>
+            <div class="r-prompt">A row reads <b>2026-07-03,Seaside Cabin,280.00</b> in a file whose columns are date, property, guests, revenue. What will the model think the guest count was?</div>
+            <button class="reveal-btn">Reveal the answer
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg></button>
+            <div class="reveal-ans" hidden><b>280 guests.</b> The guests value is missing, so 280.00 slid into its place and revenue was left empty. One absent value corrupted two columns at once, with no error.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- GROUP 3 -->
+    <section id="check">
+      <div class="grp-head"><div class="grp-k">Group 03</div><div class="grp-t">Check &amp; recall</div></div>
+
+      <div class="item">
+        <div class="item-meta">
+          <div class="item-name">Multiple choice <span class="tagm">Two-way</span></div>
+          <div class="item-use"><b>Use for</b> a quick check of understanding with feedback that teaches, not just marks.</div>
+        </div>
+        <div class="stage">
+          <div class="mcq" data-mcq data-correct="b">
+            <div class="mcq-q">Which of these is safe to hand to an AI tool without checking first?</div>
+            <div class="mcq-opts">
+              <button class="mcq-opt" data-opt="a"><span class="key">A</span>A spreadsheet with coloured cells and formulas</button>
+              <button class="mcq-opt" data-opt="b"><span class="key">B</span>A CSV with a header row and the same number of values on every line</button>
+              <button class="mcq-opt" data-opt="c"><span class="key">C</span>A file where one date is written 02/07/2026 and the rest 2026-07-02</button>
+            </div>
+            <div class="mcq-fb" hidden></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="item">
+        <div class="item-meta">
+          <div class="item-name">Sort into buckets <span class="tagm">Two-way</span></div>
+          <div class="item-use"><b>Use for</b> active categorising, far stickier than reading the same distinction in prose.</div>
+        </div>
+        <div class="stage">
+          <div class="sort" data-sort>
+            <div class="sort-row" data-answer="s"><span class="sl">A booking table with fixed columns</span><div class="seg"><button data-v="s">Structured</button><button data-v="u">Unstructured</button></div></div>
+            <div class="sort-row" data-answer="u"><span class="sl">A folder of guest review emails</span><div class="seg"><button data-v="s">Structured</button><button data-v="u">Unstructured</button></div></div>
+            <div class="sort-row" data-answer="s"><span class="sl">A CSV export of website visits</span><div class="seg"><button data-v="s">Structured</button><button data-v="u">Unstructured</button></div></div>
+            <div class="sort-row" data-answer="u"><span class="sl">A recorded interview with a tour guide</span><div class="seg"><button data-v="s">Structured</button><button data-v="u">Unstructured</button></div></div>
+            <div class="sort-foot"><button class="kit-btn" data-check>Check answers</button><span class="sort-result" hidden></span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- GROUP 4 -->
+    <section id="explore">
+      <div class="grp-head"><div class="grp-k">Group 04</div><div class="grp-t">Explore &amp; visualise</div></div>
+
+      <div class="item">
+        <div class="item-meta">
+          <div class="item-name">Before and after <span class="tagm">Toggle</span></div>
+          <div class="item-use"><b>Use for</b> showing the same thing in two states so the difference does the teaching.</div>
+        </div>
+        <div class="stage">
+          <div class="ba" data-ba>
+            <div class="ba-toggle"><button data-s="messy" class="on">Messy</button><button data-s="tidy">Tidy</button></div>
+            <div class="ba-panel" data-panel></div>
+            <div class="ba-take" data-take></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="item">
+        <div class="item-meta">
+          <div class="item-name">Three-lens viewer <span class="tagm">Tabs</span></div>
+          <div class="item-use"><b>Use for</b> one payload seen several ways. The CSV inspector is this pattern; here it is a sentence.</div>
+        </div>
+        <div class="stage">
+          <div class="lens" data-lens>
+            <div class="lens-tabs"><button data-l="plain" class="on">Plain text</button><button data-l="tokens">Tokens</button><button data-l="store">What the model stores</button></div>
+            <div class="lens-stage" data-stage></div>
+            <div class="lens-note" data-note></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="item">
+        <div class="item-meta">
+          <div class="item-name">Parameter playground <span class="tagm">Slider</span></div>
+          <div class="item-use"><b>Use for</b> letting the learner move one input and watch the effect. Illustrative, not a live model.</div>
+        </div>
+        <div class="stage">
+          <div class="play" data-play>
+            <div class="play-ctrl"><label>Examples you give the model</label><input type="range" class="rng" min="0" max="8" value="3" data-rng><span class="play-val" data-rngv>3</span></div>
+            <div class="play-bars" data-bars></div>
+            <div class="play-read"><span class="v" data-pv>72%</span><span class="k">illustrative answer quality on a repeat task</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="item">
+        <div class="item-meta">
+          <div class="item-name">Step-through pipeline <span class="tagm">Walkthrough</span></div>
+          <div class="item-use"><b>Use for</b> a sequence learned one stage at a time, with the whole shape always in view.</div>
+        </div>
+        <div class="stage">
+          <div class="pipe" data-pipe>
+            <div class="pipe-track" data-track></div>
+            <div class="pipe-exp" data-exp></div>
+            <div class="pipe-foot">
+              <button class="kit-btn ghost" data-prev>Back</button>
+              <button class="kit-btn" data-next>Next stage</button>
+              <span class="pipe-dots" data-dots></span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- GROUP 5 -->
+    <section id="paged">
+      <div class="grp-head"><div class="grp-k">Group 05</div><div class="grp-t">The paged module</div></div>
+      <p style="font-size:.9rem;font-weight:400;color:var(--learn-sub);line-height:1.7;max-width:64ch;margin-bottom:1.6rem">A module is no longer one scrolling page. It is a paged lesson: one part per frame, advanced with back and next inside a fixed-height stage, with nothing scrolling within a frame. Three parts are specific to that model and assemble every module: the designed cover, the stage and its controls, and the Your turn block that closes the lesson.</p>
+
+      <div class="item">
+        <div class="item-meta">
+          <div class="item-name">Lesson cover <span class="tagm">Frame 1</span></div>
+          <div class="item-use"><b>Use for</b> the opening frame of every module. The square orientation video is a deliberate centrepiece, not an edge thumbnail, and stays optional and dismissible.</div>
+        </div>
+        <div class="pm-cover">
+          <div>
+            <div class="pm-cv-eyebrow"><span class="pip"></span>Track 4 · Data Fundamentals · Module 4.2</div>
+            <div class="pm-cv-h">Spreadsheets and CSVs</div>
+            <div class="pm-cv-hook">Hand an AI a messy table and it answers you <span class="em">confidently, and wrong</span>. The fault is almost never the model. It is the shape of the file underneath.</div>
+            <div class="pm-cv-outcome"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg><div><div class="ot">By the end</div><div class="ob">You can open any spreadsheet or CSV and predict how an AI will read it, before you ever paste it in.</div></div></div>
+          </div>
+          <div class="pm-cv-video">
+            <div class="pm-cv-vlabel">Start with a quick word</div>
+            <button class="pm-cv-vcard" type="button">
+              <span class="pm-cv-vspk"><span class="pm-cv-vava">NH</span><span class="t">Nicholas Hall<br>DTTT</span></span>
+              <span class="pm-cv-vplay"><i><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></i></span>
+              <span class="pm-cv-vdur">Why this matters · 90 sec</span>
+            </button>
+            <div class="pm-cv-cap">Optional. Or press Begin to jump in.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="item">
+        <div class="item-meta">
+          <div class="item-name">Paged stage &amp; controls <span class="tagm">Pager</span></div>
+          <div class="item-use"><b>Use for</b> the lesson body. A fixed-height stage with pinned back and next, and progress segments that read on the navy cover as well as the white frames. If a part does not fit, it becomes two frames; nothing scrolls.</div>
+        </div>
+        <div class="pm-stage" data-pager>
+          <div class="pm-prog"><span class="pm-seg"></span><span class="pm-seg"></span><span class="pm-seg"></span></div>
+          <div class="pm-body">
+            <div class="pm-frame" data-f="0">
+              <div class="pm-fr-eyebrow"><span class="n">Step 1</span> · See it for yourself</div>
+              <div class="pm-fr-title">The same data, three ways</div>
+              <div class="pm-fr-intro">Contact first: the interactive is the first real step, before any concept prose. Leave the file clean, then switch on a broken example and watch the numbers move.</div>
+            </div>
+            <div class="pm-frame" data-f="1" hidden>
+              <div class="pm-fr-eyebrow"><span class="n">Step 2</span> · What you just saw</div>
+              <div class="pm-fr-title">The model reads text, not your grid</div>
+              <div class="pm-fr-intro">Now the idea, once you have felt it. One unquoted comma or a missing value pushes every later column one place across, silently and with no error.</div>
+            </div>
+            <div class="pm-frame" data-f="2" hidden>
+              <div class="pm-fr-eyebrow"><span class="n">Step 3</span> · Quick check</div>
+              <div class="pm-fr-title">Have a guess before you reveal</div>
+              <div class="pm-fr-intro">A short, two-way check closes the loop: predict first, then reveal. The same rhythm repeats in every module, so the shape is learned once.</div>
+            </div>
+          </div>
+          <div class="pm-foot">
+            <button class="pm-nav" data-back>Back</button>
+            <div class="pm-foot-mid"></div>
+            <button class="pm-nav primary" data-next>Next</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="item">
+        <div class="item-meta">
+          <div class="item-name">Your turn block <span class="tagm">Two-way</span></div>
+          <div class="item-use"><b>Use for</b> the do-it-yourself frame that closes every module, always the same shape: a sample file, a copyable prompt, a short set of steps, and a how-did-it-go self-check.</div>
+        </div>
+        <div class="pm-turn">
+          <div class="pm-turn-band"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 11V6a2 2 0 0 0-4 0M14 10V4a2 2 0 0 0-4 0v2M10 10.5V6a2 2 0 0 0-4 0v8"/><path d="M18 8a2 2 0 1 1 4 0v6a8 8 0 0 1-8 8h-2c-2.8 0-4.5-.86-5.99-2.34l-3.6-3.6a2 2 0 0 1 2.83-2.82L7 15"/></svg>Your turn<span class="sub">Everything you need to try this yourself</span></div>
+          <div class="pm-turn-body">
+            <div class="pm-turn-assets">
+              <a class="pm-asset dl" data-dl><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M7 10l5 5 5-5"/><path d="M12 15V3"/></svg><span><b>Sample file</b><span class="as-s">bookings_q3.csv · the messy one</span></span></a>
+              <div class="pm-asset prompt"><div class="pm-pr-top"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a3 3 0 0 0-3 3v1a3 3 0 0 0-3 3 3 3 0 0 0 0 6 3 3 0 0 0 3 3 3 3 0 0 0 6 0 3 3 0 0 0 3-3 3 3 0 0 0 0-6 3 3 0 0 0-3-3V5a3 3 0 0 0-3-3z"/></svg><b>Prompt to paste</b><button class="pm-copy" data-copy>Copy</button></div><div class="pm-pr-box">Summarise this CSV: the columns you detect, the row count and total revenue. Flag any rows that look malformed or shifted, and don’t silently fix anything.</div></div>
+            </div>
+            <div class="pm-turn-steps">
+              <div class="st"><span class="sn">01</span><span class="sx">Open the sample in a <b>plain text editor</b>. Header present? Same comma count per line?</span></div>
+              <div class="st"><span class="sn">02</span><span class="sx">Paste the file and prompt into your AI tool, then compare with the inspector.</span></div>
+              <div class="st"><span class="sn">03</span><span class="sx">Swap in <b>your own export</b> and run the same prompt.</span></div>
+            </div>
+          </div>
+          <div class="pm-turn-check">
+            <div class="pm-tc-q">How did it go?</div>
+            <div class="pm-tc-opts"><button class="pm-tc-opt" data-r="worked">It worked</button><button class="pm-tc-opt" data-r="partly">Partly</button><button class="pm-tc-opt" data-r="stuck">I got stuck</button></div>
+            <div class="pm-tc-resp" hidden></div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+</div>
+
+<script>
+/* define on demand */
+document.querySelectorAll('.term-btn').forEach(function(b){
+  b.addEventListener('click',function(){
+    var p=document.getElementById(b.dataset.term);var open=!p.hidden;
+    p.hidden=open;b.classList.toggle('open',!open);
+  });
+});
+/* accordion */
+document.querySelectorAll('[data-acc]').forEach(function(a){
+  a.querySelector('.acc-head').addEventListener('click',function(){
+    var open=a.classList.toggle('open');var body=a.querySelector('.acc-body');
+    body.style.maxHeight=open?body.querySelector('.inner').offsetHeight+'px':0;
+  });
+});
+/* try then reveal */
+document.querySelectorAll('[data-reveal]').forEach(function(r){
+  var btn=r.querySelector('.reveal-btn');
+  btn.addEventListener('click',function(){r.querySelector('.reveal-ans').hidden=false;btn.style.display='none';});
+});
+/* multiple choice */
+document.querySelectorAll('[data-mcq]').forEach(function(m){
+  var correct=m.dataset.correct,opts=m.querySelectorAll('.mcq-opt'),fb=m.querySelector('.mcq-fb'),done=false;
+  opts.forEach(function(o){o.addEventListener('click',function(){
+    if(done)return;done=true;
+    var pick=o.dataset.opt,right=pick===correct;
+    opts.forEach(function(x){
+      if(x.dataset.opt===correct)x.classList.add('right');
+      else if(x===o)x.classList.add('wrong');
+      else x.classList.add('dim');
+    });
+    fb.hidden=false;fb.className='mcq-fb '+(right?'ok':'no');
+    fb.innerHTML=right
+      ? '<b>That is the one.</b> A header row plus a consistent number of values per line is the shape a model reads cleanly.'
+      : '<b>Not quite.</b> The safe answer is B. A and C both carry faults a model will read past silently, formatting that hides structure, and an ambiguous date.';
+  });});
+});
+/* sort */
+document.querySelectorAll('[data-sort]').forEach(function(s){
+  s.querySelectorAll('.sort-row').forEach(function(row){
+    row.querySelectorAll('.seg button').forEach(function(b){
+      b.addEventListener('click',function(){
+        row.querySelectorAll('.seg button').forEach(function(x){x.classList.remove('sel','correct','incorrect')});
+        b.classList.add('sel');row.dataset.pick=b.dataset.v;
+      });
+    });
+  });
+  s.querySelector('[data-check]').addEventListener('click',function(){
+    var rows=s.querySelectorAll('.sort-row'),right=0;
+    rows.forEach(function(row){
+      var pick=row.dataset.pick,ans=row.dataset.answer;
+      var sel=row.querySelector('.seg button.sel');
+      if(!pick)return;
+      if(pick===ans){sel.classList.add('correct');right++;}else{sel.classList.add('incorrect');}
+    });
+    var res=s.querySelector('.sort-result');res.hidden=false;
+    if(right===rows.length){res.className='sort-result ok';res.textContent='All four correct.';}
+    else{res.className='sort-result partial';res.textContent=right+' of '+rows.length+' correct. Structured data has fixed rows and columns; everything else is unstructured.';}
+  });
+});
+/* before/after */
+document.querySelectorAll('[data-ba]').forEach(function(ba){
+  var data={
+    messy:{txt:'date,property,guests,revenue\n2026-07-02,Naoussa, Paros,5,710.50\n02/07/2026,Old Town Loft,5,710.50\n2026-07-03,Seaside Cabin,280.00',take:'Three faults: an unquoted comma, a stray date format and a missing value. A model reads all three as if nothing is wrong.',cls:'messy'},
+    tidy:{txt:'date,property,guests,revenue\n2026-07-02,"Naoussa, Paros",5,710.50\n2026-07-02,Old Town Loft,5,710.50\n2026-07-03,Seaside Cabin,2,280.00',take:'Quotes around the comma value, one date format, every row complete. Now the file reads the way it looks.',cls:'tidy'}
+  };
+  var panel=ba.querySelector('[data-panel]'),take=ba.querySelector('[data-take]');
+  function set(k){
+    ba.querySelectorAll('.ba-toggle button').forEach(function(b){b.classList.toggle('on',b.dataset.s===k)});
+    panel.textContent=data[k].txt;
+    take.className='ba-take '+data[k].cls;
+    take.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">'+(k==='tidy'?'<path d="M20 6L9 17l-5-5"/>':'<path d="M10.3 3.9L1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/><path d="M12 9v4M12 17h.01"/>')+'</svg><span>'+data[k].take+'</span>';
+  }
+  ba.querySelectorAll('.ba-toggle button').forEach(function(b){b.addEventListener('click',function(){set(b.dataset.s)})});
+  set('messy');
+});
+/* three-lens */
+document.querySelectorAll('[data-lens]').forEach(function(l){
+  var stage=l.querySelector('[data-stage]'),note=l.querySelector('[data-note]');
+  var toks=['A','quiet','har','bour','in','the','Tur','ku','arch','i','pel','ago','.'];
+  var views={
+    plain:{html:'<div class="lens-plain">A quiet harbour in the Turku archipelago.</div>',note:'The sentence as a person reads it: whole words, spacing, meaning.'},
+    tokens:{html:'<div class="lens-tokens">'+toks.map(function(t){return '<span class="lens-tok">'+t+'</span>'}).join('')+'</div>',note:'The model breaks text into tokens, often part-words. "harbour" is two tokens, "archipelago" is four. This is why length is counted in tokens, not words.'},
+    store:{html:'<div class="lens-store">[ 32, 4193, 855, 1764, 295, 18, 9521, 622, 6710, 71, 2884, 1502, 13 ]</div>',note:'Each token becomes a number. The model never sees letters, only these ids and the patterns between them.'}
+  };
+  function set(k){
+    l.querySelectorAll('.lens-tabs button').forEach(function(b){b.classList.toggle('on',b.dataset.l===k)});
+    stage.innerHTML=views[k].html;note.textContent=views[k].note;
+  }
+  l.querySelectorAll('.lens-tabs button').forEach(function(b){b.addEventListener('click',function(){set(b.dataset.l)})});
+  set('plain');
+});
+/* parameter playground */
+document.querySelectorAll('[data-play]').forEach(function(p){
+  var rng=p.querySelector('[data-rng]'),rngv=p.querySelector('[data-rngv]'),bars=p.querySelector('[data-bars]'),pv=p.querySelector('[data-pv]');
+  function set(){
+    var n=+rng.value;rngv.textContent=n;
+    // illustrative curve: diminishing returns
+    var q=Math.round(40+52*(1-Math.exp(-n/2.4)));
+    pv.textContent=q+'%';
+    var html='';for(var i=0;i<9;i++){var h=i<=n?(36+50*(1-Math.exp(-i/2.4))):8;html+='<i style="height:'+h+'%;opacity:'+(i<=n?1:.25)+'"></i>';}
+    bars.innerHTML=html;
+  }
+  rng.addEventListener('input',set);set();
+});
+/* pipeline */
+document.querySelectorAll('[data-pipe]').forEach(function(p){
+  var stages=[
+    {l:'Data',exp:'It starts with your <b>data</b>: the spreadsheet, the export, the document. Clean structure here decides everything downstream.'},
+    {l:'Prompt',exp:'You write a <b>prompt</b>: the instruction plus the data. The model only knows what you put in this window.'},
+    {l:'Model',exp:'The <b>model</b> turns your text into tokens and predicts a response one token at a time. It is pattern, not lookup.'},
+    {l:'Output',exp:'You get an <b>output</b>. Your job is to judge it against the data you started with, because the model will not flag its own mistakes.'}
+  ];
+  var track=p.querySelector('[data-track]'),exp=p.querySelector('[data-exp]'),dots=p.querySelector('[data-dots]');
+  var i=0;
+  track.innerHTML=stages.map(function(s,k){return '<div class="pipe-stage" data-k="'+k+'"><span class="ps-n">0'+(k+1)+'</span><span class="ps-l">'+s.l+'</span></div>'}).join('');
+  dots.innerHTML=stages.map(function(){return '<i></i>'}).join('');
+  function set(){
+    track.querySelectorAll('.pipe-stage').forEach(function(st,k){st.classList.toggle('on',k===i);st.classList.toggle('done',k<i);});
+    dots.querySelectorAll('i').forEach(function(d,k){d.classList.toggle('on',k<=i)});
+    exp.innerHTML=stages[i].exp;
+    p.querySelector('[data-prev]').disabled=i===0;
+  }
+  p.querySelector('[data-next]').addEventListener('click',function(){i=Math.min(i+1,stages.length-1);set();});
+  p.querySelector('[data-prev]').addEventListener('click',function(){i=Math.max(i-1,0);set();});
+  set();
+});
+/* paged stage demo */
+(function(){
+var PM_ARR='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>';
+var PM_BCK='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>';
+document.querySelectorAll('[data-pager]').forEach(function(p){
+  var frames=[].slice.call(p.querySelectorAll('.pm-frame'));
+  var segs=[].slice.call(p.querySelectorAll('.pm-seg'));
+  var mid=p.querySelector('.pm-foot-mid');
+  var back=p.querySelector('[data-back]'),next=p.querySelector('[data-next]');
+  var cur=0,LAST=frames.length-1;
+  function draw(){
+    frames.forEach(function(f,i){f.hidden=i!==cur;});
+    segs.forEach(function(s,i){s.className='pm-seg'+(i<cur?' past':'')+(i===cur?' on':'');});
+    back.disabled=cur===0;back.innerHTML=PM_BCK+' Back';
+    mid.innerHTML='<b>Step '+(cur+1)+'</b> of '+frames.length;
+    next.innerHTML=cur===LAST?'Restart':'Next '+PM_ARR;
+  }
+  back.addEventListener('click',function(){if(cur>0){cur--;draw();}});
+  next.addEventListener('click',function(){cur=cur===LAST?0:cur+1;draw();});
+  draw();
+});
+})();
+/* your turn block */
+document.querySelectorAll('.pm-turn').forEach(function(t){
+  var dl=t.querySelector('[data-dl]');
+  if(dl){var csv="date,property,guests,revenue\n2026-07-01,Harbour View,3,420.00\n2026-07-02,Naoussa, Paros,5,710.50\n2026-07-03,Seaside Cabin,280.00\n";dl.href=URL.createObjectURL(new Blob([csv],{type:'text/csv'}));dl.download='bookings_q3.csv';}
+  var cp=t.querySelector('[data-copy]');
+  if(cp)cp.addEventListener('click',function(){var box=t.querySelector('.pm-pr-box');if(navigator.clipboard)navigator.clipboard.writeText(box.textContent).catch(function(){});cp.textContent='Copied';cp.classList.add('done');setTimeout(function(){cp.textContent='Copy';cp.classList.remove('done');},1500);});
+  var chk=t.querySelector('.pm-turn-check');
+  if(chk){var R={worked:'Nice. You can now predict how a file will read before you paste it, which is the whole point.',partly:'Normal — the faults are subtle by design. Watch where the columns shift when you switch one on.',stuck:'No problem. Run the sample file with the prompt first, then try your own.'};
+    chk.addEventListener('click',function(e){var b=e.target.closest('.pm-tc-opt');if(!b)return;chk.querySelectorAll('.pm-tc-opt').forEach(function(x){x.classList.toggle('sel',x===b)});var r=chk.querySelector('.pm-tc-resp');r.textContent=R[b.dataset.r];r.hidden=false;});}
+});
+/* rail scroll sync */
+(function(){
+  var links=[].slice.call(document.querySelectorAll('#railNav a'));
+  var secs=links.map(function(a){return document.getElementById(a.getAttribute('href').slice(1))});
+  function onScroll(){var y=window.scrollY+140,cur=0;secs.forEach(function(s,i){if(s&&s.offsetTop<=y)cur=i});links.forEach(function(a,i){a.classList.toggle('on',i===cur)});}
+  window.addEventListener('scroll',onScroll,{passive:true});onScroll();
+})();
+</script>
+</body>
+</html>

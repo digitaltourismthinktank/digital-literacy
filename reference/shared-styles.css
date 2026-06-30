@@ -1,0 +1,93 @@
+/* ============================================================
+   Digital Literacy for Effective AI — course surface styles
+   Built on the DTTT master system (navy / teal / warm paper,
+   Inter + IBM Plex Sans + IBM Plex Mono). Shared by the
+   editorial marketing homepage and the calm learning surface.
+   ============================================================ */
+
+:root{
+  /* master-system house tokens */
+  --navy:#0F2044; --navy-mid:#1A3060; --navy-deep:#0A1730; --navy-light:#E8EDF5; --navy-rule:#CBD5E8;
+  --teal:#00857C; --teal-dark:#006B63; --teal-light:#E6F3F2; --teal-text:#006B63;
+  --paper:#F6F4EF; --paper-soft:#F0EDE6; --card:#FFFFFF; --pb:#E7E2D8; --pb2:#D9D3C6;
+  --text:#0F2044; --sub:#4A5568; --muted:#8C8A86; --muted-cool:#8A94A6;
+
+  /* learning surface runs cooler + cleaner than the warm marketing paper */
+  --learn-bg:#FBFBFA; --learn-soft:#F4F5F3; --learn-rule:#E8E8E4; --learn-rule-2:#DEDED9;
+  --learn-sub:#52606D; --learn-muted:#8A9099;
+
+  /* muted editorial status — used only to flag misread data in the inspector */
+  --warn:#9A6A1E; --warn-dark:#74501A; --warn-soft:#F6EFDE; --warn-line:#E6D6B0;
+
+  --font:'Inter',-apple-system,sans-serif;
+  --font-alt:'IBM Plex Sans',sans-serif;
+  --font-mono:'IBM Plex Mono',monospace;
+
+  --r-sm:3px; --r:4px; --r-lg:6px;
+}
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{font-size:16px;scroll-behavior:smooth}
+body{color:var(--text);font-family:var(--font);font-size:.875rem;line-height:1.6;-webkit-font-smoothing:antialiased;min-height:100vh}
+a{color:inherit;text-decoration:none}
+img{display:block;max-width:100%}
+.shell{max-width:1280px;margin:0 auto;padding:0 2.75rem}
+
+/* ───────── master-system nav ───────── */
+.topband{background:var(--navy);position:relative}
+.nav-row{display:flex;align-items:center;gap:2.25rem;height:74px;position:relative;z-index:50}
+.brand{display:flex;align-items:center;gap:.85rem;flex-shrink:0}
+.brand img{height:25px;width:auto;opacity:.97}
+.brand .brand-div{width:1px;height:22px;background:rgba(255,255,255,.22)}
+.brand .brand-prod{font-family:var(--font-alt);font-size:.8125rem;font-weight:600;color:#fff;letter-spacing:-.005em;white-space:nowrap}
+.nav-links{display:flex;align-items:stretch;height:100%;gap:.15rem;margin-left:.5rem}
+.nav-item{display:flex;align-items:center;position:relative}
+.nav-trigger{display:inline-flex;align-items:center;gap:.4rem;height:100%;padding:0 .9rem;font-family:var(--font-alt);font-size:.8125rem;font-weight:500;color:rgba(255,255,255,.72);cursor:pointer;background:none;border:none;transition:color .14s;white-space:nowrap}
+.nav-trigger:hover,.nav-item.active .nav-trigger{color:#fff}
+.nav-item.active .nav-trigger::after{content:"";position:absolute;left:.9rem;right:.9rem;bottom:18px;height:2px;background:#fff;border-radius:2px}
+.nav-spacer{flex:1}
+.nav-actions{display:flex;align-items:center;gap:1.15rem;flex-shrink:0}
+.nav-login{font-family:var(--font-alt);font-size:.8125rem;font-weight:500;color:rgba(255,255,255,.72);transition:color .14s;white-space:nowrap}
+.nav-login:hover{color:#fff}
+.btn-member{display:inline-flex;align-items:center;gap:.5rem;background:#fff;color:var(--navy);font-family:var(--font-alt);font-size:.8125rem;font-weight:600;padding:.6rem 1.1rem;border-radius:var(--r-sm);white-space:nowrap;transition:background .16s,transform .16s}
+.btn-member:hover{background:var(--navy-light);transform:translateY(-1px)}
+
+/* ───────── buttons ───────── */
+.btn{display:inline-flex;align-items:center;gap:.55rem;font-family:var(--font-alt);font-weight:600;border-radius:var(--r-sm);white-space:nowrap;cursor:pointer;border:1.5px solid transparent;transition:background .16s,border-color .16s,transform .16s,color .16s}
+.btn svg{width:16px;height:16px;flex:none}
+.btn-lg{font-size:.9375rem;padding:.85rem 1.45rem}
+.btn-md{font-size:.8125rem;padding:.62rem 1.05rem}
+.btn-navy{background:var(--navy);color:#fff;border-color:var(--navy)}
+.btn-navy:hover{background:var(--navy-deep);transform:translateY(-1px)}
+.btn-teal{background:var(--teal);color:#fff;border-color:var(--teal)}
+.btn-teal:hover{background:var(--teal-dark);transform:translateY(-1px)}
+.btn-line{background:transparent;color:var(--navy);border-color:var(--pb2)}
+.btn-line:hover{border-color:var(--navy)}
+.btn-white{background:#fff;color:var(--navy);border-color:#fff}
+.btn-white:hover{background:var(--navy-light);transform:translateY(-1px)}
+
+/* ───────── editorial primitives ───────── */
+.kicker{display:inline-flex;align-items:center;gap:.6rem;font-family:var(--font-mono);font-size:.6875rem;font-weight:500;letter-spacing:.12em;text-transform:uppercase}
+.masthead{display:flex;align-items:flex-end;justify-content:space-between;gap:2rem;border-bottom:1.5px solid var(--navy);padding-bottom:.85rem;margin-bottom:1.85rem}
+.mh-kicker{display:flex;align-items:center;gap:.55rem;font-family:var(--font-mono);font-size:.625rem;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:var(--navy);opacity:.62;margin-bottom:.55rem}
+.mh-title{font-family:var(--font-alt);font-size:1.6rem;font-weight:600;color:var(--navy);letter-spacing:-.02em;line-height:1.1}
+.mh-link{font-family:var(--font-alt);font-size:.8125rem;font-weight:600;color:var(--navy);display:inline-flex;align-items:center;gap:.45rem;white-space:nowrap;flex-shrink:0;padding-bottom:.3rem;transition:gap .16s}
+.mh-link:hover{gap:.65rem}
+.mh-link svg{width:14px;height:14px}
+.lede{font-size:1.0625rem;font-weight:300;color:var(--sub);line-height:1.6;max-width:64ch}
+.lede b{font-weight:500;color:var(--navy)}
+
+/* ───────── footer ───────── */
+.foot{background:var(--navy);color:#fff;margin-top:4rem}
+.foot-inner{display:flex;align-items:center;justify-content:space-between;gap:2rem;padding:1.6rem 0;flex-wrap:wrap}
+.foot-l{display:flex;align-items:center;gap:1.1rem}
+.foot-l img{height:22px;opacity:.95}
+.foot-tag{font-family:var(--font-mono);font-size:.625rem;font-weight:500;letter-spacing:.06em;color:rgba(255,255,255,.5);border-left:1px solid rgba(255,255,255,.18);padding-left:1.1rem}
+.foot-nav{display:flex;align-items:center;gap:1.5rem}
+.foot-nav a{font-family:var(--font-alt);font-size:.8125rem;font-weight:500;color:rgba(255,255,255,.72);transition:color .14s}
+.foot-nav a:hover{color:#fff}
+
+@media(max-width:1080px){
+  .shell{padding:0 1.5rem}
+  .nav-links{display:none}
+}
