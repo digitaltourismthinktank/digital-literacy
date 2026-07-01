@@ -13,6 +13,7 @@ const modules = defineCollection({
     status: z.enum(['published', 'coming-soon']),
     prev: z.string().nullable(),
     next: z.string().nullable(),
+    creditWeight: z.number(),
   }),
 });
 

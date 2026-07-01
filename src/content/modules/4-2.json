@@ -7,5 +7,6 @@
   "isFree": true,
   "status": "published",
   "prev": "4-1",
-  "next": "4-3"
+  "next": "4-3",
+  "creditWeight": 12
 }
